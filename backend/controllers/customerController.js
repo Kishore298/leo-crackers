@@ -1,5 +1,6 @@
 const Customer = require('../models/Customer');
 
+// get all customers with filter, sort, pagination
 const getCustomers = async (req, res) => {
   try {
     const { search, page = 1, limit = 20 } = req.query;

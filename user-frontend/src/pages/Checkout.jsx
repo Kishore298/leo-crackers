@@ -30,7 +30,7 @@ const Checkout = () => {
     try {
       const { data } = await axios.post('http://localhost:5000/api/orders', {
         customerData: formData,
-        orderItems: cart,
+        orderItems: cart.map(item => ({ ...item, priceAtPurchase: item.price })),
         subtotal: totalAmount,
         finalAmount: totalAmount,
       });

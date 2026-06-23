@@ -2,6 +2,7 @@ const xlsx = require('xlsx');
 const Category = require('../models/Category');
 const Product = require('../models/Product');
 
+// import data from excel
 const importData = async (req, res) => {
   try {
     if (!req.file) {
@@ -28,7 +29,7 @@ const importData = async (req, res) => {
         if (row.product_name) {
           const productSlug = row.product_name.toLowerCase().replace(/ /g, '-');
           const existingProduct = await Product.findOne({ slug: productSlug, category: category._id });
-          
+
           if (existingProduct) {
             existingProduct.actualPrice = row.actualPrice || existingProduct.actualPrice;
             existingProduct.description = row.description || existingProduct.description;

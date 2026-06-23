@@ -11,7 +11,7 @@ const uploadToCloudinary = async (localFilePath) => {
   try {
     if (!localFilePath) return null;
 
-    if (!process.env.CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_CLOUD_NAME === 'your_cloud_name') {
+    if (!process.env.CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_API_KEY || process.env.CLOUDINARY_API_SECRET) {
       const fileName = require('path').basename(localFilePath);
       return `http://localhost:5000/uploads/${fileName}`;
     }

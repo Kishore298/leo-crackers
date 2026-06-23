@@ -1,6 +1,7 @@
 const Product = require('../models/Product');
 const { uploadToCloudinary } = require('../utils/cloudinary');
 
+// get all products with filter, sort, pagination
 const getProducts = async (req, res) => {
   try {
     const { search, category, isActive, sortBy = 'name', order = 'asc', page = 1, limit = 50 } = req.query;
@@ -20,6 +21,7 @@ const getProducts = async (req, res) => {
   }
 };
 
+// create a product 
 const createProduct = async (req, res) => {
   try {
     let imageUrl = req.body.image || '';
@@ -40,6 +42,7 @@ const createProduct = async (req, res) => {
   }
 };
 
+// update a product
 const updateProduct = async (req, res) => {
   try {
     const updateData = { ...req.body };
@@ -53,7 +56,7 @@ const updateProduct = async (req, res) => {
       updateData.slug = updateData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') + '-' + Math.random().toString(36).substring(2, 6);
     }
 
-    const product = await Product.findByIdAndUpdate(req.params.id, updateData, { new: true, runValidators: true });
+    const product = await Product.findByIdAndUpdate(req.params.id, updateData, { returnDocument: 'after', runValidators: true });
     if (!product) return res.status(404).json({ message: 'Product not found' });
     res.json(product);
   } catch (error) {
@@ -61,6 +64,7 @@ const updateProduct = async (req, res) => {
   }
 };
 
+// delete a product
 const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);

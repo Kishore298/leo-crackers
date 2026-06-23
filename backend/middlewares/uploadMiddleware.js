@@ -1,6 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 
+// multer storage configuration
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/');
@@ -10,6 +11,7 @@ const storage = multer.diskStorage({
   }
 });
 
+// multer upload configuration
 const upload = multer({
   storage,
   limits: { fileSize: 5000000 }, // 5MB

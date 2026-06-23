@@ -2,10 +2,12 @@ const Admin = require('../models/Admin');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+// generate jwt token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET || 'leo-crackers2026', { expiresIn: '30d' });
 };
 
+// login admin
 const loginAdmin = async (req, res) => {
   const { username, password } = req.body;
   try {

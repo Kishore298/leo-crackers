@@ -151,7 +151,7 @@ const Orders = () => {
                 {viewOrder.items?.map((item, i) => (
                   <div key={i} className="flex justify-between text-sm py-1">
                     <span className="text-gray-700">{item.product?.name || item.name} × {item.quantity}</span>
-                    <span className="font-bold text-primary">₹{item.price * item.quantity}</span>
+                    <span className="font-bold text-primary">₹{(item.priceAtPurchase || 0) * item.quantity}</span>
                   </div>
                 ))}
                 <div className="border-t border-border mt-2 pt-2 flex justify-between font-black">

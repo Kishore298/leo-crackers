@@ -31,13 +31,14 @@ const getOrders = async (req, res) => {
   }
 };
 
+// update order status by admin
 const updateOrderStatus = async (req, res) => {
   try {
     const order = await Order.findByIdAndUpdate(req.params.id, {
       ...(req.body.status && { status: req.body.status }),
       ...(req.body.paymentStatus && { paymentStatus: req.body.paymentStatus }),
       ...(req.body.adminRemarks && { adminRemarks: req.body.adminRemarks }),
-    }, { new: true });
+    }, { returnDocument: 'after' });
     if (!order) return res.status(404).json({ message: 'Order not found' });
     res.json(order);
   } catch (error) {

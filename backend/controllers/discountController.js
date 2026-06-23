@@ -1,5 +1,6 @@
 const GlobalDiscount = require('../models/GlobalDiscount');
 
+// get global discount
 const getDiscount = async (req, res) => {
   try {
     const discount = await GlobalDiscount.findOne({});
@@ -9,6 +10,7 @@ const getDiscount = async (req, res) => {
   }
 };
 
+// update global discount
 const updateDiscount = async (req, res) => {
   try {
     let discount = await GlobalDiscount.findOne({});

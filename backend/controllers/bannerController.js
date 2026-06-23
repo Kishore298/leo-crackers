@@ -1,6 +1,7 @@
 const Banner = require('../models/Banner');
 const { uploadToCloudinary } = require('../utils/cloudinary');
 
+// get all banners
 const getBanners = async (req, res) => {
   try {
     const banners = await Banner.find({}).sort({ displayOrder: 1 });
@@ -10,6 +11,7 @@ const getBanners = async (req, res) => {
   }
 };
 
+// create a banner
 const createBanner = async (req, res) => {
   try {
     let imageUrl = req.body.image || '';
@@ -24,6 +26,7 @@ const createBanner = async (req, res) => {
   }
 };
 
+// update a banner
 const updateBanner = async (req, res) => {
   try {
     const banner = await Banner.findById(req.params.id);
@@ -44,6 +47,7 @@ const updateBanner = async (req, res) => {
   }
 };
 
+// delete a banner
 const deleteBanner = async (req, res) => {
   try {
     const banner = await Banner.findById(req.params.id);
