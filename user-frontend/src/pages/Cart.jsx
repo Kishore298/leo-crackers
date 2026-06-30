@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeFromCart } from '../features/shop/shopSlice';
+import { removeFromCart, updateQuantity } from '../features/shop/shopSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaTrash, FaArrowLeft, FaShoppingBag } from 'react-icons/fa';
 
@@ -42,7 +42,7 @@ const Cart = () => {
         ) : (
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Cart Items */}
-            <div className="flex-1 bg-white rounded-2xl shadow-primary overflow-hidden border border-border">
+            <div className="flex-1 bg-white rounded-2xl shadow-primary overflow-x-auto border border-border w-full">
               <table className="min-w-full">
                 <thead className="bg-fire-gradient text-white text-xs uppercase tracking-wider">
                   <tr>
@@ -58,7 +58,23 @@ const Cart = () => {
                     <tr key={item.product} className={`${i % 2 === 0 ? 'bg-white' : 'bg-surface'} hover:bg-surface-2 transition`}>
                       <td className="px-6 py-4 font-semibold text-primary-dark">{item.name}</td>
                       <td className="px-6 py-4 text-center text-gray-700">₹{item.price}</td>
-                      <td className="px-6 py-4 text-center font-bold text-gray-800">{item.quantity}</td>
+                      <td className="px-6 py-4 text-center font-bold text-gray-800">
+                        <div className="flex items-center justify-center gap-3">
+                          <button
+                            onClick={() => dispatch(updateQuantity({ id: item.product, quantity: item.quantity - 1 }))}
+                            className="w-8 h-8 flex items-center justify-center rounded bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors font-bold text-lg"
+                          >
+                            -
+                          </button>
+                          <span className="w-6 text-center">{item.quantity}</span>
+                          <button
+                            onClick={() => dispatch(updateQuantity({ id: item.product, quantity: item.quantity + 1 }))}
+                            className="w-8 h-8 flex items-center justify-center rounded bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors font-bold text-lg"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </td>
                       <td className="px-6 py-4 text-right font-black text-primary">₹{item.price * item.quantity}</td>
                       <td className="px-6 py-4 text-center">
                         <button

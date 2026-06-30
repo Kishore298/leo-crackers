@@ -1,5 +1,7 @@
 const Order = require('../models/Order');
 const Customer = require('../models/Customer');
+const { generateOrderPDF } = require('../utils/pdfGenerator');
+const { sendOrderConfirmationEmail, sendStatusUpdateEmail } = require('../utils/emailService');
 
 // Admin - get orders with filter, sort, pagination
 const getOrders = async (req, res) => {
@@ -34,12 +36,22 @@ const getOrders = async (req, res) => {
 // update order status by admin
 const updateOrderStatus = async (req, res) => {
   try {
+    const originalOrder = await Order.findById(req.params.id);
+    if (!originalOrder) return res.status(404).json({ message: 'Order not found' });
+    
+    const isStatusChanged = req.body.status && originalOrder.status !== req.body.status;
+
     const order = await Order.findByIdAndUpdate(req.params.id, {
       ...(req.body.status && { status: req.body.status }),
       ...(req.body.paymentStatus && { paymentStatus: req.body.paymentStatus }),
       ...(req.body.adminRemarks && { adminRemarks: req.body.adminRemarks }),
-    }, { returnDocument: 'after' });
-    if (!order) return res.status(404).json({ message: 'Order not found' });
+    }, { returnDocument: 'after' }).populate('customer');
+
+    if (isStatusChanged && order.customer && order.customer.email) {
+      // fire and forget email update
+      sendStatusUpdateEmail(order.customer.email, order).catch(console.error);
+    }
+
     res.json(order);
   } catch (error) {
     res.status(400).json({ message: 'Update failed', error });
@@ -73,6 +85,14 @@ const createOrder = async (req, res) => {
     });
 
     const createdOrder = await order.save();
+
+    if (customer.email) {
+       const populatedOrder = await Order.findById(createdOrder._id).populate('items.product', 'name');
+       generateOrderPDF(populatedOrder, customer)
+         .then(pdfBuffer => sendOrderConfirmationEmail(customer.email, populatedOrder, pdfBuffer))
+         .catch(err => console.error('Error in order email generation:', err));
+    }
+
     res.status(201).json(createdOrder);
   } catch (error) {
     res.status(400).json({ message: 'Order creation failed', error: error.message });

@@ -41,6 +41,20 @@ export const shopSlice = createSlice({
       state.cart = state.cart.filter(x => x.product !== action.payload);
       localStorage.setItem('leo_cart', JSON.stringify(state.cart));
     },
+    updateQuantity: (state, action) => {
+      const { id, quantity, itemDetails } = action.payload;
+      const existItem = state.cart.find(x => x.product === id);
+      if (existItem) {
+        if (quantity <= 0) {
+          state.cart = state.cart.filter(x => x.product !== id);
+        } else {
+          state.cart = state.cart.map(x => x.product === id ? { ...x, quantity } : x);
+        }
+      } else if (quantity > 0 && itemDetails) {
+        state.cart.push({ ...itemDetails, quantity });
+      }
+      localStorage.setItem('leo_cart', JSON.stringify(state.cart));
+    },
     clearCart: (state) => {
       state.cart = [];
       localStorage.removeItem('leo_cart');
@@ -62,5 +76,5 @@ export const shopSlice = createSlice({
   }
 });
 
-export const { addToCart, removeFromCart, clearCart } = shopSlice.actions;
+export const { addToCart, removeFromCart, updateQuantity, clearCart } = shopSlice.actions;
 export default shopSlice.reducer;

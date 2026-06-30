@@ -7,7 +7,7 @@ import ConfirmDialog from '../components/ConfirmDialog';
 
 const API = 'http://localhost:5000/api/categories';
 
-const initialForm = { name: '', description: '', isActive: true };
+const initialForm = { name: '', isActive: true };
 
 const Categories = () => {
   const { admin } = useSelector((state) => state.auth);
@@ -39,10 +39,13 @@ const Categories = () => {
     setLoading(false);
   };
 
-  useEffect(() => { fetchCategories(); }, [search, page]);
+  useEffect(() => { 
+    fetchCategories(); 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, page]);
 
   const openAdd = () => { setEditId(null); setForm(initialForm); setImageFile(null); setShowModal(true); };
-  const openEdit = (cat) => { setEditId(cat._id); setForm({ name: cat.name, description: cat.description || '', isActive: cat.isActive }); setImageFile(null); setShowModal(true); };
+  const openEdit = (cat) => { setEditId(cat._id); setForm({ name: cat.name, isActive: cat.isActive }); setImageFile(null); setShowModal(true); };
   const closeModal = () => { setShowModal(false); setEditId(null); setForm(initialForm); setImageFile(null); };
 
   const handleSave = async (e) => {
@@ -51,7 +54,6 @@ const Categories = () => {
     
     const formData = new FormData();
     formData.append('name', form.name);
-    formData.append('description', form.description);
     formData.append('isActive', form.isActive);
     if (imageFile) formData.append('image', imageFile);
 
@@ -96,8 +98,8 @@ const Categories = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div>
-          <h1 className="text-3xl font-heading font-black text-primary-dark">Categories</h1>
-          <p className="text-gray-500 text-sm mt-1">{total} categories total</p>
+          <h1 className="text-3xl font-heading font-black text-primary">Categories</h1>
+          <p className="text-text-secondary text-sm mt-1">{total} categories total</p>
         </div>
         <button onClick={openAdd} className="flex items-center gap-2 bg-fire-gradient text-white font-bold px-5 py-2.5 rounded-lg shadow-primary hover:shadow-primary-lg transition">
           <FaPlus /> Add Category
@@ -105,51 +107,51 @@ const Categories = () => {
       </div>
 
       {/* Search */}
-      <div className="bg-white rounded-xl shadow-primary border border-border p-4 mb-4 flex gap-3 items-center">
+      <div className="glass-panel p-4 mb-4 flex gap-3 items-center">
         <FaSearch className="text-primary" />
         <input
           type="text"
           placeholder="Search categories..."
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-          className="flex-1 outline-none text-gray-700 bg-transparent"
+          className="flex-1 outline-none text-text bg-transparent"
         />
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl shadow-primary overflow-hidden border border-border">
+      <div className="glass-panel overflow-x-auto w-full">
         <table className="min-w-full leading-normal">
           <thead>
             <tr className="bg-fire-gradient text-white text-xs uppercase tracking-wider">
               <th className="px-5 py-4 text-center">Image</th>
               <th className="px-5 py-4 text-left">Name</th>
-              <th className="px-5 py-4 text-left">Slug</th>
-              <th className="px-5 py-4 text-left">Description</th>
+              <th className="px-5 py-4 text-center">Total Products</th>
               <th className="px-5 py-4 text-center">Status</th>
               <th className="px-5 py-4 text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan="6" className="py-10 text-center text-gray-400 text-lg animate-pulse">Loading...</td></tr>
+              <tr><td colSpan="6" className="py-10 text-center text-text-secondary text-lg animate-pulse">Loading...</td></tr>
             ) : categories.length === 0 ? (
-              <tr><td colSpan="6" className="py-10 text-center text-gray-400">No categories found.</td></tr>
+              <tr><td colSpan="6" className="py-10 text-center text-text-secondary">No categories found.</td></tr>
             ) : categories.map((cat, i) => (
-              <tr key={cat._id} className={`${i % 2 === 0 ? 'bg-white' : 'bg-surface'} hover:bg-surface-2 transition`}>
+              <tr key={cat._id} className={`${i % 2 === 0 ? 'bg-surface' : 'bg-surface-2'} hover:bg-white/5 transition-colors`}>
                 <td className="px-5 py-4 border-b border-border text-center">
-                  {cat.image ? <img src={cat.image} alt={cat.name} className="w-12 h-12 object-cover rounded-lg mx-auto shadow-sm" /> : <div className="w-12 h-12 bg-gray-100 rounded-lg mx-auto flex items-center justify-center text-[10px] text-gray-400 font-bold border border-gray-200">No Img</div>}
+                  {cat.image ? <img src={cat.image} alt={cat.name} className="w-12 h-12 object-cover rounded-lg mx-auto shadow-sm" /> : <div className="w-12 h-12 bg-surface-2 rounded-lg mx-auto flex items-center justify-center text-[10px] text-text-secondary font-bold border border-border">No Img</div>}
                 </td>
-                <td className="px-5 py-4 border-b border-border text-sm font-bold text-primary-dark">{cat.name}</td>
-                <td className="px-5 py-4 border-b border-border text-sm text-gray-500 font-mono">{cat.slug}</td>
-                <td className="px-5 py-4 border-b border-border text-sm text-gray-600 max-w-xs truncate">{cat.description || '—'}</td>
+                <td className="px-5 py-4 border-b border-border text-sm font-bold text-white">{cat.name}</td>
+                <td className="px-5 py-4 border-b border-border text-center font-bold text-white text-sm">
+                  {cat.totalProducts || 0}
+                </td>
                 <td className="px-5 py-4 border-b border-border text-center">
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${cat.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                  <span className={`px-3 py-1.5 rounded-full text-xs font-bold border ${cat.isActive ? 'bg-green-500/10 text-green-500 border-green-500/20' : 'bg-surface-2 text-text-secondary border-border'}`}>
                     {cat.isActive ? 'Active' : 'Inactive'}
                   </span>
                 </td>
                 <td className="px-5 py-4 border-b border-border text-center">
-                  <button onClick={() => openEdit(cat)} className="text-primary hover:text-primary-dark mr-4 transition hover:scale-110 inline-block"><FaEdit /></button>
-                  <button onClick={() => handleDelete(cat._id)} className="text-red-400 hover:text-red-600 transition hover:scale-110 inline-block"><FaTrash /></button>
+                  <button onClick={() => openEdit(cat)} className="text-primary hover:text-white mr-4 transition hover:scale-110 inline-block"><FaEdit /></button>
+                  <button onClick={() => handleDelete(cat._id)} className="text-red-500 hover:text-red-400 transition hover:scale-110 inline-block"><FaTrash /></button>
                 </td>
               </tr>
             ))}
@@ -158,10 +160,10 @@ const Categories = () => {
 
         {/* Pagination */}
         {pages > 1 && (
-          <div className="flex justify-center items-center gap-2 py-4 border-t border-border bg-surface">
+          <div className="flex justify-center items-center gap-2 py-4 border-t border-border bg-surface-2">
             {Array.from({ length: pages }, (_, i) => i + 1).map(p => (
               <button key={p} onClick={() => setPage(p)}
-                className={`w-9 h-9 rounded-full font-bold text-sm transition ${p === page ? 'bg-fire-gradient text-white shadow-primary' : 'bg-white border border-border hover:border-primary text-gray-600'}`}>
+                className={`w-9 h-9 rounded-full font-bold text-sm transition ${p === page ? 'bg-fire-gradient text-white shadow-[0_0_15px_rgba(255,102,0,0.4)]' : 'bg-surface border border-border hover:border-primary text-text-secondary'}`}>
                 {p}
               </button>
             ))}
@@ -171,40 +173,37 @@ const Categories = () => {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fade-in-up">
-          <div className="bg-white rounded-2xl shadow-primary-lg w-full max-w-md mx-4 overflow-hidden">
-            <div className="bg-fire-gradient px-6 py-4 flex justify-between items-center">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in-up p-4">
+          <div className="glass-panel w-full max-w-md border border-white/10 flex flex-col max-h-[90vh]">
+            <div className="bg-fire-gradient px-6 py-4 flex justify-between items-center shrink-0">
               <h2 className="text-xl font-heading font-bold text-white">{editId ? 'Edit Category' : 'New Category'}</h2>
-              <button onClick={closeModal} className="text-white/80 hover:text-white text-xl"><FaTimes /></button>
+              <button onClick={closeModal} className="text-white/80 hover:text-white text-xl transition-colors"><FaTimes /></button>
             </div>
-            <form onSubmit={handleSave} className="p-6 space-y-4">
+            <div className="overflow-y-auto p-6">
+              <form onSubmit={handleSave} className="space-y-4">
               <div>
-                <label className="block text-sm font-bold text-primary-dark mb-1">Name *</label>
+                <label className="block text-sm font-bold text-primary mb-1">Name *</label>
                 <input required type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
-                  className="w-full border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary bg-surface-2" />
+                  className="input-fire" />
               </div>
               <div>
-                <label className="block text-sm font-bold text-primary-dark mb-1">Description</label>
-                <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })}
-                  rows={3} className="w-full border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary bg-surface-2" />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-primary-dark mb-1">Image (Optional)</label>
+                <label className="block text-sm font-bold text-primary mb-1">Image (Optional)</label>
                 <input type="file" accept="image/*" onChange={e => setImageFile(e.target.files[0])}
-                  className="w-full border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary bg-surface-2" />
+                  className="input-fire file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30" />
               </div>
               <div className="flex items-center gap-3">
                 <input type="checkbox" id="isActive" checked={form.isActive} onChange={e => setForm({ ...form, isActive: e.target.checked })}
                   className="w-5 h-5 accent-primary" />
-                <label htmlFor="isActive" className="text-sm font-bold text-primary-dark">Active</label>
+                <label htmlFor="isActive" className="text-sm font-bold text-white">Active</label>
               </div>
               <div className="flex gap-3 pt-2">
-                <button type="button" onClick={closeModal} className="flex-1 border border-border text-gray-600 font-bold py-2 rounded-lg hover:bg-gray-50 transition">Cancel</button>
-                <button type="submit" disabled={saving} className="flex-1 bg-fire-gradient text-white font-bold py-2 rounded-lg shadow-primary hover:shadow-primary-lg transition">
+                <button type="button" onClick={closeModal} className="flex-1 border border-border text-text-secondary font-bold py-2 rounded-lg hover:bg-white/5 transition-colors">Cancel</button>
+                <button type="submit" disabled={saving} className="flex-1 bg-fire-gradient text-white font-bold py-2 rounded-lg shadow-primary hover:shadow-[0_0_15px_rgba(255,102,0,0.5)] transition">
                   {saving ? 'Saving...' : editId ? 'Update' : 'Create'}
                 </button>
               </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       )}

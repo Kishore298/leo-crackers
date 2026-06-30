@@ -6,6 +6,7 @@ const productSchema = new mongoose.Schema({
   category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
   description: { type: String },
   image: { type: String }, // Cloudinary URL
+  mrp: { type: Number, required: true, default: 0 },
   actualPrice: { type: Number, required: true },
   isActive: { type: Boolean, default: true },
 }, { timestamps: true });

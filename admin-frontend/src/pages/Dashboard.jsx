@@ -6,12 +6,12 @@ import { FaShoppingBag, FaBoxOpen, FaTags, FaChartLine, FaFire } from 'react-ico
 const API = 'http://localhost:5000/api';
 
 const StatCard = ({ icon, label, value, sub, gradient }) => (
-  <div className={`rounded-2xl p-6 text-white shadow-primary-lg flex items-center gap-5 ${gradient}`}>
-    <div className="bg-white/20 rounded-xl p-4 text-3xl">{icon}</div>
+  <div className={`rounded-2xl p-6 text-white shadow-glass border border-white/5 flex items-center gap-5 ${gradient}`}>
+    <div className="bg-white/10 rounded-xl p-4 text-3xl shadow-inner">{icon}</div>
     <div>
       <p className="text-white/70 text-sm font-semibold uppercase tracking-wide">{label}</p>
-      <p className="text-4xl font-black mt-1">{value}</p>
-      {sub && <p className="text-white/60 text-xs mt-1">{sub}</p>}
+      <p className="text-4xl font-black mt-1 drop-shadow-md">{value}</p>
+      {sub && <p className="text-white/50 text-xs mt-1">{sub}</p>}
     </div>
   </div>
 );
@@ -47,17 +47,22 @@ const Dashboard = () => {
       setLoading(false);
     };
     fetchStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const STATUS_COLORS = { PENDING: 'bg-yellow-100 text-yellow-700', APPROVED: 'bg-green-100 text-green-700', REJECTED: 'bg-red-100 text-red-700' };
+  const STATUS_COLORS = { 
+    PENDING: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20', 
+    APPROVED: 'bg-green-500/10 text-green-500 border-green-500/20', 
+    REJECTED: 'bg-red-500/10 text-red-500 border-red-500/20' 
+  };
 
   return (
     <div className="animate-fade-in-up">
       <div className="mb-8">
-        <h1 className="text-4xl font-heading font-black text-primary-dark flex items-center gap-3">
+        <h1 className="text-4xl font-heading font-black text-primary flex items-center gap-3">
           <FaFire className="text-primary animate-bounce-subtle" /> Dashboard
         </h1>
-        <p className="text-gray-500 mt-1">Welcome back, {admin?.username || 'Admin'}!</p>
+        <p className="text-text-secondary mt-1">Welcome back, {admin?.username || 'Admin'}!</p>
       </div>
 
       {loading ? (
@@ -71,29 +76,29 @@ const Dashboard = () => {
             <StatCard icon={<FaChartLine />} label="Revenue (Approved)" value={`₹${stats.revenue.toLocaleString()}`} gradient="bg-gradient-to-br from-green-600 to-green-400" />
           </div>
 
-          <div className="bg-white rounded-2xl shadow-primary border border-border overflow-hidden">
-            <div className="bg-fire-gradient px-6 py-4">
+          <div className="glass-panel overflow-hidden">
+            <div className="bg-surface-2 border-b border-border px-6 py-4">
               <h2 className="text-lg font-heading font-bold text-white">Recent Orders</h2>
             </div>
             <table className="min-w-full">
-              <thead className="bg-surface text-xs uppercase text-primary-dark tracking-wider">
+              <thead className="bg-surface-2 text-xs uppercase text-text-secondary tracking-wider border-b border-border">
                 <tr>
-                  <th className="px-5 py-3 text-left">Order #</th>
-                  <th className="px-5 py-3 text-left">Customer</th>
-                  <th className="px-5 py-3 text-right">Amount</th>
-                  <th className="px-5 py-3 text-center">Status</th>
+                  <th className="px-5 py-4 text-left">Order #</th>
+                  <th className="px-5 py-4 text-left">Customer</th>
+                  <th className="px-5 py-4 text-right">Amount</th>
+                  <th className="px-5 py-4 text-center">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {recentOrders.length === 0 ? (
-                  <tr><td colSpan="4" className="text-center py-8 text-gray-400">No recent orders.</td></tr>
+                  <tr><td colSpan="4" className="text-center py-8 text-text-secondary">No recent orders.</td></tr>
                 ) : recentOrders.map((order, i) => (
-                  <tr key={order._id} className={`${i % 2 === 0 ? 'bg-white' : 'bg-surface'} hover:bg-surface-2 transition`}>
-                    <td className="px-5 py-4 border-b border-border text-sm font-bold text-primary-dark font-mono">{order.orderNumber}</td>
-                    <td className="px-5 py-4 border-b border-border text-sm font-semibold text-gray-800">{order.customer?.customerName}</td>
+                  <tr key={order._id} className={`${i % 2 === 0 ? 'bg-surface' : 'bg-surface-2'} hover:bg-white/5 transition-colors`}>
+                    <td className="px-5 py-4 border-b border-border text-sm font-bold text-white font-mono">{order.orderNumber}</td>
+                    <td className="px-5 py-4 border-b border-border text-sm font-semibold text-text">{order.customer?.customerName}</td>
                     <td className="px-5 py-4 border-b border-border text-right font-black text-primary">₹{order.finalAmount}</td>
                     <td className="px-5 py-4 border-b border-border text-center">
-                      <span className={`px-2 py-1 rounded-full text-xs font-bold ${STATUS_COLORS[order.status] || 'bg-gray-100 text-gray-600'}`}>{order.status}</span>
+                      <span className={`px-3 py-1.5 rounded-full text-xs font-bold border ${STATUS_COLORS[order.status] || 'bg-surface-2 text-text-secondary border-border'}`}>{order.status}</span>
                     </td>
                   </tr>
                 ))}

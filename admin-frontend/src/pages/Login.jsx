@@ -40,13 +40,13 @@ const Login = () => {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-2xl shadow-primary-lg p-8 border border-white/50">
-          <h2 className="text-2xl font-heading font-bold text-primary-dark mb-6 text-center">Welcome Back</h2>
+        <div className="glass-panel p-8">
+          <h2 className="text-2xl font-heading font-bold text-primary mb-6 text-center">Welcome Back</h2>
           <form onSubmit={onSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-bold text-primary-dark mb-2">Username</label>
+              <label className="block text-sm font-bold text-white mb-2">Username</label>
               <div className="relative">
-                <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/50" />
+                <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-primary" />
                 <input
                   type="text"
                   name="username"
@@ -54,14 +54,14 @@ const Login = () => {
                   onChange={onChange}
                   required
                   placeholder="Enter username"
-                  className="w-full pl-10 pr-4 py-3 border border-border bg-surface-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary text-gray-800 placeholder-gray-400"
+                  className="w-full pl-10 pr-4 py-3 border border-border bg-surface-2 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary text-text placeholder-text-secondary/50"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-bold text-primary-dark mb-2">Password</label>
+              <label className="block text-sm font-bold text-white mb-2">Password</label>
               <div className="relative">
-                <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/50" />
+                <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-primary" />
                 <input
                   type="password"
                   name="password"
@@ -69,21 +69,21 @@ const Login = () => {
                   onChange={onChange}
                   required
                   placeholder="Enter password"
-                  className="w-full pl-10 pr-4 py-3 border border-border bg-surface-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary text-gray-800 placeholder-gray-400"
+                  className="w-full pl-10 pr-4 py-3 border border-border bg-surface-2 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary text-text placeholder-text-secondary/50"
                 />
               </div>
             </div>
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-fire-gradient text-white font-black py-3 px-4 rounded-xl hover:bg-fire-gradient-hover transition shadow-primary hover:shadow-primary-lg text-lg uppercase tracking-wider mt-2"
+              className="w-full btn-fire text-lg uppercase tracking-wider mt-2"
             >
               {isLoading ? 'Logging in...' : 'Login'}
             </button>
           </form>
 
-          <p className="text-center text-xs text-gray-400 mt-6">
-            Default: <span className="font-mono font-bold text-primary-dark">admin / password123</span>
+          <p className="text-center text-xs text-text-secondary mt-6">
+            Default: <span className="font-mono font-bold text-primary">admin / password123</span>
           </p>
         </div>
       </div>

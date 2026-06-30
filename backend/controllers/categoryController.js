@@ -1,4 +1,5 @@
 const Category = require('../models/Category');
+const Product = require('../models/Product');
 const { uploadToCloudinary } = require('../utils/cloudinary');
 
 // get all categories 
@@ -10,10 +11,16 @@ const getCategories = async (req, res) => {
     if (isActive !== undefined) filter.isActive = isActive === 'true';
     const sort = { [sortBy]: order === 'asc' ? 1 : -1 };
     const skip = (Number(page) - 1) * Number(limit);
-    const [categories, total] = await Promise.all([
-      Category.find(filter).sort(sort).skip(skip).limit(Number(limit)),
+    const [categoriesDocs, total] = await Promise.all([
+      Category.find(filter).sort(sort).skip(skip).limit(Number(limit)).lean(),
       Category.countDocuments(filter)
     ]);
+    
+    const categories = await Promise.all(categoriesDocs.map(async cat => {
+      const count = await Product.countDocuments({ category: cat._id });
+      return { ...cat, totalProducts: count };
+    }));
+    
     res.json({ categories, total, page: Number(page), pages: Math.ceil(total / limit) });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });

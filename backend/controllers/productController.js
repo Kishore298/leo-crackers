@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const GlobalDiscount = require('../models/GlobalDiscount');
 const { uploadToCloudinary } = require('../utils/cloudinary');
 
 // get all products with filter, sort, pagination
@@ -34,7 +35,12 @@ const createProduct = async (req, res) => {
       req.body.slug = req.body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') + '-' + Math.random().toString(36).substring(2, 6);
     }
 
-    const product = new Product({ ...req.body, image: imageUrl });
+    const discount = await GlobalDiscount.findOne({});
+    const percentage = discount && discount.isActive ? discount.discountPercentage : 0;
+    const mrp = Number(req.body.mrp) || 0;
+    const actualPrice = Math.round(mrp - (mrp * (percentage / 100)));
+
+    const product = new Product({ ...req.body, mrp, actualPrice, image: imageUrl });
     const createdProduct = await product.save();
     res.status(201).json(createdProduct);
   } catch (error) {
@@ -54,6 +60,12 @@ const updateProduct = async (req, res) => {
     // Auto-create slug if missing but name is provided
     if (!updateData.slug && updateData.name) {
       updateData.slug = updateData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') + '-' + Math.random().toString(36).substring(2, 6);
+    }
+
+    if (updateData.mrp !== undefined) {
+      const discount = await GlobalDiscount.findOne({});
+      const percentage = discount && discount.isActive ? discount.discountPercentage : 0;
+      updateData.actualPrice = Math.round(Number(updateData.mrp) - (Number(updateData.mrp) * (percentage / 100)));
     }
 
     const product = await Product.findByIdAndUpdate(req.params.id, updateData, { returnDocument: 'after', runValidators: true });

@@ -6,7 +6,7 @@ import { FaEdit, FaTrash, FaSearch, FaPlus, FaTimes, FaFilter } from 'react-icon
 import ConfirmDialog from '../components/ConfirmDialog';
 
 const API = 'http://localhost:5000/api';
-const initialForm = { name: '', description: '', actualPrice: '', category: '', isActive: true };
+const initialForm = { name: '', mrp: '', category: '', isActive: true };
 
 const Products = () => {
   const { admin } = useSelector((state) => state.auth);
@@ -46,13 +46,19 @@ const Products = () => {
     } catch (err) { console.error(err); }
   };
 
-  useEffect(() => { fetchProducts(); }, [search, page, filterCat]);
-  useEffect(() => { fetchCategories(); }, []);
+  useEffect(() => { 
+    fetchProducts(); 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, page, filterCat]);
+  useEffect(() => { 
+    fetchCategories(); 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const openAdd = () => { setEditId(null); setForm(initialForm); setImageFile(null); setShowModal(true); };
   const openEdit = (prod) => {
     setEditId(prod._id);
-    setForm({ name: prod.name, description: prod.description || '', actualPrice: prod.actualPrice, category: prod.category?._id || prod.category || '', isActive: prod.isActive });
+    setForm({ name: prod.name, mrp: prod.mrp || '', category: prod.category?._id || prod.category || '', isActive: prod.isActive });
     setImageFile(null);
     setShowModal(true);
   };
@@ -64,8 +70,7 @@ const Products = () => {
     
     const formData = new FormData();
     formData.append('name', form.name);
-    formData.append('description', form.description);
-    formData.append('actualPrice', form.actualPrice);
+    formData.append('mrp', form.mrp);
     formData.append('category', form.category);
     formData.append('isActive', form.isActive);
     if (imageFile) formData.append('image', imageFile);
@@ -111,8 +116,8 @@ const Products = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div>
-          <h1 className="text-3xl font-heading font-black text-primary-dark">Products</h1>
-          <p className="text-gray-500 text-sm mt-1">{total} products total</p>
+          <h1 className="text-3xl font-heading font-black text-primary">Products</h1>
+          <p className="text-text-secondary text-sm mt-1">{total} products total</p>
         </div>
         <button onClick={openAdd} className="flex items-center gap-2 bg-fire-gradient text-white font-bold px-5 py-2.5 rounded-lg shadow-primary hover:shadow-primary-lg transition">
           <FaPlus /> Add Product
@@ -120,19 +125,19 @@ const Products = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl shadow-primary border border-border p-4 mb-4 flex flex-col md:flex-row gap-3 items-center">
+      <div className="glass-panel p-4 mb-4 flex flex-col md:flex-row gap-3 items-center">
         <FaSearch className="text-primary hidden md:block" />
         <input
           type="text"
           placeholder="Search products..."
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-          className="flex-1 outline-none text-gray-700 border border-border rounded-lg px-3 py-2 bg-surface-2 focus:ring-2 focus:ring-primary w-full md:w-auto"
+          className="flex-1 outline-none text-text border border-border rounded-lg px-3 py-2 bg-surface-2 focus:ring-1 focus:ring-primary w-full md:w-auto"
         />
         <div className="flex items-center gap-2 w-full md:w-auto">
           <FaFilter className="text-primary" />
           <select value={filterCat} onChange={(e) => { setFilterCat(e.target.value); setPage(1); }}
-            className="border border-border rounded-lg px-3 py-2 bg-surface-2 focus:outline-none focus:ring-2 focus:ring-primary text-gray-700 w-full">
+            className="border border-border rounded-lg px-3 py-2 bg-surface-2 focus:outline-none focus:ring-1 focus:ring-primary text-text w-full">
             <option value="">All Categories</option>
             {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
           </select>
@@ -140,43 +145,43 @@ const Products = () => {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl shadow-primary overflow-hidden border border-border">
+      <div className="glass-panel overflow-x-auto w-full">
         <table className="min-w-full leading-normal">
           <thead>
             <tr className="bg-fire-gradient text-white text-xs uppercase tracking-wider">
               <th className="px-5 py-4 text-center">Image</th>
               <th className="px-5 py-4 text-left">Name</th>
               <th className="px-5 py-4 text-left">Category</th>
-              <th className="px-5 py-4 text-left">Description</th>
-              <th className="px-5 py-4 text-right">Price</th>
+              <th className="px-5 py-4 text-right">MRP</th>
+              <th className="px-5 py-4 text-right">Offer Price</th>
               <th className="px-5 py-4 text-center">Status</th>
               <th className="px-5 py-4 text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan="7" className="py-10 text-center text-gray-400 text-lg animate-pulse">Loading...</td></tr>
+              <tr><td colSpan="7" className="py-10 text-center text-text-secondary text-lg animate-pulse">Loading...</td></tr>
             ) : products.length === 0 ? (
-              <tr><td colSpan="7" className="py-10 text-center text-gray-400">No products found.</td></tr>
+              <tr><td colSpan="7" className="py-10 text-center text-text-secondary">No products found.</td></tr>
             ) : products.map((prod, i) => (
-              <tr key={prod._id} className={`${i % 2 === 0 ? 'bg-white' : 'bg-surface'} hover:bg-surface-2 transition`}>
+              <tr key={prod._id} className={`${i % 2 === 0 ? 'bg-surface' : 'bg-surface-2'} hover:bg-white/5 transition-colors`}>
                 <td className="px-5 py-4 border-b border-border text-center">
-                  {prod.image ? <img src={prod.image} alt={prod.name} className="w-12 h-12 object-cover rounded-lg mx-auto shadow-sm" /> : <div className="w-12 h-12 bg-gray-100 rounded-lg mx-auto flex items-center justify-center text-[10px] text-gray-400 font-bold border border-gray-200">No Img</div>}
+                  {prod.image ? <img src={prod.image} alt={prod.name} className="w-12 h-12 object-cover rounded-lg mx-auto shadow-sm" /> : <div className="w-12 h-12 bg-surface-2 rounded-lg mx-auto flex items-center justify-center text-[10px] text-text-secondary font-bold border border-border">No Img</div>}
                 </td>
-                <td className="px-5 py-4 border-b border-border text-sm font-bold text-primary-dark">{prod.name}</td>
+                <td className="px-5 py-4 border-b border-border text-sm font-bold text-white">{prod.name}</td>
                 <td className="px-5 py-4 border-b border-border text-sm">
-                  <span className="bg-primary/10 text-primary-dark font-semibold text-xs px-2 py-1 rounded-full">{prod.category?.name || '—'}</span>
+                  <span className="bg-primary/10 text-primary border border-primary/20 font-semibold text-xs px-2 py-1 rounded-full">{prod.category?.name || '—'}</span>
                 </td>
-                <td className="px-5 py-4 border-b border-border text-sm text-gray-500 max-w-xs truncate">{prod.description || '—'}</td>
+                <td className="px-5 py-4 border-b border-border text-sm font-black text-text-secondary text-right line-through">₹{prod.mrp}</td>
                 <td className="px-5 py-4 border-b border-border text-sm font-black text-primary text-right">₹{prod.actualPrice}</td>
                 <td className="px-5 py-4 border-b border-border text-center">
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold ${prod.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                  <span className={`px-3 py-1.5 rounded-full text-xs font-bold border ${prod.isActive ? 'bg-green-500/10 text-green-500 border-green-500/20' : 'bg-surface-2 text-text-secondary border-border'}`}>
                     {prod.isActive ? 'Active' : 'Inactive'}
                   </span>
                 </td>
                 <td className="px-5 py-4 border-b border-border text-center">
-                  <button onClick={() => openEdit(prod)} className="text-primary hover:text-primary-dark mr-4 transition hover:scale-110 inline-block"><FaEdit /></button>
-                  <button onClick={() => handleDelete(prod._id)} className="text-red-400 hover:text-red-600 transition hover:scale-110 inline-block"><FaTrash /></button>
+                  <button onClick={() => openEdit(prod)} className="text-primary hover:text-white mr-4 transition hover:scale-110 inline-block"><FaEdit /></button>
+                  <button onClick={() => handleDelete(prod._id)} className="text-red-500 hover:text-red-400 transition hover:scale-110 inline-block"><FaTrash /></button>
                 </td>
               </tr>
             ))}
@@ -185,10 +190,10 @@ const Products = () => {
 
         {/* Pagination */}
         {pages > 1 && (
-          <div className="flex justify-center items-center gap-2 py-4 border-t border-border bg-surface">
+          <div className="flex justify-center items-center gap-2 py-4 border-t border-border bg-surface-2">
             {Array.from({ length: pages }, (_, i) => i + 1).map(p => (
               <button key={p} onClick={() => setPage(p)}
-                className={`w-9 h-9 rounded-full font-bold text-sm transition ${p === page ? 'bg-fire-gradient text-white shadow-primary' : 'bg-white border border-border hover:border-primary text-gray-600'}`}>
+                className={`w-9 h-9 rounded-full font-bold text-sm transition ${p === page ? 'bg-fire-gradient text-white shadow-[0_0_15px_rgba(255,102,0,0.4)]' : 'bg-surface border border-border hover:border-primary text-text-secondary'}`}>
                 {p}
               </button>
             ))}
@@ -198,54 +203,57 @@ const Products = () => {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fade-in-up px-4">
-          <div className="bg-white rounded-2xl shadow-primary-lg w-full max-w-lg overflow-hidden">
-            <div className="bg-fire-gradient px-6 py-4 flex justify-between items-center">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in-up p-4">
+          <div className="glass-panel w-full max-w-lg border border-white/10 flex flex-col max-h-[90vh]">
+            <div className="bg-fire-gradient px-6 py-4 flex justify-between items-center shrink-0">
               <h2 className="text-xl font-heading font-bold text-white">{editId ? 'Edit Product' : 'New Product'}</h2>
-              <button onClick={closeModal} className="text-white/80 hover:text-white text-xl"><FaTimes /></button>
+              <button onClick={closeModal} className="text-white/80 hover:text-white text-xl transition-colors"><FaTimes /></button>
             </div>
-            <form onSubmit={handleSave} className="p-6 space-y-4">
+            <div className="overflow-y-auto p-6">
+              <form onSubmit={handleSave} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="col-span-2">
-                  <label className="block text-sm font-bold text-primary-dark mb-1">Name *</label>
+                  <label className="block text-sm font-bold text-primary mb-1">Name *</label>
                   <input required type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
-                    className="w-full border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary bg-surface-2" />
+                    className="input-fire" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-primary-dark mb-1">Price (₹) *</label>
-                  <input required type="number" value={form.actualPrice} onChange={e => setForm({ ...form, actualPrice: e.target.value })}
-                    className="w-full border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary bg-surface-2" />
+                  <label className="block text-sm font-bold text-primary mb-1">MRP (₹) *</label>
+                  <input required type="number" value={form.mrp} onChange={e => setForm({ ...form, mrp: e.target.value })}
+                    className="input-fire" />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-primary-dark mb-1">Category *</label>
+                  <label className="block text-sm font-bold text-primary mb-1">Category *</label>
                   <select required value={form.category} onChange={e => setForm({ ...form, category: e.target.value })}
-                    className="w-full border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary bg-surface-2">
+                    className="input-fire">
                     <option value="">Select...</option>
                     {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
                   </select>
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-sm font-bold text-primary-dark mb-1">Description</label>
-                  <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })}
-                    rows={3} className="w-full border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary bg-surface-2" />
+                  <div className="bg-primary/5 p-3 rounded-lg border border-primary/20">
+                    <p className="text-xs text-text-secondary mb-1">Offer Price</p>
+                    <p className="text-sm font-bold text-white">Autocalculated globally based on MRP.</p>
+                  </div>
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-sm font-bold text-primary-dark mb-1">Image (Optional)</label>
+                  <label className="block text-sm font-bold text-primary mb-1">Image (Optional)</label>
                   <input type="file" accept="image/*" onChange={e => setImageFile(e.target.files[0])}
-                    className="w-full border border-border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary bg-surface-2" />
+                    className="input-fire file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30" />
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <input type="checkbox" id="prodActive" checked={form.isActive} onChange={e => setForm({ ...form, isActive: e.target.checked })} className="w-5 h-5 accent-primary" />
-                <label htmlFor="prodActive" className="text-sm font-bold text-primary-dark">Active</label>
+                <label htmlFor="prodActive" className="text-sm font-bold text-white">Active</label>
               </div>
               <div className="flex gap-3 pt-2">
-                <button type="button" onClick={closeModal} className="flex-1 border border-border text-gray-600 font-bold py-2 rounded-lg hover:bg-gray-50 transition">Cancel</button>
-                <button type="submit" disabled={saving} className="flex-1 bg-fire-gradient text-white font-bold py-2 rounded-lg shadow-primary hover:shadow-primary-lg transition">
+                <button type="button" onClick={closeModal} className="flex-1 border border-border text-text-secondary font-bold py-2 rounded-lg hover:bg-white/5 transition-colors">Cancel</button>
+                <button type="submit" disabled={saving} className="flex-1 bg-fire-gradient text-white font-bold py-2 rounded-lg shadow-primary hover:shadow-[0_0_15px_rgba(255,102,0,0.5)] transition">
                   {saving ? 'Saving...' : editId ? 'Update' : 'Create'}
                 </button>
               </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       )}

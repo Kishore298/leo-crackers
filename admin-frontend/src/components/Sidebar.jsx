@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { logout, reset } from '../features/auth/authSlice';
 import { FaTachometerAlt, FaBoxOpen, FaTags, FaImages, FaPercent, FaFileImport, FaSignOutAlt, FaShoppingCart, FaUsers } from 'react-icons/fa';
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, setIsOpen }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,30 +26,38 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="w-64 bg-primary-dark min-h-screen text-white flex flex-col shadow-primary-lg z-10 border-r-4 border-primary">
-      <div className="p-6 mb-4">
-        <h2 className="text-2xl font-black tracking-wide text-primary-light">LEO<span className="text-white font-light">CRACKERS</span></h2>
-        <p className="text-xs text-border mt-1 uppercase tracking-wider font-semibold">Admin Portal</p>
+    <div className={`fixed inset-y-0 left-0 z-30 w-64 bg-surface-2/95 backdrop-blur-xl min-h-screen text-text flex flex-col shadow-[0_0_30px_rgba(0,0,0,0.5)] border-r border-white/5 transform transition-transform duration-300 lg:relative lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <div className="p-6 mb-4 flex flex-col items-center border-b border-white/5">
+        <div className="flex items-center gap-2 mb-2">
+          <img src="/assets/lion-logo.png" alt="Logo" className="w-8 h-8 rounded-full grayscale opacity-80" onError={(e) => e.target.style.display = 'none'} />
+          <h2 className="text-2xl font-black tracking-wide text-primary">LEO<span className="text-white font-light">CRACKERS</span></h2>
+        </div>
+        <p className="text-xs text-text-secondary mt-1 uppercase tracking-wider font-semibold">Admin Portal</p>
       </div>
-      <nav className="flex-1 px-4 space-y-2 font-sans">
-        {navItems.map((item) => (
-          <Link
-            key={item.path}
-            to={item.path}
-            className={`flex items-center space-x-3 w-full px-4 py-3 rounded-lg transition-all duration-200 ${location.pathname === item.path
-                ? 'bg-fire-gradient text-white shadow-primary font-semibold translate-x-1'
-                : 'text-border hover:bg-black/20 hover:text-white'
+      <nav className="flex-1 px-4 py-2 space-y-2 font-sans overflow-y-auto">
+        {navItems.map((item) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              onClick={() => setIsOpen && setIsOpen(false)}
+              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-lg transition-all duration-300 ${
+                isActive
+                  ? 'bg-fire-gradient text-white shadow-[0_0_15px_rgba(255,102,0,0.4)] font-semibold translate-x-2'
+                  : 'text-text-secondary hover:bg-white/5 hover:text-white hover:translate-x-1'
               }`}
-          >
-            <span className="text-lg">{item.icon}</span>
-            <span>{item.name}</span>
-          </Link>
-        ))}
+            >
+              <span className={`text-lg ${isActive ? 'animate-pulse' : ''}`}>{item.icon}</span>
+              <span>{item.name}</span>
+            </Link>
+          );
+        })}
       </nav>
-      <div className="p-4 border-t border-white/10">
+      <div className="p-4 border-t border-white/5">
         <button
           onClick={onLogout}
-          className="flex items-center space-x-3 w-full px-4 py-3 rounded-lg text-border hover:bg-red-600 hover:text-white transition-colors font-medium shadow"
+          className="flex items-center space-x-3 w-full px-4 py-3 rounded-lg text-text-secondary hover:bg-primary-dark hover:text-white hover:shadow-[0_0_15px_rgba(139,0,0,0.5)] transition-all duration-300 font-medium"
         >
           <FaSignOutAlt className="text-lg" />
           <span>Logout</span>
