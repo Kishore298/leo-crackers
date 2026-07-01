@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { FaEdit, FaTrash, FaSearch, FaPlus, FaTimes } from 'react-icons/fa';
 import ConfirmDialog from '../components/ConfirmDialog';
 
-const API = 'http://localhost:5000/api/categories';
+const API = process.env.REACT_APP_API_URL + '/categories';
 
 const initialForm = { name: '', isActive: true };
 

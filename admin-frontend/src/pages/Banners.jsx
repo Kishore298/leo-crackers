@@ -25,7 +25,7 @@ const Banners = () => {
 
   const fetchBanners = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5000/api/banners', {
+      const { data } = await axios.get(process.env.REACT_APP_API_URL + '/banners', {
         headers: { Authorization: `Bearer ${admin?.token}` }
       });
       setBanners(data);
@@ -65,7 +65,7 @@ const Banners = () => {
 
     setLoading(true);
     try {
-      await axios.post('http://localhost:5000/api/banners', data, {
+      await axios.post(process.env.REACT_APP_API_URL + '/banners', data, {
         headers: { 
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${admin?.token}` 
@@ -85,7 +85,7 @@ const Banners = () => {
   const deleteBanner = async (id) => {
     if (window.confirm('Are you sure you want to delete this banner?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/banners/${id}`, {
+        await axios.delete(`${process.env.REACT_APP_API_URL}/banners/${id}`, {
           headers: { Authorization: `Bearer ${admin?.token}` }
         });
         toast.success('Banner deleted');

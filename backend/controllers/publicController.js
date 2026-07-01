@@ -49,6 +49,50 @@ const getHomeData = async (req, res) => {
   }
 };
 
+// @desc    Get single product by slug
+// @route   GET /api/public/products/:slug
+// @access  Public
+const getProductBySlug = async (req, res) => {
+  try {
+    const product = await Product.findOne({ slug: req.params.slug, isActive: true })
+      .populate('category', 'name slug');
+    
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.json(product);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error fetching product' });
+  }
+};
+
+// @desc    Get category and its products by slug
+// @route   GET /api/public/categories/:slug
+// @access  Public
+const getCategoryBySlug = async (req, res) => {
+  try {
+    const category = await Category.findOne({ slug: req.params.slug, isActive: true });
+    
+    if (!category) {
+      return res.status(404).json({ message: 'Category not found' });
+    }
+
+    const products = await Product.find({ category: category._id, isActive: true });
+
+    res.json({
+      category,
+      products
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error fetching category' });
+  }
+};
+
 module.exports = {
-  getHomeData
+  getHomeData,
+  getProductBySlug,
+  getCategoryBySlug
 };

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { FaSearch } from 'react-icons/fa';
 
-const API = 'http://localhost:5000/api/customers';
+const API = process.env.REACT_APP_API_URL + '/customers';
 
 const Customers = () => {
   const { admin } = useSelector((state) => state.auth);

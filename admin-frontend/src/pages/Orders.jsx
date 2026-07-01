@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { FaEye, FaTimes } from 'react-icons/fa';
 
-const API = 'http://localhost:5000/api/orders';
+const API = process.env.REACT_APP_API_URL + '/orders';
 const STATUS_COLORS = { 
   PENDING: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20', 
   APPROVED: 'bg-green-500/10 text-green-500 border-green-500/20', 

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { FaShoppingBag, FaBoxOpen, FaTags, FaChartLine, FaFire } from 'react-icons/fa';
 
-const API = 'http://localhost:5000/api';
+const API = process.env.REACT_APP_API_URL + '';
 
 const StatCard = ({ icon, label, value, sub, gradient }) => (
   <div className={`rounded-2xl p-6 text-white shadow-glass border border-white/5 flex items-center gap-5 ${gradient}`}>

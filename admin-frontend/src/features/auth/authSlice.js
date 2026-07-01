@@ -13,7 +13,7 @@ const initialState = {
 
 export const login = createAsyncThunk('auth/login', async (adminData, thunkAPI) => {
   try {
-    const response = await axios.post('http://localhost:5000/api/admin/login', adminData);
+    const response = await axios.post(process.env.REACT_APP_API_URL + '/admin/login', adminData);
     if (response.data) {
       localStorage.setItem('admin', JSON.stringify(response.data));
     }

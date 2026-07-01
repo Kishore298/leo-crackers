@@ -14,7 +14,7 @@ const Discounts = () => {
   useEffect(() => {
     const fetchDiscount = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/discounts', config);
+        const { data } = await axios.get(process.env.REACT_APP_API_URL + '/discounts', config);
         setDiscount({ discountPercentage: data.discountPercentage, isActive: data.isActive });
       } catch (err) {
         console.error(err);
@@ -26,7 +26,7 @@ const Discounts = () => {
 
   const saveDiscount = async () => {
     try {
-      await axios.post('http://localhost:5000/api/discounts', discount, config);
+      await axios.post(process.env.REACT_APP_API_URL + '/discounts', discount, config);
       toast.success('Discount Saved!');
     } catch (err) {
       toast.error('Error saving discount');

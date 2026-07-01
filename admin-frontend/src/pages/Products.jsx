@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { FaEdit, FaTrash, FaSearch, FaPlus, FaTimes, FaFilter } from 'react-icons/fa';
 import ConfirmDialog from '../components/ConfirmDialog';
 
-const API = 'http://localhost:5000/api';
+const API = process.env.REACT_APP_API_URL + '';
 const initialForm = { name: '', mrp: '', category: '', youtubeUrl: '', isActive: true };
 
 const Products = () => {

@@ -19,7 +19,7 @@ const Import = () => {
     setLoading(true);
 
     try {
-      const { data } = await axios.post('http://localhost:5000/api/import', formData, {
+      const { data } = await axios.post(process.env.REACT_APP_API_URL + '/import', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${admin?.token}`
