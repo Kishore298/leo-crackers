@@ -24,8 +24,8 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        heading: ["Playfair Display", "Georgia", "serif"],
+        sans: ["Outfit", "system-ui", "sans-serif"],
+        heading: ["Outfit", "system-ui", "sans-serif"],
       },
       boxShadow: {
         primary: "0 4px 14px rgba(255, 102, 0, 0.25)",

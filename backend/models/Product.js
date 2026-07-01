@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema({
   image: { type: String }, // Cloudinary URL
   mrp: { type: Number, required: true, default: 0 },
   actualPrice: { type: Number, required: true },
+  youtubeId: { type: String },
   isActive: { type: Boolean, default: true },
 }, { timestamps: true });
 

@@ -23,8 +23,8 @@ module.exports = {
         border: "#2A2A2A",
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        heading: ["Playfair Display", "Georgia", "serif"],
+        sans: ["Outfit", "system-ui", "sans-serif"],
+        heading: ["Outfit", "system-ui", "sans-serif"],
       },
       boxShadow: {
         golden: "0 4px 14px rgba(255, 204, 51, 0.2)",

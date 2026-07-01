@@ -4,10 +4,12 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import BackgroundEffects from './components/BackgroundEffects';
 import PremiumExtras from './components/PremiumExtras';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="min-h-screen flex flex-col relative">
         <BackgroundEffects />
         <PremiumExtras />

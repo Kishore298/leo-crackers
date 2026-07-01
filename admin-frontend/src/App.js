@@ -12,6 +12,7 @@ import Discounts from './pages/Discounts';
 import Customers from './pages/Customers';
 import Import from './pages/Import';
 import Layout from './components/Layout';
+import ScrollToTop from './components/ScrollToTop';
 
 const ProtectedRoute = ({ children }) => {
   const { admin } = useSelector((state) => state.auth);
@@ -24,6 +25,7 @@ const ProtectedRoute = ({ children }) => {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored" />
       <Routes>
         <Route path="/login" element={<Login />} />

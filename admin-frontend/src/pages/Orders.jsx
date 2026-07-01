@@ -58,7 +58,8 @@ const Orders = () => {
   };
 
   return (
-    <div className="animate-fade-in-up">
+    <>
+      <div className="animate-fade-in-up">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div>
           <h1 className="text-3xl font-heading font-black text-primary">Orders</h1>
@@ -144,9 +145,11 @@ const Orders = () => {
         )}
       </div>
 
+      </div>
+
       {viewOrder && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="glass-panel w-full max-w-lg overflow-hidden max-h-[90vh] flex flex-col border border-white/10">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+          <div className="glass-panel w-full max-w-lg overflow-hidden max-h-[90vh] flex flex-col border border-white/10 animate-fade-in-up">
             <div className="bg-fire-gradient px-6 py-4 flex justify-between items-center">
               <h2 className="text-lg font-heading font-bold text-white">Order: {viewOrder.orderNumber}</h2>
               <button onClick={() => setViewOrder(null)} className="text-white/80 hover:text-white text-xl transition-colors"><FaTimes /></button>
@@ -196,7 +199,7 @@ const Orders = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 export default Orders;

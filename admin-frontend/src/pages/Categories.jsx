@@ -94,7 +94,8 @@ const Categories = () => {
   };
 
   return (
-    <div className="animate-fade-in-up">
+    <>
+      <div className="animate-fade-in-up">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div>
@@ -171,10 +172,12 @@ const Categories = () => {
         )}
       </div>
 
+      </div>
+
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in-up p-4">
-          <div className="glass-panel w-full max-w-md border border-white/10 flex flex-col max-h-[90vh]">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+          <div className="glass-panel w-full max-w-md border border-white/10 flex flex-col max-h-[90vh] animate-fade-in-up">
             <div className="bg-fire-gradient px-6 py-4 flex justify-between items-center shrink-0">
               <h2 className="text-xl font-heading font-bold text-white">{editId ? 'Edit Category' : 'New Category'}</h2>
               <button onClick={closeModal} className="text-white/80 hover:text-white text-xl transition-colors"><FaTimes /></button>
@@ -215,7 +218,7 @@ const Categories = () => {
         onConfirm={confirmDeleteAction}
         onCancel={() => setConfirmDelete({ isOpen: false, id: null })}
       />
-    </div>
+    </>
   );
 };
 

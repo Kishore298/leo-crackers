@@ -9,7 +9,7 @@ const Footer = () => (
       {/* Brand */}
       <div>
         <h3 className="text-2xl font-heading font-black flex items-center mb-3">
-          <img src="/assets/lion-logo.png" alt="Leo Crackers Logo" className="w-8 h-8 mr-2 rounded-full grayscale opacity-80" />
+          <img src="/assets/leo-logo.png" alt="Leo Crackers Logo" className="w-8 h-8 mr-2 rounded-full object-contain bg-white p-1 grayscale opacity-80" />
           <span className="text-white">LEO</span><span className="text-primary font-light">CRACKERS</span>
         </h3>
         <p className="text-text-secondary text-sm leading-relaxed">
@@ -21,9 +21,21 @@ const Footer = () => (
       <div>
         <h4 className="font-heading font-bold text-lg text-primary mb-4">Contact Us</h4>
         <ul className="space-y-3 text-sm text-text-secondary">
-          <li className="flex items-center gap-2 hover:text-white transition-colors"><FaPhone className="text-primary" /> +91 98765 43210</li>
-          <li className="flex items-center gap-2 hover:text-white transition-colors"><FaEnvelope className="text-primary" /> leo@crackers.com</li>
-          <li className="flex items-center gap-2 hover:text-white transition-colors"><FaMapMarkerAlt className="text-primary" /> Sivakasi, Tamil Nadu</li>
+          <li>
+            <a href="tel:+919159533949" className="flex items-center gap-2 hover:text-white transition-colors">
+              <FaPhone className="text-primary" /> +91 9159533949
+            </a>
+          </li>
+          <li>
+            <a href="mailto:admin@leocrackers.com" className="flex items-center gap-2 hover:text-white transition-colors">
+              <FaEnvelope className="text-primary" /> admin@leocrackers.com
+            </a>
+          </li>
+          <li>
+            <a href="https://maps.google.com/?q=Sivakasi,+Tamil+Nadu" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition-colors">
+              <FaMapMarkerAlt className="text-primary" /> Sivakasi, Tamil Nadu
+            </a>
+          </li>
         </ul>
       </div>
 

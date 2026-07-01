@@ -2,6 +2,13 @@ const Product = require('../models/Product');
 const GlobalDiscount = require('../models/GlobalDiscount');
 const { uploadToCloudinary } = require('../utils/cloudinary');
 
+const extractYouTubeID = (url) => {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+};
+
 // get all products with filter, sort, pagination
 const getProducts = async (req, res) => {
   try {
@@ -39,8 +46,9 @@ const createProduct = async (req, res) => {
     const percentage = discount && discount.isActive ? discount.discountPercentage : 0;
     const mrp = Number(req.body.mrp) || 0;
     const actualPrice = Math.round(mrp - (mrp * (percentage / 100)));
+    const youtubeId = extractYouTubeID(req.body.youtubeUrl);
 
-    const product = new Product({ ...req.body, mrp, actualPrice, image: imageUrl });
+    const product = new Product({ ...req.body, mrp, actualPrice, image: imageUrl, youtubeId });
     const createdProduct = await product.save();
     res.status(201).json(createdProduct);
   } catch (error) {
@@ -60,6 +68,10 @@ const updateProduct = async (req, res) => {
     // Auto-create slug if missing but name is provided
     if (!updateData.slug && updateData.name) {
       updateData.slug = updateData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') + '-' + Math.random().toString(36).substring(2, 6);
+    }
+
+    if (req.body.youtubeUrl !== undefined) {
+      updateData.youtubeId = extractYouTubeID(req.body.youtubeUrl) || '';
     }
 
     if (updateData.mrp !== undefined) {

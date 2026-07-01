@@ -6,7 +6,7 @@ import { FaEdit, FaTrash, FaSearch, FaPlus, FaTimes, FaFilter } from 'react-icon
 import ConfirmDialog from '../components/ConfirmDialog';
 
 const API = 'http://localhost:5000/api';
-const initialForm = { name: '', mrp: '', category: '', isActive: true };
+const initialForm = { name: '', mrp: '', category: '', youtubeUrl: '', isActive: true };
 
 const Products = () => {
   const { admin } = useSelector((state) => state.auth);
@@ -58,7 +58,13 @@ const Products = () => {
   const openAdd = () => { setEditId(null); setForm(initialForm); setImageFile(null); setShowModal(true); };
   const openEdit = (prod) => {
     setEditId(prod._id);
-    setForm({ name: prod.name, mrp: prod.mrp || '', category: prod.category?._id || prod.category || '', isActive: prod.isActive });
+    setForm({ 
+      name: prod.name, 
+      mrp: prod.mrp || '', 
+      category: prod.category?._id || prod.category || '', 
+      youtubeUrl: prod.youtubeId ? `https://www.youtube.com/watch?v=${prod.youtubeId}` : '',
+      isActive: prod.isActive 
+    });
     setImageFile(null);
     setShowModal(true);
   };
@@ -72,6 +78,7 @@ const Products = () => {
     formData.append('name', form.name);
     formData.append('mrp', form.mrp);
     formData.append('category', form.category);
+    if (form.youtubeUrl) formData.append('youtubeUrl', form.youtubeUrl);
     formData.append('isActive', form.isActive);
     if (imageFile) formData.append('image', imageFile);
 
@@ -112,7 +119,8 @@ const Products = () => {
   };
 
   return (
-    <div className="animate-fade-in-up">
+    <>
+      <div className="animate-fade-in-up">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
         <div>
@@ -201,10 +209,12 @@ const Products = () => {
         )}
       </div>
 
+      </div>
+
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in-up p-4">
-          <div className="glass-panel w-full max-w-lg border border-white/10 flex flex-col max-h-[90vh]">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+          <div className="glass-panel w-full max-w-lg border border-white/10 flex flex-col max-h-[90vh] animate-fade-in-up">
             <div className="bg-fire-gradient px-6 py-4 flex justify-between items-center shrink-0">
               <h2 className="text-xl font-heading font-bold text-white">{editId ? 'Edit Product' : 'New Product'}</h2>
               <button onClick={closeModal} className="text-white/80 hover:text-white text-xl transition-colors"><FaTimes /></button>
@@ -237,6 +247,11 @@ const Products = () => {
                   </div>
                 </div>
                 <div className="col-span-2">
+                  <label className="block text-sm font-bold text-primary mb-1">YouTube Video URL (Optional)</label>
+                  <input type="url" value={form.youtubeUrl} onChange={e => setForm({ ...form, youtubeUrl: e.target.value })}
+                    className="input-fire" placeholder="https://www.youtube.com/watch?v=..." />
+                </div>
+                <div className="col-span-2">
                   <label className="block text-sm font-bold text-primary mb-1">Image (Optional)</label>
                   <input type="file" accept="image/*" onChange={e => setImageFile(e.target.files[0])}
                     className="input-fire file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30" />
@@ -265,7 +280,7 @@ const Products = () => {
         onConfirm={confirmDeleteAction}
         onCancel={() => setConfirmDelete({ isOpen: false, id: null })}
       />
-    </div>
+    </>
   );
 };
 

@@ -29,7 +29,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     <div className={`fixed inset-y-0 left-0 z-30 w-64 bg-surface-2/95 backdrop-blur-xl min-h-screen text-text flex flex-col shadow-[0_0_30px_rgba(0,0,0,0.5)] border-r border-white/5 transform transition-transform duration-300 lg:relative lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
       <div className="p-6 mb-4 flex flex-col items-center border-b border-white/5">
         <div className="flex items-center gap-2 mb-2">
-          <img src="/assets/lion-logo.png" alt="Logo" className="w-8 h-8 rounded-full grayscale opacity-80" onError={(e) => e.target.style.display = 'none'} />
+          <img src="/assets/leo-logo.png" alt="Logo" className="w-8 h-8 rounded-full bg-white p-1 object-contain grayscale opacity-80" onError={(e) => e.target.style.display = 'none'} />
           <h2 className="text-2xl font-black tracking-wide text-primary">LEO<span className="text-white font-light">CRACKERS</span></h2>
         </div>
         <p className="text-xs text-text-secondary mt-1 uppercase tracking-wider font-semibold">Admin Portal</p>
@@ -42,11 +42,10 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
               key={item.path}
               to={item.path}
               onClick={() => setIsOpen && setIsOpen(false)}
-              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-lg transition-all duration-300 ${
-                isActive
+              className={`flex items-center space-x-3 w-full px-4 py-3 rounded-lg transition-all duration-300 ${isActive
                   ? 'bg-fire-gradient text-white shadow-[0_0_15px_rgba(255,102,0,0.4)] font-semibold translate-x-2'
                   : 'text-text-secondary hover:bg-white/5 hover:text-white hover:translate-x-1'
-              }`}
+                }`}
             >
               <span className={`text-lg ${isActive ? 'animate-pulse' : ''}`}>{item.icon}</span>
               <span>{item.name}</span>
