@@ -6,12 +6,15 @@ import { FaShoppingBag, FaBoxOpen, FaTags, FaChartLine, FaFire } from 'react-ico
 const API = process.env.REACT_APP_API_URL + '';
 
 const StatCard = ({ icon, label, value, sub, gradient }) => (
-  <div className={`rounded-2xl p-6 text-white shadow-glass border border-white/5 flex items-center gap-5 ${gradient}`}>
-    <div className="bg-white/10 rounded-xl p-4 text-3xl shadow-inner">{icon}</div>
-    <div>
-      <p className="text-white/70 text-sm font-semibold uppercase tracking-wide">{label}</p>
-      <p className="text-4xl font-black mt-1 drop-shadow-md">{value}</p>
-      {sub && <p className="text-white/50 text-xs mt-1">{sub}</p>}
+  <div className="glass-panel relative overflow-hidden flex items-center group transition-transform duration-300 hover:-translate-y-1 p-2 gap-2 sm:p-4 sm:gap-3 md:p-5 md:gap-4 lg:p-6 lg:gap-5 rounded-lg sm:rounded-xl md:rounded-2xl">
+    <div className={`absolute -right-5 -bottom-5 sm:-right-8 sm:-bottom-8 lg:-right-10 lg:-bottom-10 rounded-full blur-2xl sm:blur-3xl opacity-20 ${gradient} w-16 h-16 sm:w-24 sm:h-24 lg:w-32 lg:h-32`}></div>
+    <div className={`relative z-10 flex items-center justify-center text-white shadow-md sm:shadow-lg ${gradient} w-8 h-8 text-sm rounded-md sm:w-10 sm:h-10 sm:text-lg sm:rounded-lg md:w-12 md:h-12 md:text-xl md:rounded-xl lg:w-14 lg:h-14 lg:text-2xl`}>
+      {icon}
+    </div>
+    <div className="relative z-10">
+      <p className="text-text-secondary font-bold uppercase tracking-wider mb-0.5 text-[9px] sm:text-[10px] md:text-xs">{label}</p>
+      <p className="font-black text-white text-lg sm:text-xl md:text-2xl lg:text-3xl leading-none">{value}</p>
+      {sub && <p className="text-primary font-semibold text-[8px] sm:text-[9px] md:text-xs mt-0.5 leading-none">{sub}</p>}
     </div>
   </div>
 );
@@ -27,22 +30,22 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const [ordRes, prodRes, catRes] = await Promise.all([
-          axios.get(`${API}/orders?limit=5&sortBy=createdAt&order=desc`, config),
+        const [statsRes, prodRes, catRes] = await Promise.all([
+          axios.get(`${API}/orders/dashboard/stats`, config),
           axios.get(`${API}/products?limit=1`, config),
           axios.get(`${API}/categories?limit=1`, config),
         ]);
-        const orders = ordRes.data;
-        const revenue = orders.orders?.reduce((acc, o) => o.status === 'APPROVED' ? acc + (o.finalAmount || 0) : acc, 0) || 0;
-        const pending = orders.orders?.filter(o => o.status === 'PENDING').length || 0;
+        
+        const data = statsRes.data;
+        
         setStats({
-          orders: orders.total || 0,
+          orders: data.totalOrders || 0,
           products: prodRes.data.total || 0,
           categories: catRes.data.total || 0,
-          revenue,
-          pending,
+          revenue: data.totalRevenue || 0,
+          pending: data.pendingOrders || 0,
         });
-        setRecentOrders(orders.orders || []);
+        setRecentOrders(data.recentOrders || []);
       } catch (err) { console.error(err); }
       setLoading(false);
     };
@@ -69,7 +72,7 @@ const Dashboard = () => {
         <div className="text-center py-20 text-primary animate-pulse text-xl font-bold">Loading stats...</div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 lg:gap-6 mb-10">
             <StatCard icon={<FaShoppingBag />} label="Total Orders" value={stats.orders} sub={`${stats.pending} pending`} gradient="bg-fire-gradient" />
             <StatCard icon={<FaBoxOpen />} label="Products" value={stats.products} gradient="bg-gradient-to-br from-primary-dark to-primary" />
             <StatCard icon={<FaTags />} label="Categories" value={stats.categories} gradient="bg-gradient-to-br from-primary to-accent-light" />

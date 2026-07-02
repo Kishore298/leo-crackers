@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import CrackerBurst from '@/components/CrackerBurst';
@@ -23,6 +23,18 @@ const Checkout = () => {
   const [formData, setFormData] = useState({
     customerName: '', mobileNumber: '', email: '', address: '', city: '', pincode: ''
   });
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    // Only redirect if NOT order placed
+    if (mounted && cart.length === 0 && !orderPlaced) {
+      router.push('/cart');
+    }
+  }, [mounted, cart, router, orderPlaced]);
 
   const totalAmount = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
@@ -41,6 +53,7 @@ const Checkout = () => {
       setOrderNumber(data.orderNumber);
       setOrderPlaced(true);
       dispatch(clearCart());
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to place order. Please try again.');
     }
@@ -77,8 +90,7 @@ const Checkout = () => {
     );
   }
 
-  if (cart.length === 0) {
-    router.push('/cart');
+  if (!mounted || (cart.length === 0 && !orderPlaced)) {
     return null;
   }
 

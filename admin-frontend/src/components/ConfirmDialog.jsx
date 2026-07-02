@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 const ConfirmDialog = ({ isOpen, title, message, onConfirm, onCancel }) => {
-  if (!isOpen) return null;
+  const [mounted, setMounted] = useState(false);
 
-  return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[60] animate-fade-in-up px-4">
-      <div className="glass-panel w-full max-w-sm overflow-hidden border border-white/10">
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!isOpen || !mounted) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[9999] px-4 animate-fade-in-up">
+      <div className="glass-panel w-full max-w-sm overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.8)]">
         <div className="bg-fire-gradient px-6 py-4">
           <h2 className="text-xl font-heading font-bold text-white">{title}</h2>
         </div>
@@ -27,7 +34,8 @@ const ConfirmDialog = ({ isOpen, title, message, onConfirm, onCancel }) => {
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

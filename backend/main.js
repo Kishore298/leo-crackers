@@ -31,6 +31,7 @@ const bannerRoutes = require('./routes/bannerRoutes');
 const discountRoutes = require('./routes/discountRoutes');
 const customerRoutes = require('./routes/customerRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 app.use('/api/public', publicRoutes);
 app.use('/api/admin', adminRoutes);
@@ -41,6 +42,7 @@ app.use('/api/banners', bannerRoutes);
 app.use('/api/discounts', discountRoutes);
 app.use('/api/customers', customerRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Basic route
 app.get('/', (req, res) => {

@@ -4,6 +4,7 @@ import BackgroundEffects from "@/components/BackgroundEffects";
 import PremiumExtras from "@/components/PremiumExtras";
 
 export const metadata = {
+  metadataBase: new URL("https://www.leocrackers.com"),
   title: "Leo Crackers | Premium Quality Crackers from Sivakasi",
   description: "Buy premium quality fireworks and crackers directly from Sivakasi. Best prices, fast delivery, and safe celebrations with Leo Crackers.",
   keywords: "crackers online, sivakasi crackers, buy fireworks, diwali crackers, leo crackers, premium fireworks, cheap crackers",
@@ -16,6 +17,10 @@ export const metadata = {
   },
   alternates: {
     canonical: "https://www.leocrackers.com/",
+  },
+  icons: {
+    icon: 'leo-crackers-logo.png',
+    apple: 'leo-crackers-logo.png',
   }
 };
 

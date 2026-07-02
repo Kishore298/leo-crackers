@@ -19,8 +19,8 @@ const Navbar = () => {
               alt="Leo Crackers Logo"
               className="h-10 w-10 mr-2 sm:mr-3 rounded-full object-contain bg-white p-1 border border-primary/30 group-hover:border-primary transition-colors"
             />
-            <span className="text-lg sm:text-2xl font-black text-white tracking-wide">
-              LEO<span className="text-primary font-light">CRACKERS</span>
+            <span className="text-3xl sm:text-4xl font-brand font-normal tracking-normal text-primary">
+              Leo Crackers
             </span>
           </Link>
         </div>

@@ -2,6 +2,22 @@ const Order = require('../models/Order');
 const Customer = require('../models/Customer');
 const { generateOrderPDF } = require('../utils/pdfGenerator');
 const { sendOrderConfirmationEmail, sendStatusUpdateEmail } = require('../utils/emailService');
+const { sendAdminPushNotification } = require('../services/firebaseService');
+
+// Admin - get orders with filter, sort, pagination
+const getDashboardStats = async (req, res) => {
+  try {
+    const totalOrders = await Order.countDocuments();
+    const pendingOrders = await Order.countDocuments({ status: 'PENDING' });
+    const approvedOrders = await Order.find({ status: 'APPROVED' }).select('finalAmount');
+    const totalRevenue = approvedOrders.reduce((acc, o) => acc + (o.finalAmount || 0), 0);
+    const recentOrders = await Order.find().populate('customer').sort({ createdAt: -1 }).limit(10);
+    
+    res.json({ totalOrders, pendingOrders, totalRevenue, recentOrders });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 
 // Admin - get orders with filter, sort, pagination
 const getOrders = async (req, res) => {
@@ -45,7 +61,7 @@ const updateOrderStatus = async (req, res) => {
       ...(req.body.status && { status: req.body.status }),
       ...(req.body.paymentStatus && { paymentStatus: req.body.paymentStatus }),
       ...(req.body.adminRemarks && { adminRemarks: req.body.adminRemarks }),
-    }, { returnDocument: 'after' }).populate('customer');
+    }, { new: true }).populate('customer');
 
     if (isStatusChanged && order.customer && order.customer.email) {
       // fire and forget email update
@@ -93,10 +109,17 @@ const createOrder = async (req, res) => {
          .catch(err => console.error('Error in order email generation:', err));
     }
 
+    // Trigger push notification to admins
+    sendAdminPushNotification(
+      'New Order Received! 🚀',
+      `Order ${orderNumber} placed for ₹${finalAmount}`,
+      { type: 'NEW_ORDER', orderId: createdOrder._id.toString() }
+    ).catch(console.error);
+
     res.status(201).json(createdOrder);
   } catch (error) {
     res.status(400).json({ message: 'Order creation failed', error: error.message });
   }
 };
 
-module.exports = { getOrders, updateOrderStatus, createOrder };
+module.exports = { getOrders, updateOrderStatus, createOrder, getDashboardStats };

@@ -33,8 +33,8 @@ const Login = () => {
           <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-2xl mb-4 shadow-primary-lg backdrop-blur-sm border border-white/30">
             <FaFire className="text-4xl text-white animate-bounce-subtle" />
           </div>
-          <h1 className="text-4xl font-heading font-black text-white tracking-tight">
-            LEO<span className="font-light text-primary-light">CRACKERS</span>
+          <h1 className="text-5xl font-brand font-normal text-white tracking-normal text-center">
+            Leo Crackers
           </h1>
           <p className="text-white/70 text-sm mt-1 font-semibold uppercase tracking-widest">Admin Portal</p>
         </div>

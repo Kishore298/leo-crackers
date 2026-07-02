@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 
 const Footer = () => (
@@ -25,7 +26,7 @@ const Footer = () => (
         <ul className="space-y-3 text-sm text-text-secondary">
           <li>
             <a href="tel:+919159533949" className="flex items-center gap-2 hover:text-white transition-colors">
-              <FaPhone className="text-primary" /> +91 9159533949
+              <FaPhone className="text-primary" /> +91 91595 33949
             </a>
           </li>
           <li>
@@ -41,14 +42,20 @@ const Footer = () => (
         </ul>
       </div>
 
-      {/* Policy */}
+      {/* Quick Links */}
       <div>
-        <h4 className="font-heading font-bold text-lg text-primary mb-4">Quick Info</h4>
+        <h4 className="font-heading font-bold text-lg text-primary mb-4">Quick Links</h4>
         <ul className="space-y-2 text-sm text-text-secondary">
-          <li>Minimum order value: <span className="text-white font-bold">₹3,000</span></li>
-          <li>Orders processed within 24hrs</li>
-          <li>All prices are inclusive of taxes</li>
-          <li>Subject to availability</li>
+          <li>
+            <Link href="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+          </li>
+          <li>
+            <Link href="/terms-conditions" className="hover:text-primary transition-colors">Terms & Conditions</Link>
+          </li>
+          <li>
+            <Link href="/refund-policy" className="hover:text-primary transition-colors">Cancellation & Refund Policy</Link>
+          </li>
+          <li className="pt-2 text-white font-bold">Minimum order: ₹3,000</li>
         </ul>
       </div>
     </div>
@@ -60,7 +67,7 @@ const Footer = () => (
         alt="Deity Blessing"
         className="w-20 h-20 object-contain mb-4 filter drop-shadow-[0_0_10px_rgba(255,204,51,0.3)] animate-pulse-glow"
       />
-      <h4 className="text-xl font-heading text-white font-bold tracking-widest mb-1">LEO CRACKERS</h4>
+      <h4 className="text-3xl font-brand text-white font-normal tracking-normal mb-1">Leo Crackers</h4>
       <p className="text-primary font-medium text-sm mb-6 uppercase tracking-widest">Lighting Happiness</p>
 
       <div className="text-center text-text-secondary/50 text-xs tracking-wider">

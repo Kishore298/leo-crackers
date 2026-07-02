@@ -28,6 +28,7 @@ const sendOrderConfirmationEmail = async (customerEmail, order, pdfBuffer) => {
       <p>Your order <strong>${order.orderNumber}</strong> has been successfully placed.</p>
       <p>We have attached your order invoice for your reference.</p>
       <p>We will notify you once your order status changes.</p>
+      <p>For any queries, please contact us at <strong>+91 91595 33949</strong>.</p>
       <br/>
       <p>Best Regards,</p>
       <p><strong>Leo Crackers Team</strong></p>
@@ -84,7 +85,7 @@ const sendStatusUpdateEmail = async (customerEmail, order) => {
       <p>This is to inform you that your order <strong>${order.orderNumber}</strong> ${statusMessage}</p>
       ${order.adminRemarks ? `<p><strong>Admin Note:</strong> ${order.adminRemarks}</p>` : ''}
       <br/>
-      <p>If you have any questions, please contact our support.</p>
+      <p>If you have any questions, please contact us at <strong>+91 91595 33949</strong>.</p>
       <p>Best Regards,</p>
       <p><strong>Leo Crackers Team</strong></p>
     `

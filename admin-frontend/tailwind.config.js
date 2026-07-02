@@ -26,6 +26,7 @@ module.exports = {
       fontFamily: {
         sans: ["Outfit", "system-ui", "sans-serif"],
         heading: ["Outfit", "system-ui", "sans-serif"],
+        brand: ["Snell Roundhand", "Great Vibes", "cursive"],
       },
       boxShadow: {
         primary: "0 4px 14px rgba(255, 102, 0, 0.25)",

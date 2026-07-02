@@ -18,13 +18,7 @@ const Home = () => {
   const router = useRouter();
   const { banners, categories, cart, isLoading } = useSelector((state) => state.shop);
   const [searchTerm, setSearchTerm] = useState('');
-  const [expandedCategories, setExpandedCategories] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = sessionStorage.getItem('expandedCategories');
-      if (saved) return JSON.parse(saved);
-    }
-    return {};
-  });
+
   const [playingVideoId, setPlayingVideoId] = useState(null);
   const scrollRestoredRef = useRef(false);
 
@@ -54,18 +48,28 @@ const Home = () => {
     dispatch(fetchHomeData());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (categories.length > 0 && Object.keys(expandedCategories).length === 0) {
-      setExpandedCategories({ [categories[0]._id]: true });
-    }
-  }, [categories, expandedCategories]);
+  const [expandedCategories, setExpandedCategories] = useState({});
 
   useEffect(() => {
-    sessionStorage.setItem('expandedCategories', JSON.stringify(expandedCategories));
-  }, [expandedCategories]);
+    if (categories.length > 0) {
+      const saved = sessionStorage.getItem('expandedCategories');
+      if (saved) {
+        setExpandedCategories(JSON.parse(saved));
+      } else {
+        const initial = {};
+        categories.forEach(c => initial[c._id] = true);
+        setExpandedCategories(initial);
+      }
+    }
+  }, [categories]);
 
   const toggleCategory = (id) => {
-    setExpandedCategories(prev => ({ ...prev, [id]: !prev[id] }));
+    setExpandedCategories(prev => {
+      const isCurrentlyExpanded = prev[id] !== false; // Defaults to true if undefined
+      const newState = { ...prev, [id]: !isCurrentlyExpanded };
+      sessionStorage.setItem('expandedCategories', JSON.stringify(newState));
+      return newState;
+    });
   };
 
   const handleQuantityChange = (product, newQuantity) => {
@@ -109,7 +113,7 @@ const Home = () => {
     doc.setFontSize(10);
     doc.setTextColor(100);
     doc.text('Premium Quality Crackers | Sivakasi', 105, 28, { align: 'center' });
-    doc.text('www.leocrackers.com | Phone: +91 9876543210', 105, 33, { align: 'center' });
+    doc.text('www.leocrackers.com | Phone: +91 91595 33949', 105, 33, { align: 'center' });
 
     doc.setDrawColor(217, 4, 41);
     doc.line(14, 38, 196, 38);
@@ -250,7 +254,7 @@ const Home = () => {
 
           if (!filteredProducts || filteredProducts.length === 0) return null;
 
-          const isExpanded = expandedCategories[category._id];
+          const isExpanded = expandedCategories[category._id] !== false; // defaults to true
 
           return (
             <div key={category._id} className="mb-6 glass-panel overflow-hidden animate-slide-up" style={{ animationDelay: '0.1s' }}>

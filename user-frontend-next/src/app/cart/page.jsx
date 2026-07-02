@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,11 +13,18 @@ const Cart = () => {
   const { cart } = useSelector((state) => state.shop);
   const dispatch = useDispatch();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const totalAmount = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   const MIN_ORDER_VALUE = 3000;
   const remaining = MIN_ORDER_VALUE - totalAmount;
   const progress = Math.min((totalAmount / MIN_ORDER_VALUE) * 100, 100);
+
+  if (!mounted) return null;
 
   return (
     <div className="bg-surface min-h-screen flex flex-col">
