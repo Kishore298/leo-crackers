@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { login, reset } from '../features/auth/authSlice';
 import { toast } from 'react-toastify';
-import { FaFire, FaUser, FaLock } from 'react-icons/fa';
+import { FaUser, FaLock } from 'react-icons/fa';
 
 const Login = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
@@ -22,69 +22,77 @@ const Login = () => {
   const onSubmit = (e) => { e.preventDefault(); dispatch(login({ username, password })); };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-fire-gradient relative overflow-hidden">
-      {/* Background flame orbs */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-primary-light/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-dark/30 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+    <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#D90429]/10 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-md px-4">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-2xl mb-4 shadow-primary-lg backdrop-blur-sm border border-white/30">
-            <FaFire className="text-4xl text-white animate-bounce-subtle" />
+        {/* Logo Section */}
+        <div className="text-center mb-10">
+          <div className="inline-block relative">
+            <div className="absolute inset-0 bg-primary/30 blur-2xl rounded-full" />
+            <img 
+              src="/assets/leo-logo.png" 
+              alt="Leo Crackers Logo" 
+              className="relative w-24 h-24 rounded-full bg-white p-2 object-contain grayscale opacity-90 mx-auto shadow-2xl border-2 border-white/10"
+              onError={(e) => {
+                e.target.style.display = 'none';
+              }}
+            />
           </div>
-          <h1 className="text-5xl font-brand font-normal text-white tracking-normal text-center">
+          <h1 className="text-5xl font-brand text-primary mt-4 tracking-normal drop-shadow-sm">
             Leo Crackers
           </h1>
-          <p className="text-white/70 text-sm mt-1 font-semibold uppercase tracking-widest">Admin Portal</p>
+          <p className="text-text-secondary text-sm mt-2 font-bold uppercase tracking-[0.2em]">Admin Portal</p>
         </div>
 
-        {/* Card */}
-        <div className="glass-panel p-8">
-          <h2 className="text-2xl font-heading font-bold text-primary mb-6 text-center">Welcome Back</h2>
-          <form onSubmit={onSubmit} className="space-y-5">
+        {/* Login Card */}
+        <div className="bg-surface-2/60 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+          <h2 className="text-2xl font-heading font-black text-white mb-6 text-center">Secure Login</h2>
+          <form onSubmit={onSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-bold text-white mb-2">Username</label>
-              <div className="relative">
-                <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-primary" />
+              <div className="relative group">
+                <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary group-focus-within:text-primary transition-colors" />
                 <input
                   type="text"
                   name="username"
                   value={username}
                   onChange={onChange}
                   required
-                  placeholder="Enter username"
-                  className="w-full pl-10 pr-4 py-3 border border-border bg-surface-2 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary text-text placeholder-text-secondary/50"
+                  placeholder="Username"
+                  className="w-full pl-12 pr-4 py-3.5 border border-white/5 bg-[#121215] rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-white placeholder-text-secondary transition-all"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-bold text-white mb-2">Password</label>
-              <div className="relative">
-                <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-primary" />
+              <div className="relative group">
+                <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary group-focus-within:text-primary transition-colors" />
                 <input
                   type="password"
                   name="password"
                   value={password}
                   onChange={onChange}
                   required
-                  placeholder="Enter password"
-                  className="w-full pl-10 pr-4 py-3 border border-border bg-surface-2 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary text-text placeholder-text-secondary/50"
+                  placeholder="Password"
+                  className="w-full pl-12 pr-4 py-3.5 border border-white/5 bg-[#121215] rounded-xl focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-white placeholder-text-secondary transition-all"
                 />
               </div>
             </div>
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full btn-fire text-lg uppercase tracking-wider mt-2"
+              className="w-full bg-fire-gradient text-white font-black py-4 rounded-xl shadow-[0_0_20px_rgba(255,102,0,0.3)] hover:shadow-[0_0_30px_rgba(255,102,0,0.5)] transition-all hover:-translate-y-1 text-lg tracking-wider mt-4"
             >
-              {isLoading ? 'Logging in...' : 'Login'}
+              {isLoading ? 'AUTHENTICATING...' : 'LOGIN TO DASHBOARD'}
             </button>
           </form>
 
-          <p className="text-center text-xs text-text-secondary mt-6">
-            Default: <span className="font-mono font-bold text-primary">admin / password123</span>
-          </p>
+          <div className="mt-8 pt-6 border-t border-white/5 text-center">
+            <p className="text-xs text-text-secondary font-medium">
+              Demo access: <span className="text-primary font-mono bg-primary/10 px-2 py-1 rounded">admin</span> / <span className="text-primary font-mono bg-primary/10 px-2 py-1 rounded">password123</span>
+            </p>
+          </div>
         </div>
       </div>
     </div>
