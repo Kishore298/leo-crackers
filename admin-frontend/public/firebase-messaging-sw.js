@@ -1,31 +1,37 @@
-// Scripts for firebase and firebase messaging
-importScripts('https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/10.9.0/firebase-messaging-compat.js');
+self.addEventListener('push', function(event) {
+  if (event.data) {
+    try {
+      const payload = event.data.json();
+      console.log('[firebase-messaging-sw.js] Received push event', payload);
 
-// Default config will be picked up by URL parameters automatically if hosted, but for local/CRA we often need to initialize it
-// However, the standard approach is to let the frontend inject it, but in SW it's isolated.
-// A simpler way: we'll handle background notifications by relying on standard push.
+      const title = payload?.notification?.title || 'Leo Crackers Update';
+      const options = {
+        body: payload?.notification?.body || 'You have a new notification.',
+        icon: '/assets/leo-logo.png',
+        badge: '/assets/leo-logo.png',
+        data: payload?.data || {}
+      };
 
-// Initialize the Firebase app in the service worker by passing in the messagingSenderId.
-// This is required for background messages to work properly.
-const firebaseConfig = {
-  // It's safe to hardcode these public keys here, or inject them at build time.
-  // The user will replace these with their own via a build script or manual entry later.
-  // We will expect the user to populate this if background pushes are strictly required.
-  // But for standard VAPID integration, just importing the compat libraries is enough for many setups.
-};
+      event.waitUntil(self.registration.showNotification(title, options));
+    } catch (err) {
+      console.error('Error parsing push payload', err);
+    }
+  }
+});
 
-// firebase.initializeApp(firebaseConfig);
-// const messaging = firebase.messaging();
-
-// messaging.onBackgroundMessage(function(payload) {
-//   console.log('[firebase-messaging-sw.js] Received background message ', payload);
-//   // Customize notification here
-//   const notificationTitle = payload.notification.title;
-//   const notificationOptions = {
-//     body: payload.notification.body,
-//     icon: '/logo192.png'
-//   };
-// 
-//   self.registration.showNotification(notificationTitle, notificationOptions);
-// });
+self.addEventListener('notificationclick', function(event) {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: 'window' }).then((windowClients) => {
+      for (let i = 0; i < windowClients.length; i++) {
+        const client = windowClients[i];
+        if (client.url.includes('/') && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow('/');
+      }
+    })
+  );
+});
