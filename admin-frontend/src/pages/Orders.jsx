@@ -62,10 +62,7 @@ const Orders = () => {
     setResending(true);
     try {
       const { data } = await axios.post(`${API}/${id}/resend-confirmation`, {}, config);
-      let msg = 'Confirmation resent!';
-      if (data.sentEmail) msg += ' (Email)';
-      if (data.sentWhatsApp) msg += ' (WhatsApp)';
-      toast.success(msg);
+      toast.success(data.message || 'Resend request initiated!');
     } catch (err) {
       toast.error('Error resending confirmation');
     }

@@ -147,25 +147,31 @@ const resendOrderConfirmation = async (req, res) => {
       return res.status(400).json({ message: 'Customer has no email or mobile number.' });
     }
 
-    const pdfBuffer = await generateOrderPDF(order, order.customer);
-    
-    let sentEmail = false;
-    let sentWhatsApp = false;
+    // Acknowledge the request immediately
+    res.json({ message: 'Resend request initiated. Processing in background...' });
 
-    if (order.customer.email) {
-      await sendOrderConfirmationEmail(order.customer.email, order, pdfBuffer);
-      sentEmail = true;
-    }
+    // Fire and forget background processing
+    (async () => {
+      try {
+        const pdfBuffer = await generateOrderPDF(order, order.customer);
+        
+        if (order.customer.email) {
+          await sendOrderConfirmationEmail(order.customer.email, order, pdfBuffer);
+        }
+        
+        if (order.customer.mobileNumber) {
+          await sendWhatsAppOrderConfirmation(order.customer.mobileNumber, order, pdfBuffer);
+        }
+      } catch (backgroundError) {
+        console.error('Background error during resend confirmation:', backgroundError);
+      }
+    })();
     
-    if (order.customer.mobileNumber) {
-      await sendWhatsAppOrderConfirmation(order.customer.mobileNumber, order, pdfBuffer);
-      sentWhatsApp = true;
-    }
-
-    res.json({ message: 'Order confirmation resent successfully.', sentEmail, sentWhatsApp });
   } catch (error) {
-    console.error('Error resending confirmation:', error);
-    res.status(500).json({ message: 'Failed to resend confirmation', error: error.message });
+    console.error('Error initiating resend confirmation:', error);
+    if (!res.headersSent) {
+      res.status(500).json({ message: 'Failed to initiate resend confirmation', error: error.message });
+    }
   }
 };
 
