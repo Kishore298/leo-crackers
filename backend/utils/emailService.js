@@ -22,7 +22,7 @@ const sendOrderConfirmationEmail = async (customerEmail, order, pdfBuffer) => {
 
   const transporter = createTransporter();
   const mailOptions = {
-    from: process.env.EMAIL_USER || '"Leo Crackers" <noreply@leocrackers.com>',
+    from: `"Leo Crackers" <${process.env.EMAIL_FROM || process.env.EMAIL_USER || 'noreply@leocrackers.com'}>`,
     to: customerEmail,
     subject: `Order Confirmation - ${order.orderNumber}`,
     html: `
@@ -78,7 +78,7 @@ const sendStatusUpdateEmail = async (customerEmail, order) => {
   }
 
   const mailOptions = {
-    from: process.env.EMAIL_USER || '"Leo Crackers" <noreply@leocrackers.com>',
+    from: `"Leo Crackers" <${process.env.EMAIL_FROM || process.env.EMAIL_USER || 'noreply@leocrackers.com'}>`,
     to: customerEmail,
     subject: `Order Status Update - ${order.orderNumber}`,
     html: `
