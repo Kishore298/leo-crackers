@@ -1,6 +1,8 @@
 const Category = require('../models/Category');
 const Product = require('../models/Product');
 const Banner = require('../models/Banner');
+const path = require('path');
+
 
 // @desc    Get home page data (Banners + Categories with Products)
 // @route   GET /api/public/home
@@ -91,8 +93,24 @@ const getCategoryBySlug = async (req, res) => {
   }
 };
 
+// @desc    Download the Price List PDF
+// @route   GET /api/public/price-list
+// @access  Public
+const downloadPriceList = (req, res) => {
+  const filePath = path.join(__dirname, '../Diwali_Crackers_Price_List.pdf');
+  res.download(filePath, 'Diwali_Crackers_Price_List.pdf', (err) => {
+    if (err) {
+      console.error('Error downloading the file:', err);
+      if (!res.headersSent) {
+        res.status(500).send('Error downloading file');
+      }
+    }
+  });
+};
+
 module.exports = {
   getHomeData,
   getProductBySlug,
-  getCategoryBySlug
+  getCategoryBySlug,
+  downloadPriceList
 };

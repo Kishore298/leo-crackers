@@ -30,6 +30,7 @@ const Orders = () => {
   const [filterPayment, setFilterPayment] = useState('');
   const [loading, setLoading] = useState(false);
   const [viewOrder, setViewOrder] = useState(null);
+  const [resending, setResending] = useState(false);
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -55,6 +56,20 @@ const Orders = () => {
       if (viewOrder?._id === id) setViewOrder(prev => ({ ...prev, [field]: value }));
       toast.success('Order updated successfully!');
     } catch (err) { toast.error('Error updating order'); }
+  };
+
+  const resendConfirmation = async (id) => {
+    setResending(true);
+    try {
+      const { data } = await axios.post(`${API}/${id}/resend-confirmation`, {}, config);
+      let msg = 'Confirmation resent!';
+      if (data.sentEmail) msg += ' (Email)';
+      if (data.sentWhatsApp) msg += ' (WhatsApp)';
+      toast.success(msg);
+    } catch (err) {
+      toast.error('Error resending confirmation');
+    }
+    setResending(false);
   };
 
   return (
@@ -194,6 +209,15 @@ const Orders = () => {
                     <option value="CASH">CASH</option>
                   </select>
                 </div>
+              </div>
+              <div className="mt-4 pt-4 border-t border-border flex justify-end">
+                <button 
+                  onClick={() => resendConfirmation(viewOrder._id)}
+                  disabled={resending}
+                  className="bg-primary/20 hover:bg-primary/40 border border-primary text-primary hover:text-white font-bold py-2 px-4 rounded transition-colors disabled:opacity-50 text-sm"
+                >
+                  {resending ? 'Resending...' : 'Resend Details (Email & WhatsApp)'}
+                </button>
               </div>
             </div>
           </div>

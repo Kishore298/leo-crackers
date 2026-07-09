@@ -2,6 +2,7 @@ const Order = require('../models/Order');
 const Customer = require('../models/Customer');
 const { generateOrderPDF } = require('../utils/pdfGenerator');
 const { sendOrderConfirmationEmail, sendStatusUpdateEmail } = require('../utils/emailService');
+const { sendWhatsAppOrderConfirmation, sendWhatsAppStatusUpdate } = require('../utils/whatsappService');
 const { sendAdminPushNotification } = require('../services/firebaseService');
 
 // Admin - get orders with filter, sort, pagination
@@ -68,6 +69,11 @@ const updateOrderStatus = async (req, res) => {
       sendStatusUpdateEmail(order.customer.email, order).catch(console.error);
     }
 
+    if (isStatusChanged && order.customer && order.customer.mobileNumber) {
+      // fire and forget whatsapp update
+      sendWhatsAppStatusUpdate(order.customer.mobileNumber, order).catch(console.error);
+    }
+
     res.json(order);
   } catch (error) {
     res.status(400).json({ message: 'Update failed', error });
@@ -102,11 +108,20 @@ const createOrder = async (req, res) => {
 
     const createdOrder = await order.save();
 
-    if (customer.email) {
+    if (customer.email || customer.mobileNumber) {
        const populatedOrder = await Order.findById(createdOrder._id).populate('items.product', 'name');
        generateOrderPDF(populatedOrder, customer)
-         .then(pdfBuffer => sendOrderConfirmationEmail(customer.email, populatedOrder, pdfBuffer))
-         .catch(err => console.error('Error in order email generation:', err));
+         .then(pdfBuffer => {
+            if (customer.email) {
+                sendOrderConfirmationEmail(customer.email, populatedOrder, pdfBuffer)
+                  .catch(err => console.error('Error in order email generation:', err));
+            }
+            if (customer.mobileNumber) {
+                sendWhatsAppOrderConfirmation(customer.mobileNumber, populatedOrder, pdfBuffer)
+                  .catch(err => console.error('Error sending WhatsApp order confirmation:', err));
+            }
+         })
+         .catch(err => console.error('Error in order PDF generation:', err));
     }
 
     // Trigger push notification to admins
@@ -122,4 +137,36 @@ const createOrder = async (req, res) => {
   }
 };
 
-module.exports = { getOrders, updateOrderStatus, createOrder, getDashboardStats };
+// Admin - resend order confirmation
+const resendOrderConfirmation = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id).populate('customer').populate('items.product', 'name');
+    if (!order) return res.status(404).json({ message: 'Order not found' });
+
+    if (!order.customer.email && !order.customer.mobileNumber) {
+      return res.status(400).json({ message: 'Customer has no email or mobile number.' });
+    }
+
+    const pdfBuffer = await generateOrderPDF(order, order.customer);
+    
+    let sentEmail = false;
+    let sentWhatsApp = false;
+
+    if (order.customer.email) {
+      await sendOrderConfirmationEmail(order.customer.email, order, pdfBuffer);
+      sentEmail = true;
+    }
+    
+    if (order.customer.mobileNumber) {
+      await sendWhatsAppOrderConfirmation(order.customer.mobileNumber, order, pdfBuffer);
+      sentWhatsApp = true;
+    }
+
+    res.json({ message: 'Order confirmation resent successfully.', sentEmail, sentWhatsApp });
+  } catch (error) {
+    console.error('Error resending confirmation:', error);
+    res.status(500).json({ message: 'Failed to resend confirmation', error: error.message });
+  }
+};
+
+module.exports = { getOrders, updateOrderStatus, createOrder, getDashboardStats, resendOrderConfirmation };

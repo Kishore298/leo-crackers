@@ -24,7 +24,7 @@ const Navbar = () => {
             </span>
           </Link>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center gap-3 sm:gap-6">
           <Link href="/cart" className="flex items-center text-text hover:text-primary transition group">
             <div className="flex items-center gap-2 sm:gap-3">
               <div className="relative">

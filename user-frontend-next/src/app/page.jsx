@@ -10,8 +10,6 @@ import Link from 'next/link';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaFire, FaChevronDown, FaChevronUp, FaFilePdf, FaYoutube, FaTimes, FaPlayCircle } from 'react-icons/fa';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -102,67 +100,7 @@ const Home = () => {
     }
   };
 
-  const downloadPriceList = () => {
-    const doc = new jsPDF();
 
-    // Header
-    doc.setFontSize(22);
-    doc.setTextColor(217, 4, 41); // Primary Red
-    doc.text('Leo Crackers', 105, 20, { align: 'center' });
-
-    doc.setFontSize(10);
-    doc.setTextColor(100);
-    doc.text('Premium Quality Crackers | Sivakasi', 105, 28, { align: 'center' });
-    doc.text('www.leocrackers.com | Phone: +91 91595 33949', 105, 33, { align: 'center' });
-
-    doc.setDrawColor(217, 4, 41);
-    doc.line(14, 38, 196, 38);
-
-    doc.setFontSize(14);
-    doc.setTextColor(0);
-    doc.text('Product Price List', 14, 48);
-
-    const tableData = [];
-    let sNo = 1;
-
-    categories.forEach(category => {
-      if (category.products && category.products.length > 0) {
-        // Category Header Row
-        tableData.push([
-          { content: category.name.toUpperCase(), colSpan: 4, styles: { fillColor: [243, 244, 246], textColor: [217, 4, 41], fontStyle: 'bold', halign: 'center' } }
-        ]);
-
-        category.products.forEach(product => {
-          tableData.push([
-            sNo++,
-            product.name,
-            '1', // Base quantity representation
-            `Rs. ${product.actualPrice}`
-          ]);
-        });
-      }
-    });
-
-    autoTable(doc, {
-      startY: 52,
-      head: [['S.No', 'Product Name', 'Quantity', 'Price']],
-      body: tableData,
-      theme: 'grid',
-      headStyles: { fillColor: [217, 4, 41], textColor: [255, 255, 255] },
-      styles: { fontSize: 9 },
-      alternateRowStyles: { fillColor: [250, 250, 250] },
-      margin: { top: 52 }
-    });
-
-    const finalY = doc.lastAutoTable.finalY || 52;
-    doc.setFontSize(12);
-    doc.setTextColor(0);
-    doc.text('Thank You for shopping with Leo Crackers!', 105, finalY + 15, { align: 'center' });
-    doc.setFontSize(10);
-    doc.text('Have a safe and happy celebration.', 105, finalY + 20, { align: 'center' });
-
-    doc.save('Leo_Crackers_Price_List.pdf');
-  };
 
   if (isLoading) {
     return (
@@ -208,12 +146,20 @@ const Home = () => {
           <p className="text-text-secondary text-md md:text-xl font-medium mt-4 mb-8 max-w-2xl tracking-wide">
             Premium Quality Fireworks Since 1995. Light up your celebrations with joy and prosperity.
           </p>
-          <button
-            onClick={() => window.scrollBy({ top: window.innerHeight * 0.7, behavior: 'smooth' })}
-            className="btn-fire text-lg px-8 py-3"
-          >
-            Explore Collection
-          </button>
+          <div className="flex flex-col sm:flex-row gap-4 items-center">
+            <button
+              onClick={() => window.scrollBy({ top: window.innerHeight * 0.7, behavior: 'smooth' })}
+              className="btn-fire text-lg px-8 py-3"
+            >
+              Explore Collection
+            </button>
+            <button
+              onClick={() => window.open(`${process.env.NEXT_PUBLIC_API_URL}/api/public/price-list`, '_blank')}
+              className="btn-outline-fire text-lg px-8 py-3 flex items-center gap-2"
+            >
+              <FaFilePdf /> Download Price List
+            </button>
+          </div>
         </div>
       </div>
 
@@ -234,7 +180,7 @@ const Home = () => {
             </div>
           </div>
           <button
-            onClick={downloadPriceList}
+            onClick={() => window.open(`${process.env.NEXT_PUBLIC_API_URL}/api/public/price-list`, '_blank')}
             className="btn-outline-fire flex items-center gap-2 rounded-full"
           >
             <FaFilePdf /> Download Price List
