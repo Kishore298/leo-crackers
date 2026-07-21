@@ -126,13 +126,13 @@ const Home = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <div className="w-full pt-20 md:pt-32 pb-4 md:pb-12 relative flex flex-col items-center justify-center text-center min-h-[70vh]">
+      <div className="w-full pt-20 md:pt-32 pb-4 md:pb-8 relative flex flex-col items-center justify-center text-center min-h-[70vh]">
         {/* Deity Image */}
         <div className="mb-3 md:mb-6 animate-fade-zoom relative z-10">
           <img
             src="/assets/hero-deity.jpeg"
             alt="Deity"
-            className="w-36 h-36 md:w-48 md:h-48 object-contain filter drop-shadow-[0_0_20px_rgba(255,204,51,0.5)] mx-auto"
+            className="w-28 h-28 md:w-40 md:h-40 object-contain filter drop-shadow-[0_0_20px_rgba(255,204,51,0.5)] mx-auto"
           />
         </div>
 
@@ -140,11 +140,11 @@ const Home = () => {
         <div className="relative z-10 animate-fade-in-up flex flex-col items-center">
           <div className="flex items-center justify-center mb-4">
             <h1 className="text-3xl md:text-5xl font-heading font-black text-white tracking-tight">
-              Welcome to <span className="fire-gradient-text">Leo Crackers</span>
+              Welcome to <span className="fire-gradient-text font-brand tracking-[1.5px]">Leo Crackers</span>
             </h1>
           </div>
           <p className="text-text-secondary text-md md:text-xl font-medium mt-4 mb-8 max-w-2xl tracking-wide">
-            Premium Quality Fireworks Since 1995. Light up your celebrations with joy and prosperity.
+            Premium Quality Fireworks Since 2009. Light up your celebrations with joy and prosperity.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 items-center">
             <button

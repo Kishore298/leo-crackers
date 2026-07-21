@@ -8,6 +8,13 @@ const PremiumExtras = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [showSocialSidebar, setShowSocialSidebar] = useState(true);
   const [hasAutoClosed, setHasAutoClosed] = useState(false);
+  const [isBumpedUp, setIsBumpedUp] = useState(false);
+
+  useEffect(() => {
+    const handleStickyCartChange = (e) => setIsBumpedUp(e.detail);
+    window.addEventListener('stickyCartChange', handleStickyCartChange);
+    return () => window.removeEventListener('stickyCartChange', handleStickyCartChange);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,7 +43,7 @@ const PremiumExtras = () => {
     });
   };
 
-  const dummyWhatsAppNumber = "+919159533949";
+  const primaryWhatsAppNumber = "+919597203949";
 
   return (
     <>
@@ -49,7 +56,7 @@ const PremiumExtras = () => {
       </div>
 
       {/* Floating Social Icons (Left) */}
-      <div className="fixed bottom-6 left-0 z-[90] flex items-end">
+      <div className={`fixed left-0 z-[90] flex items-end transition-all duration-300 ${isBumpedUp ? 'bottom-24 lg:bottom-6' : 'bottom-6'}`}>
         {/* Mobile Toggle Button (Visible when closed) */}
         <button
           onClick={() => setShowSocialSidebar(true)}
@@ -83,7 +90,7 @@ const PremiumExtras = () => {
       </div>
 
       {/* Floating Buttons Container (Right) */}
-      <div className="fixed bottom-6 right-2 md:right-6 z-[90] flex flex-col gap-3 md:gap-4">
+      <div className={`fixed right-2 md:right-6 z-[90] flex flex-col gap-3 md:gap-4 transition-all duration-300 ${isBumpedUp ? 'bottom-24 lg:bottom-6' : 'bottom-6'}`}>
         {/* Back to Top */}
         <button
           onClick={scrollToTop}
@@ -93,9 +100,9 @@ const PremiumExtras = () => {
           <FaArrowUp />
         </button>
 
-        {/* WhatsApp Button */}
+        {/* Primary WhatsApp Button */}
         <a
-          href={`https://wa.me/${dummyWhatsAppNumber}`}
+          href={`https://wa.me/${primaryWhatsAppNumber}`}
           target="_blank"
           rel="noopener noreferrer"
           className="p-3 md:p-4 rounded-full bg-[#25D366] text-white shadow-[0_0_15px_rgba(37,211,102,0.5)] hover:shadow-[0_0_25px_rgba(37,211,102,0.8)] transition-all duration-300 hover:scale-110 flex items-center justify-center animate-bounce-subtle"

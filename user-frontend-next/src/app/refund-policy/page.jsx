@@ -18,7 +18,7 @@ const RefundPolicy = () => {
           <p>At <strong>Leo Crackers</strong>, we strive to ensure that our customers are completely satisfied with their purchases. Please read our cancellation and refund policy carefully.</p>
           
           <h2 className="text-2xl font-bold text-white mt-8 mb-4">1. Order Cancellations</h2>
-          <p>You may cancel your order only if it has not yet been processed or dispatched from our warehouse. To cancel an order, please contact our customer support immediately at <strong>+91 91595 33949</strong>. Once an order is dispatched, it cannot be cancelled.</p>
+          <p>You may cancel your order only if it has not yet been processed or dispatched from our warehouse. To cancel an order, please contact our customer support immediately at <strong>+91 95972 03949</strong> or <strong>+91 91595 33949</strong>. Once an order is dispatched, it cannot be cancelled.</p>
 
           <h2 className="text-2xl font-bold text-white mt-8 mb-4">2. Returns</h2>
           <p>Due to the nature of fireworks and safety regulations, <strong>we do not accept returns</strong> once the products have been delivered. Please ensure you double-check your order before making a payment.</p>
@@ -31,7 +31,7 @@ const RefundPolicy = () => {
 
           <h2 className="text-2xl font-bold text-white mt-8 mb-4">5. Contact Support</h2>
           <p>For any cancellation or refund queries, reach out to us at:</p>
-          <p className="mt-2 text-primary font-bold">Phone: +91 91595 33949<br/>Email: admin@leocrackers.com</p>
+          <p className="mt-2 text-primary font-bold">Phone: +91 95972 03949, +91 91595 33949<br/>Email: leocrackershop@gmail.com</p>
         </div>
       </div>
       <Footer />

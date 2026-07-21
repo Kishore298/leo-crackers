@@ -43,7 +43,7 @@ const PrivacyPolicy = () => {
 
           <h2 className="text-2xl font-bold text-white mt-8 mb-4">5. Contact Us</h2>
           <p>If you have any questions or concerns about this Privacy Policy, please contact us at:</p>
-          <p className="mt-2 text-primary font-bold">Email: admin@leocrackers.com<br/>Phone: +91 91595 33949</p>
+          <p className="mt-2 text-primary font-bold">Email: leocrackershop@gmail.com<br/>Phone: +91 95972 03949, +91 91595 33949</p>
         </div>
       </div>
       <Footer />

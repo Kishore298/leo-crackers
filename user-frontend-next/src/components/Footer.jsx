@@ -11,10 +11,10 @@ const Footer = () => (
     <div className="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
       {/* Brand */}
       <div>
-        <h3 className="text-2xl font-heading font-black flex items-center mb-3">
+        <Link href="/" className="flex items-center mb-3">
           <img src="/assets/leo-logo.png" alt="Leo Crackers Logo" className="w-8 h-8 mr-2 rounded-full object-contain bg-white p-1 grayscale opacity-80" />
-          <span className="text-white">LEO</span><span className="text-primary font-light">CRACKERS</span>
-        </h3>
+          <span className="text-2xl font-brand font-normal tracking-normal text-primary">Leo Crackers</span>
+        </Link>
         <p className="text-text-secondary text-sm leading-relaxed">
           The finest fireworks for every celebration. Light up your moments with joy and prosperity.
         </p>
@@ -25,13 +25,18 @@ const Footer = () => (
         <h4 className="font-heading font-bold text-lg text-primary mb-4">Contact Us</h4>
         <ul className="space-y-3 text-sm text-text-secondary">
           <li>
+            <a href="tel:+919597203949" className="flex items-center gap-2 hover:text-white transition-colors">
+              <FaPhone className="text-primary" /> +91 95972 03949
+            </a>
+          </li>
+          <li>
             <a href="tel:+919159533949" className="flex items-center gap-2 hover:text-white transition-colors">
               <FaPhone className="text-primary" /> +91 91595 33949
             </a>
           </li>
           <li>
-            <a href="mailto:admin@leocrackers.com" className="flex items-center gap-2 hover:text-white transition-colors">
-              <FaEnvelope className="text-primary" /> admin@leocrackers.com
+            <a href="mailto:leocrackershop@gmail.com" className="flex items-center gap-2 hover:text-white transition-colors">
+              <FaEnvelope className="text-primary" /> leocrackershop@gmail.com
             </a>
           </li>
           <li>

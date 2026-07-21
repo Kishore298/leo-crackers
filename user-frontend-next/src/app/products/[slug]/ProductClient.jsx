@@ -6,12 +6,42 @@ import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, updateQuantity } from '@/store/shopSlice';
-import { FaShoppingCart, FaFire, FaPlayCircle, FaArrowLeft, FaCheck } from 'react-icons/fa';
+import { FaShoppingCart, FaFire, FaPlayCircle, FaArrowLeft, FaCheck, FaImage } from 'react-icons/fa';
 
 export default function ProductClient({ product }) {
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.shop);
   const [playingVideo, setPlayingVideo] = useState(false);
+  const [showStickyCart, setShowStickyCart] = useState(false);
+  const cartActionRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Show sticky bar only when original actions are out of view
+        setShowStickyCart(!entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+
+    if (cartActionRef.current) {
+      observer.observe(cartActionRef.current);
+    }
+
+    return () => {
+      if (cartActionRef.current) {
+        observer.unobserve(cartActionRef.current);
+      }
+    };
+  }, []);
+
+  // Broadcast sticky cart state to global components (like PremiumExtras)
+  React.useEffect(() => {
+    window.dispatchEvent(new CustomEvent('stickyCartChange', { detail: showStickyCart }));
+    return () => {
+      window.dispatchEvent(new CustomEvent('stickyCartChange', { detail: false }));
+    };
+  }, [showStickyCart]);
 
   const cartItem = cart.find(x => x.product === product._id);
   const qty = cartItem ? cartItem.quantity : 0;
@@ -42,8 +72,8 @@ export default function ProductClient({ product }) {
   return (
     <div className="bg-surface min-h-screen flex flex-col">
       <Navbar />
-      
-      <div className="max-w-6xl mx-auto px-4 pt-32 pb-20 w-full flex-1">
+
+      <div className="max-w-6xl mx-auto px-4 pt-32 pb-32 lg:pb-20 w-full flex-1">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-gray-400 mb-8 font-medium">
           <Link href="/" className="hover:text-accent transition">Home</Link>
@@ -58,7 +88,7 @@ export default function ProductClient({ product }) {
         </div>
 
         <div className="bg-[#16161a] border border-white/5 rounded-3xl p-6 lg:p-10 shadow-2xl flex flex-col lg:flex-row gap-10 lg:gap-16">
-          
+
           {/* Image & Video Section */}
           <div className="lg:w-1/2 flex flex-col gap-4">
             <div className="relative aspect-square bg-[#22222a] rounded-2xl flex items-center justify-center p-6 border border-white/5 overflow-hidden group">
@@ -68,7 +98,7 @@ export default function ProductClient({ product }) {
                   {Math.round(((product.mrp - product.actualPrice) / product.mrp) * 100)}% OFF
                 </div>
               )}
-              
+
               {!playingVideo ? (
                 <>
                   <img
@@ -94,16 +124,16 @@ export default function ProductClient({ product }) {
 
           {/* Details Section */}
           <div className="lg:w-1/2 flex flex-col justify-center">
-            <h1 className="text-3xl lg:text-5xl font-heading font-black text-white leading-tight mb-4">{product.name}</h1>
-            
+            <h1 className="text-2xl md:text-3xl lg:text-5xl font-heading font-black text-white leading-tight mb-4">{product.name}</h1>
+
             <div className="flex items-end gap-4 mb-6">
-              <span className="text-4xl lg:text-5xl font-black text-accent tracking-tight">₹{product.actualPrice}</span>
+              <span className="text-xl md:text-2xl lg:text-5xl font-black text-accent tracking-tight">₹{product.actualPrice}</span>
               {product.mrp > product.actualPrice && (
-                <span className="text-xl text-gray-500 line-through font-bold mb-1">₹{product.mrp}</span>
+                <span className="text-lg md:text-xl text-gray-500 line-through font-bold mb-1">₹{product.mrp}</span>
               )}
             </div>
 
-            <p className="text-gray-400 text-lg mb-8 leading-relaxed">
+            <p className="text-gray-400 text-md md:text-lg mb-8 leading-relaxed">
               {product.description || 'Premium quality fireworks manufactured in Sivakasi. Safe and highly entertaining for all your festive needs.'}
             </p>
 
@@ -122,8 +152,8 @@ export default function ProductClient({ product }) {
               </div>
             </div>
 
-            {/* Cart Actions */}
-            <div className="mt-auto flex flex-col sm:flex-row items-center gap-4">
+            {/* Original Cart Actions */}
+            <div ref={cartActionRef} className="mt-auto flex flex-col sm:flex-row items-center gap-4">
               {qty === 0 ? (
                 <button
                   onClick={handleAddToCart}
@@ -149,13 +179,27 @@ export default function ProductClient({ product }) {
                   </button>
                 </div>
               )}
-              
-              {product.youtubeId && !playingVideo && (
+
+              {product.youtubeId && (
                 <button
-                  onClick={() => setPlayingVideo(true)}
-                  className="w-full sm:w-auto bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white border border-red-500/30 font-bold text-lg px-8 py-4 rounded-xl flex items-center justify-center gap-3 transition-all shadow-lg"
+                  onClick={() => {
+                    setPlayingVideo(!playingVideo);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className={`w-full sm:w-auto border font-bold text-lg px-8 py-4 rounded-xl flex items-center justify-center gap-3 transition-all shadow-lg ${playingVideo
+                    ? 'bg-white/5 text-white/80 hover:bg-white/10 hover:text-white border-white/10'
+                    : 'bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white border-red-500/30'
+                    }`}
                 >
-                  <FaPlayCircle /> WATCH VIDEO
+                  {playingVideo ? (
+                    <>
+                      <FaImage /> SEE IMAGE
+                    </>
+                  ) : (
+                    <>
+                      <FaPlayCircle /> WATCH VIDEO
+                    </>
+                  )}
                 </button>
               )}
             </div>
@@ -165,6 +209,68 @@ export default function ProductClient({ product }) {
       </div>
 
       <Footer />
+
+      {/* Sticky Cart Actions (Mobile Only) */}
+      <div 
+        className={`fixed left-0 right-0 z-[100] p-3 sm:p-4 bg-[#16161a]/95 backdrop-blur-md border-t border-white/10 flex flex-row items-center gap-2 sm:gap-4 lg:hidden shadow-[0_-10px_30px_rgba(0,0,0,0.6)] transition-all duration-300 ${
+          showStickyCart ? 'bottom-0 opacity-100' : '-bottom-32 opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="flex-1">
+          {qty === 0 ? (
+            <button
+              onClick={handleAddToCart}
+              className="w-full btn-fire text-xs sm:text-lg px-2 sm:px-12 py-3 sm:py-4 flex items-center justify-center gap-1.5 sm:gap-3 shadow-primary hover:shadow-primary-lg whitespace-nowrap"
+            >
+              <FaShoppingCart className="text-sm sm:text-lg" />
+              <span className="hidden sm:inline">ADD TO CART</span>
+              <span className="sm:hidden">ADD</span>
+            </button>
+          ) : (
+            <div className="flex items-center justify-between sm:justify-start gap-2 sm:gap-4 bg-[#22222a] p-1.5 sm:p-2 rounded-2xl w-full border border-white/5">
+              <button
+                onClick={() => handleQuantityChange(qty - 1)}
+                className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-[#16161a] text-white rounded-xl hover:bg-white/10 transition-colors font-bold text-lg sm:text-xl"
+              >
+                -
+              </button>
+              <span className="flex-1 text-center text-base sm:text-xl font-bold text-white">{qty}</span>
+              <button
+                onClick={() => handleQuantityChange(qty + 1)}
+                className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-[#16161a] text-white rounded-xl hover:bg-white/10 transition-colors font-bold text-lg sm:text-xl"
+              >
+                +
+              </button>
+            </div>
+          )}
+        </div>
+        
+        {product.youtubeId && (
+          <div className="flex-1">
+            <button
+              onClick={() => {
+                setPlayingVideo(!playingVideo);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className={`w-full border font-bold text-xs sm:text-lg px-2 sm:px-8 py-3 sm:py-4 rounded-xl flex items-center justify-center gap-1.5 sm:gap-3 transition-all shadow-lg whitespace-nowrap ${
+                playingVideo 
+                  ? 'bg-white/5 text-white/80 hover:bg-white/10 hover:text-white border-white/10'
+                  : 'bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white border-red-500/30'
+              }`}
+            >
+              {playingVideo ? (
+                <>
+                  <FaImage className="text-sm sm:text-lg" /> <span className="hidden sm:inline">SEE IMAGE</span><span className="sm:hidden">IMAGE</span>
+                </>
+              ) : (
+                <>
+                  <FaPlayCircle className="text-sm sm:text-lg" /> <span className="hidden sm:inline">WATCH VIDEO</span><span className="sm:hidden">VIDEO</span>
+                </>
+              )}
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
