@@ -28,7 +28,7 @@ const processDataArray = async (sheetData) => {
 
       if (row.product_name) {
         const productSlug = row.product_name.toLowerCase().replace(/ /g, '-');
-        const existingProduct = await Product.findOne({ slug: productSlug, category: category._id });
+        const existingProduct = await Product.findOne({ slug: productSlug });
         
         const mrp = Number(row.mrp) || 0;
         const actualPrice = Math.round(mrp - (mrp * (percentage / 100)));
@@ -38,6 +38,7 @@ const processDataArray = async (sheetData) => {
              existingProduct.mrp = mrp;
              existingProduct.actualPrice = actualPrice;
           }
+          existingProduct.category = category._id;
           await existingProduct.save();
         } else {
           await Product.create({
