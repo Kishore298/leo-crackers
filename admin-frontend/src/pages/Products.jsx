@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { FaEdit, FaTrash, FaSearch, FaPlus, FaTimes, FaFilter } from 'react-icons/fa';
 import ConfirmDialog from '../components/ConfirmDialog';
+import Pagination from '../components/Pagination';
 
 const API = process.env.REACT_APP_API_URL + '';
 const initialForm = { name: '', mrp: '', category: '', youtubeUrl: '', isActive: true };
@@ -178,7 +179,7 @@ const Products = () => {
                 </td>
                 <td className="px-5 py-4 border-b border-border text-sm font-bold text-white">{prod.name}</td>
                 <td className="px-5 py-4 border-b border-border text-sm">
-                  <span className="bg-primary/10 text-primary border border-primary/20 font-semibold text-xs px-2 py-1 rounded-full">{prod.category?.name || '—'}</span>
+                  <span className="bg-primary/10 text-primary border border-primary/20 font-semibold text-xs px-3 py-1 rounded-full inline-block whitespace-nowrap">{prod.category?.name || '—'}</span>
                 </td>
                 <td className="px-5 py-4 border-b border-border text-sm font-black text-text-secondary text-right line-through">₹{prod.mrp}</td>
                 <td className="px-5 py-4 border-b border-border text-sm font-black text-primary text-right">₹{prod.actualPrice}</td>
@@ -196,17 +197,7 @@ const Products = () => {
           </tbody>
         </table>
 
-        {/* Pagination */}
-        {pages > 1 && (
-          <div className="flex justify-center items-center gap-2 py-4 border-t border-border bg-surface-2">
-            {Array.from({ length: pages }, (_, i) => i + 1).map(p => (
-              <button key={p} onClick={() => setPage(p)}
-                className={`w-9 h-9 rounded-full font-bold text-sm transition ${p === page ? 'bg-fire-gradient text-white shadow-[0_0_15px_rgba(255,102,0,0.4)]' : 'bg-surface border border-border hover:border-primary text-text-secondary'}`}>
-                {p}
-              </button>
-            ))}
-          </div>
-        )}
+        <Pagination page={page} pages={pages} setPage={setPage} />
       </div>
 
       </div>

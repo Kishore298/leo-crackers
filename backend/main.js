@@ -21,7 +21,8 @@ app.use(cors({
     "https://admin.leocrackers.com",
     "https://www.admin.leocrackers.com",
     "https://leocrackers.com",
-    "https://www.leocrackers.com"
+    "https://www.leocrackers.com",
+    "http://localhost:3000"
   ]
 }));
 app.use(express.json());

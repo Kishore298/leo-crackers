@@ -62,7 +62,7 @@ const updateOrderStatus = async (req, res) => {
       ...(req.body.status && { status: req.body.status }),
       ...(req.body.paymentStatus && { paymentStatus: req.body.paymentStatus }),
       ...(req.body.adminRemarks && { adminRemarks: req.body.adminRemarks }),
-    }, { new: true }).populate('customer');
+    }, { returnDocument: 'after' }).populate('customer');
 
     if (isStatusChanged && order.customer && order.customer.email) {
       // fire and forget email update

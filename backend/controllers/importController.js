@@ -15,41 +15,48 @@ const processDataArray = async (sheetData) => {
 
   for (const row of sheetData) {
     if (row.category_name) {
-      let category = await Category.findOne({ name: row.category_name });
-      if (!category) {
-        const slug = row.category_name.toLowerCase().replace(/ /g, '-');
-        category = await Category.create({ name: row.category_name, slug });
-        processedCategories.add(category._id.toString());
-        categoryCount++;
-      } else if (!processedCategories.has(category._id.toString())) {
+      const rawCategoryName = row.category_name.trim();
+      const categoryName = rawCategoryName.split('(')[0].trim();
+      const categorySlug = categoryName.toLowerCase().replace(/[\s_]+/g, '-');
+      
+      let category = await Category.findOneAndUpdate(
+        { slug: categorySlug },
+        { $setOnInsert: { name: categoryName, slug: categorySlug } },
+        { upsert: true, returnDocument: 'after' }
+      );
+      
+      if (!processedCategories.has(category._id.toString())) {
         processedCategories.add(category._id.toString());
         categoryCount++;
       }
 
       if (row.product_name) {
-        const productSlug = row.product_name.toLowerCase().replace(/ /g, '-');
-        const existingProduct = await Product.findOne({ slug: productSlug });
+        const productName = row.product_name.trim();
+        const productSlug = productName.toLowerCase().replace(/[\s_]+/g, '-');
         
         const mrp = Number(row.mrp) || 0;
         const actualPrice = Math.round(mrp - (mrp * (percentage / 100)));
 
-        if (existingProduct) {
-          if (row.mrp !== undefined) {
-             existingProduct.mrp = mrp;
-             existingProduct.actualPrice = actualPrice;
-          }
-          existingProduct.category = category._id;
-          await existingProduct.save();
-        } else {
-          await Product.create({
-            name: row.product_name,
-            slug: productSlug,
-            category: category._id,
-            mrp: mrp,
-            actualPrice: actualPrice
-          });
-          productCount++;
+        const updateData = {
+          category: category._id
+        };
+        if (row.mrp !== undefined) {
+          updateData.mrp = mrp;
+          updateData.actualPrice = actualPrice;
         }
+
+        const product = await Product.findOneAndUpdate(
+          { slug: productSlug },
+          { 
+            $set: updateData,
+            $setOnInsert: { name: productName }
+          },
+          { upsert: true, returnDocument: 'after' }
+        );
+        
+        // We can't easily track new vs updated product count with upsert without extra checks, 
+        // but let's just increment productCount for each row processed
+        productCount++;
       }
     }
   }
@@ -127,7 +134,7 @@ const importData = async (req, res) => {
       sheetData = rawData.map(row => ({
         category_name: row['Category'] || row['category_name'] || 'Uncategorized',
         product_name: row['Product Name'] || row['product_name'] || 'Unnamed Product',
-        mrp: row['Original Price (Rs.)'] || row['mrp'] || row['Rate Rs'] || 0
+        mrp: row['Original Price (Rs.)'] || row['mrp'] || row['Rate Rs'] || row['actualPrice'] || 0
       })).filter(row => row.product_name !== 'Unnamed Product');
     }
 

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { FaEdit, FaTrash, FaSearch, FaPlus, FaTimes } from 'react-icons/fa';
 import ConfirmDialog from '../components/ConfirmDialog';
+import Pagination from '../components/Pagination';
 
 const API = process.env.REACT_APP_API_URL + '/categories';
 
@@ -159,17 +160,7 @@ const Categories = () => {
           </tbody>
         </table>
 
-        {/* Pagination */}
-        {pages > 1 && (
-          <div className="flex justify-center items-center gap-2 py-4 border-t border-border bg-surface-2">
-            {Array.from({ length: pages }, (_, i) => i + 1).map(p => (
-              <button key={p} onClick={() => setPage(p)}
-                className={`w-9 h-9 rounded-full font-bold text-sm transition ${p === page ? 'bg-fire-gradient text-white shadow-[0_0_15px_rgba(255,102,0,0.4)]' : 'bg-surface border border-border hover:border-primary text-text-secondary'}`}>
-                {p}
-              </button>
-            ))}
-          </div>
-        )}
+        <Pagination page={page} pages={pages} setPage={setPage} />
       </div>
 
       </div>
