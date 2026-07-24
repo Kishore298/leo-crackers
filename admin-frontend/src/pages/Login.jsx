@@ -32,9 +32,9 @@ const Login = () => {
         <div className="text-center mb-10">
           <div className="inline-block relative">
             <div className="absolute inset-0 bg-primary/30 blur-2xl rounded-full" />
-            <img 
-              src="/assets/leo-logo.png" 
-              alt="Leo Crackers Logo" 
+            <img
+              src="/assets/leo-logo.png"
+              alt="Leo Crackers Logo"
               className="relative w-24 h-24 rounded-full bg-white p-2 object-contain grayscale opacity-90 mx-auto shadow-2xl border-2 border-white/10"
               onError={(e) => {
                 e.target.style.display = 'none';
@@ -87,12 +87,6 @@ const Login = () => {
               {isLoading ? 'AUTHENTICATING...' : 'LOGIN TO DASHBOARD'}
             </button>
           </form>
-
-          <div className="mt-8 pt-6 border-t border-white/5 text-center">
-            <p className="text-xs text-text-secondary font-medium">
-              Demo access: <span className="text-primary font-mono bg-primary/10 px-2 py-1 rounded">admin</span> / <span className="text-primary font-mono bg-primary/10 px-2 py-1 rounded">password123</span>
-            </p>
-          </div>
         </div>
       </div>
     </div>
