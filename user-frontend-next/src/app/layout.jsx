@@ -1,5 +1,6 @@
 import "./globals.css";
 import StoreProvider from "@/store/StoreProvider";
+import { dancingScript } from "./fonts";
 import BackgroundEffects from "@/components/BackgroundEffects";
 import PremiumExtras from "@/components/PremiumExtras";
 
@@ -27,7 +28,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-background text-text">
         <StoreProvider>
           <div className="min-h-screen flex flex-col relative">
             <BackgroundEffects />

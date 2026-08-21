@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { FaShoppingCart } from 'react-icons/fa';
+import { dancingScript } from '@/app/fonts';
 
 const Navbar = () => {
   const { cart } = useSelector((state) => state.shop);
@@ -19,7 +20,7 @@ const Navbar = () => {
               alt="Leo Crackers Logo"
               className="h-10 w-10 mr-2 sm:mr-3 rounded-full object-contain bg-white p-1 border border-primary/30 group-hover:border-primary transition-colors"
             />
-            <span className="text-3xl sm:text-4xl font-brand font-normal tracking-normal text-primary">
+            <span className={`text-4xl sm:text-5xl font-bold tracking-wide text-primary ${dancingScript.className}`}>
               Leo Crackers
             </span>
           </Link>
@@ -30,7 +31,7 @@ const Navbar = () => {
               <div className="relative">
                 <FaShoppingCart className="text-2xl group-hover:scale-110 transition-transform" />
                 {cart.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-golden">
+                  <span className="absolute -top-2 -right-2 bg-primary text-text text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-golden">
                     {cart.length}
                   </span>
                 )}

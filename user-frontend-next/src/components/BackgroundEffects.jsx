@@ -31,9 +31,7 @@ const BackgroundEffects = () => {
     window.addEventListener("resize", resize);
     resize();
 
-    // Setup audio (optional crackle)
-    const audio = new Audio("/fireworks-crackle.mp3");
-    audio.volume = 0.5;
+    // Audio removed due to 404
 
     let animationFrameId;
     let particles = [];
@@ -41,10 +39,10 @@ const BackgroundEffects = () => {
     let fuseSparks = [];
     let startTime = Date.now();
 
-    // Fire and golden sparkles colors for sky bursts
-    const skyColors = ["#ffcc00", "#ff9900", "#ff6600", "#ff3300", "#ffcc33", "#ffffff"];
-    // Spark colors for Anar/fuse
-    const sparkColors = ["#ffffff", "#fff0b3", "#ffe066", "#ffcc00", "#ff9933"];
+    // Vibrant contrasting colors for sky bursts on a yellow background
+    const skyColors = ["#E91E63", "#9C27B0", "#3F51B5", "#009688", "#F44336", "#00BCD4"];
+    // Deep contrasting spark colors for Anar/fuse
+    const sparkColors = ["#FF5722", "#E91E63", "#D32F2F", "#1976D2", "#388E3C"];
 
     class Particle {
       constructor(x, y, color, vx, vy, life, gravity = 0.05, friction = 0.96, isSpark = false, glow = false) {
@@ -208,8 +206,7 @@ const BackgroundEffects = () => {
           )
         );
       }
-
-      audio.play().catch(() => { });
+      // audio.play().catch(() => { });
     };
 
     let timeline = {
@@ -342,8 +339,6 @@ const BackgroundEffects = () => {
 
   return (
     <>
-      <div className="fixed inset-0 -z-20 bg-[radial-gradient(circle_at_center,rgba(255,102,0,0.1)_0%,rgba(5,5,5,1)_100%)] pointer-events-none" />
-      
       {isVisible && (
         <div
           ref={containerRef}
@@ -351,7 +346,7 @@ const BackgroundEffects = () => {
         >
           <canvas
             ref={canvasRef}
-            className="absolute inset-0 w-full h-full pointer-events-none mix-blend-screen"
+            className="absolute inset-0 w-full h-full pointer-events-none"
           />
         </div>
       )}

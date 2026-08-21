@@ -66,20 +66,20 @@ const Checkout = () => {
         <CrackerBurst />
         <Navbar />
         <div className="flex-1 flex items-center justify-center px-4 pt-32 pb-20 relative z-10">
-          <div className="bg-[#16161a] rounded-2xl shadow-lg border border-white/5 p-12 text-center max-w-md w-full animate-fade-in-up">
+          <div className="bg-surface rounded-2xl shadow-lg border border-border p-12 text-center max-w-md w-full animate-fade-in-up">
             <div className="flex justify-center mb-5">
               <div className="bg-green-900/30 w-24 h-24 rounded-full flex items-center justify-center">
                 <FaCheckCircle className="text-5xl text-green-500" />
               </div>
             </div>
-            <h2 className="text-3xl font-heading font-black text-white mb-2">Order Placed!</h2>
-            <p className="text-gray-400 mb-4">Thank you for your order. Our team will review and confirm it shortly.</p>
-            <div className="bg-[#22222a] border border-white/5 rounded-xl px-6 py-4 mb-6 inline-block">
-              <p className="text-xs text-gray-500 uppercase tracking-wide font-semibold mb-1">Your Order Number</p>
+            <h2 className="text-3xl font-heading font-black text-text mb-2">Order Placed!</h2>
+            <p className="text-muted mb-4">Thank you for your order. Our team will review and confirm it shortly.</p>
+            <div className="bg-surface-2 border border-border rounded-xl px-6 py-4 mb-6 inline-block">
+              <p className="text-xs text-muted uppercase tracking-wide font-semibold mb-1">Your Order Number</p>
               <p className="text-2xl font-black text-accent font-mono">{orderNumber}</p>
             </div>
-            <p className="text-xs text-gray-500 mb-8">Save this number to track your order status.</p>
-            <Link href="/" className="inline-block bg-fire-gradient text-white font-bold py-3 px-10 rounded-xl shadow-primary hover:shadow-primary-lg transition">
+            <p className="text-xs text-muted mb-8">Save this number to track your order status.</p>
+            <Link href="/" className="inline-block bg-fire-gradient text-text font-bold py-3 px-10 rounded-xl shadow-primary hover:shadow-primary-lg transition">
               <FaFire className="inline mr-2" />
               Continue Shopping
             </Link>
@@ -99,56 +99,56 @@ const Checkout = () => {
       <Navbar />
       <div className="max-w-5xl mx-auto px-4 pt-32 pb-12 w-full flex-1">
         <div className="flex items-center gap-3 mb-8">
-          <Link href="/cart" className="text-white hover:text-accent transition bg-[#16161a] p-3 rounded-full border border-white/10"><FaArrowLeft /></Link>
-          <h1 className="text-3xl font-heading font-black text-white">Checkout</h1>
+          <Link href="/cart" className="text-text hover:text-accent transition bg-surface p-3 rounded-full border border-border"><FaArrowLeft /></Link>
+          <h1 className="text-3xl font-heading font-black text-text">Checkout</h1>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Form */}
           <div className="flex-1">
-            <div className="bg-[#16161a] rounded-2xl shadow-lg border border-white/5 p-8">
-              <h2 className="text-xl font-heading font-bold text-white mb-6 flex items-center gap-2">
-                <span className="bg-fire-gradient text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black">1</span>
+            <div className="bg-surface rounded-2xl shadow-lg border border-border p-8">
+              <h2 className="text-xl font-heading font-bold text-text mb-6 flex items-center gap-2">
+                <span className="bg-fire-gradient text-text w-8 h-8 rounded-full flex items-center justify-center text-sm font-black">1</span>
                 Delivery Details
               </h2>
               <form id="checkout-form" onSubmit={onSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-sm font-bold text-gray-300 mb-1.5">Full Name *</label>
+                    <label className="block text-sm font-bold text-muted mb-1.5">Full Name *</label>
                     <input required type="text" name="customerName" onChange={onChange}
-                      className="w-full px-4 py-3 border border-white/5 bg-[#22222a] rounded-xl focus:ring-2 focus:ring-accent outline-none text-white placeholder-gray-500 transition-shadow"
+                      className="w-full px-4 py-3 border border-border bg-surface-2 rounded-xl focus:ring-2 focus:ring-accent outline-none text-text placeholder-gray-500 transition-shadow"
                       placeholder="Your full name" />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-gray-300 mb-1.5">Mobile Number *</label>
+                    <label className="block text-sm font-bold text-muted mb-1.5">Mobile Number *</label>
                     <input required type="tel" name="mobileNumber" onChange={onChange}
                       pattern="[6-9][0-9]{9}"
-                      className="w-full px-4 py-3 border border-white/5 bg-[#22222a] rounded-xl focus:ring-2 focus:ring-accent outline-none text-white placeholder-gray-500 transition-shadow"
+                      className="w-full px-4 py-3 border border-border bg-surface-2 rounded-xl focus:ring-2 focus:ring-accent outline-none text-text placeholder-gray-500 transition-shadow"
                       placeholder="10-digit mobile number" />
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-bold text-gray-300 mb-1.5">Email Address</label>
+                    <label className="block text-sm font-bold text-muted mb-1.5">Email Address</label>
                     <input type="email" name="email" onChange={onChange}
-                      className="w-full px-4 py-3 border border-white/5 bg-[#22222a] rounded-xl focus:ring-2 focus:ring-accent outline-none text-white placeholder-gray-500 transition-shadow"
+                      className="w-full px-4 py-3 border border-border bg-surface-2 rounded-xl focus:ring-2 focus:ring-accent outline-none text-text placeholder-gray-500 transition-shadow"
                       placeholder="optional" />
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-bold text-gray-300 mb-1.5">Delivery Address *</label>
+                    <label className="block text-sm font-bold text-muted mb-1.5">Delivery Address *</label>
                     <textarea required name="address" onChange={onChange} rows="3"
-                      className="w-full px-4 py-3 border border-white/5 bg-[#22222a] rounded-xl focus:ring-2 focus:ring-accent outline-none text-white placeholder-gray-500 transition-shadow"
+                      className="w-full px-4 py-3 border border-border bg-surface-2 rounded-xl focus:ring-2 focus:ring-accent outline-none text-text placeholder-gray-500 transition-shadow"
                       placeholder="Street, area, landmark..." />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-gray-300 mb-1.5">City *</label>
+                    <label className="block text-sm font-bold text-muted mb-1.5">City *</label>
                     <input required type="text" name="city" onChange={onChange}
-                      className="w-full px-4 py-3 border border-white/5 bg-[#22222a] rounded-xl focus:ring-2 focus:ring-accent outline-none text-white placeholder-gray-500 transition-shadow"
+                      className="w-full px-4 py-3 border border-border bg-surface-2 rounded-xl focus:ring-2 focus:ring-accent outline-none text-text placeholder-gray-500 transition-shadow"
                       placeholder="City name" />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-gray-300 mb-1.5">Pincode *</label>
+                    <label className="block text-sm font-bold text-muted mb-1.5">Pincode *</label>
                     <input required type="text" name="pincode" onChange={onChange}
                       pattern="[0-9]{6}"
-                      className="w-full px-4 py-3 border border-white/5 bg-[#22222a] rounded-xl focus:ring-2 focus:ring-accent outline-none text-white placeholder-gray-500 transition-shadow"
+                      className="w-full px-4 py-3 border border-border bg-surface-2 rounded-xl focus:ring-2 focus:ring-accent outline-none text-text placeholder-gray-500 transition-shadow"
                       placeholder="6-digit pincode" />
                   </div>
                 </div>
@@ -158,32 +158,32 @@ const Checkout = () => {
 
           {/* Summary */}
           <div className="w-full lg:w-80 shrink-0">
-            <div className="bg-[#16161a] rounded-2xl shadow-lg border border-white/5 p-6 sticky top-24">
-              <h2 className="text-xl font-heading font-bold text-white mb-4 flex items-center gap-2">
-                <span className="bg-fire-gradient text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-black">2</span>
+            <div className="bg-surface rounded-2xl shadow-lg border border-border p-6 sticky top-24">
+              <h2 className="text-xl font-heading font-bold text-text mb-4 flex items-center gap-2">
+                <span className="bg-fire-gradient text-text w-8 h-8 rounded-full flex items-center justify-center text-sm font-black">2</span>
                 Order Summary
               </h2>
               <div className="space-y-2 mb-4 max-h-48 overflow-y-auto pr-1">
                 {cart.map(item => (
-                  <div key={item.product} className="flex justify-between text-sm py-2 border-b border-white/5 last:border-0">
-                    <span className="text-gray-300 truncate max-w-[60%] font-medium">{item.name} <span className="text-gray-500">×{item.quantity}</span></span>
+                  <div key={item.product} className="flex justify-between text-sm py-2 border-b border-border last:border-0">
+                    <span className="text-muted truncate max-w-[60%] font-medium">{item.name} <span className="text-muted">×{item.quantity}</span></span>
                     <span className="font-bold text-accent shrink-0">₹{item.price * item.quantity}</span>
                   </div>
                 ))}
               </div>
-              <div className="bg-[#22222a] rounded-xl p-4 border border-white/5 mb-5 text-center">
-                <p className="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-1">Total Amount</p>
+              <div className="bg-surface-2 rounded-xl p-4 border border-border mb-5 text-center">
+                <p className="text-xs text-muted font-semibold uppercase tracking-wide mb-1">Total Amount</p>
                 <p className="text-3xl font-black text-accent">₹{totalAmount}</p>
               </div>
               <button
                 type="submit"
                 form="checkout-form"
                 disabled={loading}
-                className="w-full bg-fire-gradient text-white font-black py-4 rounded-xl hover:shadow-[0_0_20px_rgba(255,102,0,0.4)] transition text-base uppercase tracking-wide"
+                className="w-full bg-fire-gradient text-text font-black py-4 rounded-xl hover:shadow-[0_0_20px_rgba(255,102,0,0.4)] transition text-base uppercase tracking-wide"
               >
                 {loading ? 'Placing Order...' : '🔥 Confirm Order'}
               </button>
-              <p className="text-center text-xs text-gray-400 mt-3">
+              <p className="text-center text-xs text-muted mt-3">
                 By confirming, our team will review and contact you
               </p>
             </div>

@@ -75,7 +75,7 @@ export default function ProductClient({ product }) {
 
       <div className="max-w-6xl mx-auto px-4 pt-32 pb-32 lg:pb-20 w-full flex-1">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-gray-400 mb-8 font-medium">
+        <div className="flex items-center gap-2 text-sm text-muted mb-8 font-medium">
           <Link href="/" className="hover:text-accent transition">Home</Link>
           <span>/</span>
           {product.category && (
@@ -84,16 +84,16 @@ export default function ProductClient({ product }) {
               <span>/</span>
             </>
           )}
-          <span className="text-white">{product.name}</span>
+          <span className="text-text">{product.name}</span>
         </div>
 
-        <div className="bg-[#16161a] border border-white/5 rounded-3xl p-6 lg:p-10 shadow-2xl flex flex-col lg:flex-row gap-10 lg:gap-16">
+        <div className="bg-surface border border-border rounded-3xl p-6 lg:p-10 shadow-2xl flex flex-col lg:flex-row gap-10 lg:gap-16">
 
           {/* Image & Video Section */}
           <div className="lg:w-1/2 flex flex-col gap-4">
-            <div className="relative aspect-square bg-[#22222a] rounded-2xl flex items-center justify-center p-6 border border-white/5 overflow-hidden group">
+            <div className="relative aspect-square bg-surface-2 rounded-2xl flex items-center justify-center p-6 border border-border overflow-hidden group">
               {product.mrp > product.actualPrice && (
-                <div className="absolute top-4 left-4 bg-[#ff5500] text-white text-sm font-black px-4 py-1.5 rounded-full z-20 shadow-lg flex items-center gap-1">
+                <div className="absolute top-4 left-4 bg-discount text-text text-sm font-black px-4 py-1.5 rounded-full z-20 shadow-lg flex items-center gap-1">
                   <FaFire className="text-yellow-300" />
                   {Math.round(((product.mrp - product.actualPrice) / product.mrp) * 100)}% OFF
                 </div>
@@ -124,29 +124,29 @@ export default function ProductClient({ product }) {
 
           {/* Details Section */}
           <div className="lg:w-1/2 flex flex-col justify-center">
-            <h1 className="text-2xl md:text-3xl lg:text-5xl font-heading font-black text-white leading-tight mb-4">{product.name}</h1>
+            <h1 className="text-2xl md:text-3xl lg:text-5xl font-heading font-black text-text leading-tight mb-4">{product.name}</h1>
 
             <div className="flex items-end gap-4 mb-6">
               <span className="text-xl md:text-2xl lg:text-5xl font-black text-accent tracking-tight">₹{product.actualPrice}</span>
               {product.mrp > product.actualPrice && (
-                <span className="text-lg md:text-xl text-gray-500 line-through font-bold mb-1">₹{product.mrp}</span>
+                <span className="text-lg md:text-xl text-muted line-through font-bold mb-1">₹{product.mrp}</span>
               )}
             </div>
 
-            <p className="text-gray-400 text-md md:text-lg mb-8 leading-relaxed">
+            <p className="text-muted text-md md:text-lg mb-8 leading-relaxed">
               {product.description || 'Premium quality fireworks manufactured in Sivakasi. Safe and highly entertaining for all your festive needs.'}
             </p>
 
             <div className="space-y-4 mb-10">
-              <div className="flex items-center gap-3 text-sm text-gray-300">
+              <div className="flex items-center gap-3 text-sm text-muted">
                 <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center"><FaCheck className="text-green-500 text-xs" /></div>
                 100% Authentic Sivakasi Crackers
               </div>
-              <div className="flex items-center gap-3 text-sm text-gray-300">
+              <div className="flex items-center gap-3 text-sm text-muted">
                 <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center"><FaCheck className="text-green-500 text-xs" /></div>
                 Safe and Premium Quality
               </div>
-              <div className="flex items-center gap-3 text-sm text-gray-300">
+              <div className="flex items-center gap-3 text-sm text-muted">
                 <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center"><FaCheck className="text-green-500 text-xs" /></div>
                 Fast & Secure Delivery
               </div>
@@ -163,17 +163,17 @@ export default function ProductClient({ product }) {
                   ADD TO CART
                 </button>
               ) : (
-                <div className="flex items-center gap-4 bg-[#22222a] p-2 rounded-2xl w-fit border border-white/5">
+                <div className="flex items-center gap-4 bg-surface-2 p-2 rounded-2xl w-fit border border-border">
                   <button
                     onClick={() => handleQuantityChange(qty - 1)}
-                    className="w-12 h-12 flex items-center justify-center bg-[#16161a] text-white rounded-xl hover:bg-white/10 transition-colors font-bold text-xl"
+                    className="w-12 h-12 flex items-center justify-center bg-surface text-text rounded-xl hover:bg-primary/20 transition-colors font-bold text-xl"
                   >
                     -
                   </button>
-                  <span className="w-12 text-center text-xl font-bold text-white">{qty}</span>
+                  <span className="w-12 text-center text-xl font-bold text-text">{qty}</span>
                   <button
                     onClick={() => handleQuantityChange(qty + 1)}
-                    className="w-12 h-12 flex items-center justify-center bg-[#16161a] text-white rounded-xl hover:bg-white/10 transition-colors font-bold text-xl"
+                    className="w-12 h-12 flex items-center justify-center bg-surface text-text rounded-xl hover:bg-primary/20 transition-colors font-bold text-xl"
                   >
                     +
                   </button>
@@ -187,8 +187,8 @@ export default function ProductClient({ product }) {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   className={`w-full sm:w-auto border font-bold text-lg px-8 py-4 rounded-xl flex items-center justify-center gap-3 transition-all shadow-lg ${playingVideo
-                    ? 'bg-white/5 text-white/80 hover:bg-white/10 hover:text-white border-white/10'
-                    : 'bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white border-red-500/30'
+                    ? 'bg-primary/10 text-text/80 hover:bg-primary/20 hover:text-text border-border'
+                    : 'bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-text border-red-500/30'
                     }`}
                 >
                   {playingVideo ? (
@@ -212,7 +212,7 @@ export default function ProductClient({ product }) {
 
       {/* Sticky Cart Actions (Mobile Only) */}
       <div 
-        className={`fixed left-0 right-0 z-[100] p-3 sm:p-4 bg-[#16161a]/95 backdrop-blur-md border-t border-white/10 flex flex-row items-center gap-2 sm:gap-4 lg:hidden shadow-[0_-10px_30px_rgba(0,0,0,0.6)] transition-all duration-300 ${
+        className={`fixed left-0 right-0 z-[100] p-3 sm:p-4 bg-surface/95 backdrop-blur-md border-t border-border flex flex-row items-center gap-2 sm:gap-4 lg:hidden shadow-[0_-10px_30px_rgba(0,0,0,0.6)] transition-all duration-300 ${
           showStickyCart ? 'bottom-0 opacity-100' : '-bottom-32 opacity-0 pointer-events-none'
         }`}
       >
@@ -227,17 +227,17 @@ export default function ProductClient({ product }) {
               <span className="sm:hidden">ADD</span>
             </button>
           ) : (
-            <div className="flex items-center justify-between sm:justify-start gap-2 sm:gap-4 bg-[#22222a] p-1.5 sm:p-2 rounded-2xl w-full border border-white/5">
+            <div className="flex items-center justify-between sm:justify-start gap-2 sm:gap-4 bg-surface-2 p-1.5 sm:p-2 rounded-2xl w-full border border-border">
               <button
                 onClick={() => handleQuantityChange(qty - 1)}
-                className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-[#16161a] text-white rounded-xl hover:bg-white/10 transition-colors font-bold text-lg sm:text-xl"
+                className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-surface text-text rounded-xl hover:bg-primary/20 transition-colors font-bold text-lg sm:text-xl"
               >
                 -
               </button>
-              <span className="flex-1 text-center text-base sm:text-xl font-bold text-white">{qty}</span>
+              <span className="flex-1 text-center text-base sm:text-xl font-bold text-text">{qty}</span>
               <button
                 onClick={() => handleQuantityChange(qty + 1)}
-                className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-[#16161a] text-white rounded-xl hover:bg-white/10 transition-colors font-bold text-lg sm:text-xl"
+                className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-surface text-text rounded-xl hover:bg-primary/20 transition-colors font-bold text-lg sm:text-xl"
               >
                 +
               </button>
@@ -254,8 +254,8 @@ export default function ProductClient({ product }) {
               }}
               className={`w-full border font-bold text-xs sm:text-lg px-2 sm:px-8 py-3 sm:py-4 rounded-xl flex items-center justify-center gap-1.5 sm:gap-3 transition-all shadow-lg whitespace-nowrap ${
                 playingVideo 
-                  ? 'bg-white/5 text-white/80 hover:bg-white/10 hover:text-white border-white/10'
-                  : 'bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white border-red-500/30'
+                  ? 'bg-primary/10 text-text/80 hover:bg-primary/20 hover:text-text border-border'
+                  : 'bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-text border-red-500/30'
               }`}
             >
               {playingVideo ? (

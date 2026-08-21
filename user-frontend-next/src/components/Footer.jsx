@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { dancingScript } from '@/app/fonts';
 
 const Footer = () => (
   <footer className="relative mt-20 border-t border-border bg-surface/80 backdrop-blur-md pt-12 pb-6">
@@ -13,7 +14,7 @@ const Footer = () => (
       <div>
         <Link href="/" className="flex items-center mb-3">
           <img src="/assets/leo-logo.png" alt="Leo Crackers Logo" className="w-8 h-8 mr-2 rounded-full object-contain bg-white p-1 grayscale opacity-80" />
-          <span className="text-2xl font-brand font-normal tracking-normal text-primary">Leo Crackers</span>
+          <span className={`text-3xl sm:text-4xl font-bold tracking-wide text-primary ${dancingScript.className}`}>Leo Crackers</span>
         </Link>
         <p className="text-text-secondary text-sm leading-relaxed">
           The finest fireworks for every celebration. Light up your moments with joy and prosperity.
@@ -25,22 +26,22 @@ const Footer = () => (
         <h4 className="font-heading font-bold text-lg text-primary mb-4">Contact Us</h4>
         <ul className="space-y-3 text-sm text-text-secondary">
           <li>
-            <a href="tel:+919597203949" className="flex items-center gap-2 hover:text-white transition-colors">
+            <a href="tel:+919597203949" className="flex items-center gap-2 hover:text-text transition-colors">
               <FaPhone className="text-primary" /> +91 95972 03949
             </a>
           </li>
           <li>
-            <a href="tel:+919159533949" className="flex items-center gap-2 hover:text-white transition-colors">
+            <a href="tel:+919159533949" className="flex items-center gap-2 hover:text-text transition-colors">
               <FaPhone className="text-primary" /> +91 91595 33949
             </a>
           </li>
           <li>
-            <a href="mailto:leocrackershop@gmail.com" className="flex items-center gap-2 hover:text-white transition-colors">
+            <a href="mailto:leocrackershop@gmail.com" className="flex items-center gap-2 hover:text-text transition-colors">
               <FaEnvelope className="text-primary" /> leocrackershop@gmail.com
             </a>
           </li>
           <li>
-            <a href="https://maps.google.com/?q=Sivakasi,+Tamil+Nadu" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition-colors">
+            <a href="https://maps.google.com/?q=Sivakasi,+Tamil+Nadu" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-text transition-colors">
               <FaMapMarkerAlt className="text-primary" /> Sivakasi, Tamil Nadu
             </a>
           </li>
@@ -60,19 +61,19 @@ const Footer = () => (
           <li>
             <Link href="/refund-policy" className="hover:text-primary transition-colors">Cancellation & Refund Policy</Link>
           </li>
-          <li className="pt-2 text-white font-bold">Minimum order: ₹3,000</li>
+          <li className="pt-2 text-text font-bold">Minimum order: ₹3,000</li>
         </ul>
       </div>
     </div>
 
     {/* Center Deity & Copyright */}
-    <div className="relative z-10 flex flex-col items-center justify-center border-t border-white/5 pt-8">
+    <div className="relative z-10 flex flex-col items-center justify-center border-t border-border pt-8">
       <img
         src="/assets/hero-deity.jpeg"
         alt="Deity Blessing"
         className="w-20 h-20 object-contain mb-4 filter drop-shadow-[0_0_10px_rgba(255,204,51,0.3)] animate-pulse-glow"
       />
-      <h4 className="text-3xl font-brand text-white font-normal tracking-normal mb-1">Leo Crackers</h4>
+      <h4 className={`text-4xl sm:text-5xl text-text font-bold tracking-wide mb-1 ${dancingScript.className}`}>Leo Crackers</h4>
       <p className="text-primary font-medium text-sm mb-6 uppercase tracking-widest">Lighting Happiness</p>
 
       <div className="text-center text-text-secondary/50 text-xs tracking-wider">

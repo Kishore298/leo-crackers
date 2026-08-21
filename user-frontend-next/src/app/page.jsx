@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchHomeData, updateQuantity } from '@/store/shopSlice';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BannerCarousel from '@/components/BannerCarousel';
 import Link from 'next/link';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,6 +17,7 @@ const Home = () => {
   const router = useRouter();
   const { banners, categories, cart, isLoading } = useSelector((state) => state.shop);
   const [searchTerm, setSearchTerm] = useState('');
+  const [lightboxImage, setLightboxImage] = useState(null);
 
   const [playingVideoId, setPlayingVideoId] = useState(null);
   const scrollRestoredRef = useRef(false);
@@ -112,7 +114,7 @@ const Home = () => {
             alt="Loading..."
             className="w-24 h-24 rounded-full mb-6 filter drop-shadow-[0_0_20px_rgba(255,204,51,0.6)] animate-pulse-glow bg-white p-2 object-contain"
           />
-          <p className="text-white font-heading font-bold text-2xl tracking-widest animate-pulse">
+          <p className="text-text font-heading font-bold text-2xl tracking-widest animate-pulse">
             LOADING<span className="text-primary">...</span>
           </p>
         </div>
@@ -125,55 +127,22 @@ const Home = () => {
     <div className="min-h-screen flex flex-col font-sans bg-transparent">
       <Navbar />
 
-      {/* Hero Section */}
-      <div className="w-full pt-20 md:pt-32 pb-4 md:pb-8 relative flex flex-col items-center justify-center text-center min-h-[70vh]">
-        {/* Deity Image */}
-        <div className="mb-3 md:mb-6 animate-fade-zoom relative z-10">
-          <img
-            src="/assets/hero-deity.jpeg"
-            alt="Deity"
-            className="w-28 h-28 md:w-40 md:h-40 object-contain filter drop-shadow-[0_0_20px_rgba(255,204,51,0.5)] mx-auto"
-          />
-        </div>
-
-        {/* Text Content */}
-        <div className="relative z-10 animate-fade-in-up flex flex-col items-center">
-          <div className="flex items-center justify-center mb-4">
-            <h1 className="text-3xl md:text-5xl font-heading font-black text-white tracking-tight">
-              Welcome to <span className="fire-gradient-text font-brand tracking-[1.5px]">Leo Crackers</span>
-            </h1>
-          </div>
-          <p className="text-text-secondary text-md md:text-xl font-medium mt-4 mb-8 max-w-2xl tracking-wide">
-            Premium Quality Fireworks Since 2009. Light up your celebrations with joy and prosperity.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 items-center">
-            <button
-              onClick={() => window.scrollBy({ top: window.innerHeight * 0.7, behavior: 'smooth' })}
-              className="btn-fire text-lg px-8 py-3"
-            >
-              Explore Collection
-            </button>
-            <button
-              onClick={() => window.open(`${process.env.NEXT_PUBLIC_API_URL}/api/public/price-list`, '_blank')}
-              className="btn-outline-fire text-lg px-8 py-3 flex items-center gap-2"
-            >
-              <FaFilePdf /> Download Price List
-            </button>
-          </div>
-        </div>
+      {/* Banner Section */}
+      <div className="w-full max-w-[100%] lg:max-w-7xl mx-auto pt-24 md:pt-32 pb-0 md:pb-2 px-2 md:px-4 relative">
+        <BannerCarousel banners={banners} />
       </div>
 
       {/* Categories & Products */}
-      <div className="max-w-[100%] lg:max-w-7xl mx-auto px-2 md:px-4 py-10 flex-1 w-full">
+      <div className="max-w-[100%] lg:max-w-7xl mx-auto px-2 md:px-4 pt-2 pb-10 flex-1 w-full">
         {/* Actions Row */}
-        <div className="mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="mb-4 flex flex-col md:flex-row justify-between items-center gap-2 md:gap-4">
           <div className="relative w-full md:max-w-lg">
             <input
               type="text"
               placeholder="Search for crackers..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="input-fire bg-surface/80 rounded-full py-3 text-white pl-5 pr-12 border-border focus:border-primary backdrop-blur-sm"
+              className="input-fire bg-surface/80 rounded-full py-3 text-text pl-5 pr-12 border-border focus:border-primary backdrop-blur-sm"
             />
             <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-primary">
               <FaFire className="text-sm" />
@@ -209,16 +178,16 @@ const Home = () => {
                 <div className="flex items-center gap-3">
                   <div className="h-6 w-1.5 bg-accent rounded-full" />
                   <Link href={`/categories/${category.slug}`} className="hover:text-accent transition-colors">
-                    <h2 className="text-lg md:text-xl font-bold text-white tracking-wider">
+                    <h2 className="text-lg md:text-xl font-bold text-text tracking-wider">
                       {category.name}
                     </h2>
                   </Link>
                 </div>
                 <button
                   onClick={() => toggleCategory(category._id)}
-                  className="text-accent text-sm p-2 hover:bg-white/5 rounded-full transition-colors flex items-center gap-2"
+                  className="text-accent text-sm p-2 hover:bg-primary/10 rounded-full transition-colors flex items-center gap-2"
                 >
-                  <span className="text-gray-400 hidden sm:inline">{isExpanded ? 'Hide' : 'Show All'}</span>
+                  <span className="text-muted hidden sm:inline">{isExpanded ? 'Hide' : 'Show All'}</span>
                   {isExpanded ? <FaChevronUp /> : <FaChevronDown />}
                 </button>
               </div>
@@ -235,12 +204,12 @@ const Home = () => {
                     return (
                       <div
                         key={product._id}
-                        className="bg-[#16161a] border border-white/5 rounded-xl hover:bg-[#1e1e24] transition-colors duration-300 p-3 md:p-4 flex flex-row items-center gap-4 relative"
+                        className="bg-surface border border-border rounded-xl hover:bg-surface-2 transition-colors duration-300 p-3 md:p-4 flex flex-row items-center gap-4 relative"
                       >
                         {/* Image */}
-                        <Link href={`/products/${product.slug}`} className="relative w-16 h-16 md:w-20 md:h-20 shrink-0 bg-[#22222a] rounded-lg overflow-visible flex items-center justify-center p-1 group">
+                        <div onClick={() => product.image && setLightboxImage(product.image)} className="relative w-16 h-16 md:w-20 md:h-20 shrink-0 bg-surface-2 rounded-lg overflow-visible flex items-center justify-center p-1 group cursor-pointer">
                           {product.mrp > product.actualPrice && (
-                            <div className="absolute -top-2.5 left-1/2 transform -translate-x-1/2 bg-[#ff5500] text-white text-[8px] md:text-[9px] font-bold px-2.5 py-0.5 rounded-full z-20 whitespace-nowrap shadow-lg">
+                            <div className="absolute -top-2.5 left-1/2 transform -translate-x-1/2 bg-discount text-text text-[8px] md:text-[9px] font-bold px-2.5 py-0.5 rounded-full z-20 whitespace-nowrap shadow-lg">
                               {Math.round(((product.mrp - product.actualPrice) / product.mrp) * 100)}% OFF
                             </div>
                           )}
@@ -249,15 +218,13 @@ const Home = () => {
                             alt={product.name}
                             className="w-full h-full object-contain rounded-lg group-hover:scale-105 transition-transform"
                           />
-                        </Link>
+                        </div>
 
                         {/* Info */}
                         <div className="flex-1 flex flex-col justify-center min-w-0 py-1">
-                          <Link href={`/products/${product.slug}`} className="hover:text-accent transition-colors w-fit">
-                            <h3 className="text-sm md:text-base font-bold text-white leading-snug text-wrap">
-                              {product.name}
-                            </h3>
-                          </Link>
+                          <h3 className="text-sm md:text-base font-bold text-text leading-snug text-wrap">
+                            {product.name}
+                          </h3>
                         </div>
 
                         {/* Pricing & Actions */}
@@ -274,7 +241,7 @@ const Home = () => {
                           {product.youtubeId && (
                             <button
                               onClick={() => setPlayingVideoId(product.youtubeId)}
-                              className="text-[#FF0000] hover:text-white transition-colors flex-shrink-0"
+                              className="text-primary hover:text-text transition-colors flex-shrink-0"
                               title="Watch Video"
                             >
                               <FaYoutube className="text-3xl md:text-5xl" />
@@ -282,20 +249,20 @@ const Home = () => {
                           )}
 
                           {/* Quantity Controls */}
-                          <div className="flex items-center justify-between border border-white/5 rounded-lg p-0.5 bg-[#22222a] w-20 md:w-24 shrink-0 md:ml-10 lg:ml-16">
+                          <div className="flex items-center justify-between border border-border rounded-lg p-0.5 bg-surface-2 w-20 md:w-24 shrink-0 md:ml-10 lg:ml-16">
                             <button
                               onClick={() => handleQuantityChange(product, qty - 1)}
-                              className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center rounded text-text-secondary hover:text-white hover:bg-white/5 transition-colors font-medium text-lg"
+                              className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center rounded text-text-secondary hover:text-text hover:bg-primary/10 transition-colors font-medium text-lg"
                               disabled={qty === 0}
                             >
                               -
                             </button>
-                            <span className="font-medium text-xs md:text-sm text-white w-6 text-center select-none">
+                            <span className="font-medium text-xs md:text-sm text-text w-6 text-center select-none">
                               {qty}
                             </span>
                             <button
                               onClick={() => handleQuantityChange(product, qty + 1)}
-                              className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center rounded text-text-secondary hover:text-white hover:bg-white/5 transition-colors font-medium text-lg"
+                              className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center rounded text-text-secondary hover:text-text hover:bg-primary/10 transition-colors font-medium text-lg"
                             >
                               +
                             </button>
@@ -313,11 +280,11 @@ const Home = () => {
 
       {/* Video Player Modal */}
       {playingVideoId && (
-        <div className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-zoom">
-          <div className="relative w-full max-w-4xl bg-black rounded-xl overflow-hidden shadow-[0_0_40px_rgba(255,102,0,0.3)] border border-white/10">
+        <div className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-zoom" onClick={() => setPlayingVideoId(null)}>
+          <div className="relative w-full max-w-4xl bg-black rounded-xl overflow-hidden shadow-[0_0_40px_rgba(255,102,0,0.3)] border border-border" onClick={(e) => e.stopPropagation()}>
             <button
               onClick={() => setPlayingVideoId(null)}
-              className="absolute -top-12 right-0 md:top-4 md:right-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+              className="absolute -top-12 right-0 md:top-4 md:right-4 z-10 p-2 bg-primary/20 hover:bg-primary/30 rounded-full text-text transition-colors"
             >
               <FaTimes className="text-xl" />
             </button>
@@ -331,6 +298,28 @@ const Home = () => {
                 className="absolute inset-0 w-full h-full"
               ></iframe>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Image Lightbox Modal */}
+      {lightboxImage && (
+        <div 
+          className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-zoom"
+          onClick={() => setLightboxImage(null)}
+        >
+          <div className="relative w-full max-w-4xl max-h-[90vh] bg-transparent rounded-xl overflow-hidden flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => setLightboxImage(null)}
+              className="absolute top-0 right-0 md:top-4 md:right-4 z-10 p-2 bg-primary/20 hover:bg-primary/30 rounded-full text-text transition-colors"
+            >
+              <FaTimes className="text-xl" />
+            </button>
+            <img 
+              src={lightboxImage} 
+              alt="Product Large" 
+              className="w-full h-full max-h-[85vh] object-contain"
+            />
           </div>
         </div>
       )}

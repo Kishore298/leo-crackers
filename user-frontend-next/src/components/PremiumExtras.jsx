@@ -60,7 +60,7 @@ const PremiumExtras = () => {
         {/* Mobile Toggle Button (Visible when closed) */}
         <button
           onClick={() => setShowSocialSidebar(true)}
-          className={`md:hidden absolute left-0 bottom-4 p-2 bg-surface-2/90 backdrop-blur border border-l-0 border-white/10 rounded-r-xl text-primary shadow-lg transition-transform duration-300 z-0 ${showSocialSidebar ? '-translate-x-full' : 'translate-x-0'}`}
+          className={`md:hidden absolute left-0 bottom-4 p-2 bg-surface-2/90 backdrop-blur border border-l-0 border-border rounded-r-xl text-primary shadow-lg transition-transform duration-300 z-0 ${showSocialSidebar ? '-translate-x-full' : 'translate-x-0'}`}
           aria-label="Open social links"
         >
           <FaChevronRight className="text-xs" />
@@ -71,19 +71,19 @@ const PremiumExtras = () => {
           {/* Close button for mobile */}
           <button
             onClick={() => setShowSocialSidebar(false)}
-            className="md:hidden p-2 mx-auto rounded-full bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-colors mb-1"
+            className="md:hidden p-2 mx-auto rounded-full bg-primary/20 text-text/70 hover:bg-primary/30 hover:text-text transition-colors mb-1"
             aria-label="Close social links"
           >
             <FaChevronLeft className="text-sm" />
           </button>
 
-          <a href="https://www.instagram.com/leo_crackers_sivakasi?igsh=eDBwcG5jcXd5c3Rs&utm_source=qr" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white shadow-[0_0_15px_rgba(220,39,67,0.4)] hover:shadow-[0_0_20px_rgba(220,39,67,0.7)] transition-all duration-300 hover:scale-110 flex items-center justify-center" aria-label="Instagram">
+          <a href="https://www.instagram.com/leo_crackers_sivakasi?igsh=eDBwcG5jcXd5c3Rs&utm_source=qr" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-text shadow-[0_0_15px_rgba(220,39,67,0.4)] hover:shadow-[0_0_20px_rgba(220,39,67,0.7)] transition-all duration-300 hover:scale-110 flex items-center justify-center" aria-label="Instagram">
             <FaInstagram className="text-xl md:text-2xl" />
           </a>
-          <a href="https://youtube.com/@leocrackers-sivakasi?si=mQ6IhVeWEWq8pQEN" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-[#FF0000] text-white shadow-[0_0_15px_rgba(255,0,0,0.4)] hover:shadow-[0_0_20px_rgba(255,0,0,0.7)] transition-all duration-300 hover:scale-110 flex items-center justify-center" aria-label="YouTube">
+          <a href="https://youtube.com/@leocrackers-sivakasi?si=mQ6IhVeWEWq8pQEN" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-[#FF0000] text-text shadow-[0_0_15px_rgba(255,0,0,0.4)] hover:shadow-[0_0_20px_rgba(255,0,0,0.7)] transition-all duration-300 hover:scale-110 flex items-center justify-center" aria-label="YouTube">
             <FaYoutube className="text-xl md:text-2xl" />
           </a>
-          <a href="https://www.facebook.com/share/1Cfww3EkBU/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-[#1877F2] text-white shadow-[0_0_15px_rgba(24,119,242,0.4)] hover:shadow-[0_0_20px_rgba(24,119,242,0.7)] transition-all duration-300 hover:scale-110 flex items-center justify-center" aria-label="Facebook">
+          <a href="https://www.facebook.com/share/1Cfww3EkBU/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-[#1877F2] text-text shadow-[0_0_15px_rgba(24,119,242,0.4)] hover:shadow-[0_0_20px_rgba(24,119,242,0.7)] transition-all duration-300 hover:scale-110 flex items-center justify-center" aria-label="Facebook">
             <FaFacebook className="text-xl md:text-2xl" />
           </a>
         </div>
@@ -94,7 +94,7 @@ const PremiumExtras = () => {
         {/* Back to Top */}
         <button
           onClick={scrollToTop}
-          className={`flex items-center justify-center p-3 rounded-full bg-surface-2 border border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 shadow-golden ${showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
+          className={`flex items-center justify-center p-3 rounded-full bg-surface-2 border border-primary text-primary hover:bg-primary hover:text-text transition-all duration-300 shadow-golden ${showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}
           aria-label="Back to top"
         >
           <FaArrowUp />
@@ -105,7 +105,7 @@ const PremiumExtras = () => {
           href={`https://wa.me/${primaryWhatsAppNumber}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="p-3 md:p-4 rounded-full bg-[#25D366] text-white shadow-[0_0_15px_rgba(37,211,102,0.5)] hover:shadow-[0_0_25px_rgba(37,211,102,0.8)] transition-all duration-300 hover:scale-110 flex items-center justify-center animate-bounce-subtle"
+          className="p-3 md:p-4 rounded-full bg-[#25D366] text-text shadow-[0_0_15px_rgba(37,211,102,0.5)] hover:shadow-[0_0_25px_rgba(37,211,102,0.8)] transition-all duration-300 hover:scale-110 flex items-center justify-center animate-bounce-subtle"
           aria-label="Chat on WhatsApp"
         >
           <FaWhatsapp className="text-2xl md:text-3xl" />

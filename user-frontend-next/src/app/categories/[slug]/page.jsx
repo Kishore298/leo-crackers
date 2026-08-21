@@ -37,7 +37,7 @@ export default async function CategoryPage({ params }) {
     
     if (!res.ok) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-surface text-white">
+        <div className="min-h-screen flex items-center justify-center bg-surface text-text">
           <h1 className="text-3xl font-bold text-red-500">Category Not Found</h1>
         </div>
       );
@@ -47,7 +47,7 @@ export default async function CategoryPage({ params }) {
 
     if (data.message === 'Category not found') {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-surface text-white">
+        <div className="min-h-screen flex items-center justify-center bg-surface text-text">
           <h1 className="text-3xl font-bold text-red-500">Category Not Found</h1>
         </div>
       );
@@ -56,7 +56,7 @@ export default async function CategoryPage({ params }) {
     return <CategoryClient category={data.category} products={data.products} />;
   } catch (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface text-white">
+      <div className="min-h-screen flex items-center justify-center bg-surface text-text">
         <h1 className="text-3xl font-bold text-red-500">Error loading category</h1>
       </div>
     );

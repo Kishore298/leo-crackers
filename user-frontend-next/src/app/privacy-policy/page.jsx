@@ -17,7 +17,7 @@ const PrivacyPolicy = () => {
         <div className="glass-panel p-6 sm:p-10 space-y-6 animate-slide-up leading-relaxed" style={{ animationDelay: '0.1s' }}>
           <p>At <strong>Leo Crackers</strong>, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, and protect your data when you use our website.</p>
           
-          <h2 className="text-2xl font-bold text-white mt-8 mb-4">1. Information We Collect</h2>
+          <h2 className="text-2xl font-bold text-text mt-8 mb-4">1. Information We Collect</h2>
           <p>We may collect the following types of information when you place an order or create an account:</p>
           <ul className="list-disc pl-6 space-y-2 text-text-secondary">
             <li>Personal identification information (Name, Email Address, Phone Number)</li>
@@ -26,7 +26,7 @@ const PrivacyPolicy = () => {
             <li>Technical data (IP address, browser type, cookies) for analytics</li>
           </ul>
 
-          <h2 className="text-2xl font-bold text-white mt-8 mb-4">2. How We Use Your Information</h2>
+          <h2 className="text-2xl font-bold text-text mt-8 mb-4">2. How We Use Your Information</h2>
           <p>The information we collect is used to:</p>
           <ul className="list-disc pl-6 space-y-2 text-text-secondary">
             <li>Process and deliver your orders accurately</li>
@@ -35,13 +35,13 @@ const PrivacyPolicy = () => {
             <li>Send promotional offers (only if you have opted in)</li>
           </ul>
 
-          <h2 className="text-2xl font-bold text-white mt-8 mb-4">3. Data Security</h2>
+          <h2 className="text-2xl font-bold text-text mt-8 mb-4">3. Data Security</h2>
           <p>We implement strict security measures to protect your personal data from unauthorized access, alteration, disclosure, or destruction. Your data is stored securely on our servers and we do not sell or share your personal information with third parties for marketing purposes.</p>
 
-          <h2 className="text-2xl font-bold text-white mt-8 mb-4">4. Cookies</h2>
+          <h2 className="text-2xl font-bold text-text mt-8 mb-4">4. Cookies</h2>
           <p>Our website uses cookies to enhance your browsing experience. Cookies help us remember your cart items and understand how you interact with our website. You can choose to disable cookies through your browser settings, but some features of our website may not function properly.</p>
 
-          <h2 className="text-2xl font-bold text-white mt-8 mb-4">5. Contact Us</h2>
+          <h2 className="text-2xl font-bold text-text mt-8 mb-4">5. Contact Us</h2>
           <p>If you have any questions or concerns about this Privacy Policy, please contact us at:</p>
           <p className="mt-2 text-primary font-bold">Email: leocrackershop@gmail.com<br/>Phone: +91 95972 03949, +91 91595 33949</p>
         </div>
