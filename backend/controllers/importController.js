@@ -45,14 +45,27 @@ const processDataArray = async (sheetData) => {
           updateData.actualPrice = actualPrice;
         }
 
-        const product = await Product.findOneAndUpdate(
-          { slug: productSlug },
-          { 
-            $set: updateData,
-            $setOnInsert: { name: productName }
-          },
-          { upsert: true, returnDocument: 'after' }
-        );
+        // Find existing product by slug OR exact name match to handle old suffixed slugs
+        let product = await Product.findOne({
+          $or: [
+            { slug: productSlug },
+            { name: { $regex: new RegExp('^' + productName.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&') + '$', 'i') } }
+          ]
+        });
+
+        if (product) {
+          product = await Product.findByIdAndUpdate(
+            product._id,
+            { $set: updateData },
+            { new: true }
+          );
+        } else {
+          product = await Product.create({
+            ...updateData,
+            name: productName,
+            slug: productSlug
+          });
+        }
         
         // We can't easily track new vs updated product count with upsert without extra checks, 
         // but let's just increment productCount for each row processed

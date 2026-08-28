@@ -147,7 +147,7 @@ const Cart = () => {
                   className={`w-full py-4 px-4 rounded-xl font-bold text-text transition-all duration-200 text-base flex justify-center items-center gap-2 ${
                     totalAmount >= MIN_ORDER_VALUE
                       ? 'bg-fire-gradient hover:shadow-[0_0_20px_rgba(255,102,0,0.4)]'
-                      : 'bg-gray-800 cursor-not-allowed text-muted border border-border'
+                      : 'bg-orange-400/50 cursor-not-allowed text-white/60 border border-orange-300/30'
                   }`}
                 >
                   {totalAmount >= MIN_ORDER_VALUE ? 'Proceed to Checkout →' : `Add ₹${remaining} more`}
