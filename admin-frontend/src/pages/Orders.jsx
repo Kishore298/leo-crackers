@@ -3,7 +3,8 @@ import Pagination from '../components/Pagination';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { FaEye, FaTimes } from 'react-icons/fa';
+import { FaEye, FaTimes, FaFilePdf } from 'react-icons/fa';
+import html2pdf from 'html2pdf.js';
 
 const API = process.env.REACT_APP_API_URL + '/orders';
 const STATUS_COLORS = { 
@@ -68,6 +69,85 @@ const Orders = () => {
       toast.error('Error resending confirmation');
     }
     setResending(false);
+  };
+
+  const downloadPDF = (targetOrder) => {
+    // If called directly from an event handler, targetOrder might be an event object.
+    const order = (targetOrder && !targetOrder.nativeEvent) ? targetOrder : viewOrder;
+    if (!order) return;
+    
+    const invoiceContent = `
+      <div style="padding: 40px; background-color: #ffffff; color: #000000; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+        <div style="text-align: center; margin-bottom: 40px;">
+          <h1 style="color: #ff6600; margin: 0; font-size: 28px; font-weight: bold;">Leo Crackers</h1>
+          <p style="margin: 5px 0 0; color: #666; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Order Invoice</p>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 20px;">
+          <div>
+            <h3 style="margin: 0 0 10px; color: #333; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Order Details</h3>
+            <p style="margin: 0 0 5px; font-size: 14px;"><strong>Order #:</strong> ${order.orderNumber}</p>
+            <p style="margin: 0 0 5px; font-size: 14px;"><strong>Status:</strong> ${order.status}</p>
+            <p style="margin: 0 0 5px; font-size: 14px;"><strong>Payment:</strong> ${order.paymentStatus}</p>
+          </div>
+          <div style="text-align: right;">
+            <h3 style="margin: 0 0 10px; color: #333; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Customer Details</h3>
+            <p style="margin: 0 0 5px; font-size: 14px;"><strong>${order.customer?.customerName || 'N/A'}</strong></p>
+            <p style="margin: 0 0 5px; font-size: 14px;">${order.customer?.mobileNumber || ''} ${order.customer?.email ? ' | ' + order.customer.email : ''}</p>
+            <p style="margin: 0 0 5px; font-size: 14px;">${order.customer?.address || ''}</p>
+            <p style="margin: 0 0 5px; font-size: 14px;">${order.customer?.city || ''} ${order.customer?.pincode ? '- ' + order.customer.pincode : ''}</p>
+          </div>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+          <thead>
+            <tr style="background-color: #f8f9fa;">
+              <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6; font-size: 14px; font-weight: bold; color: #333;">Item</th>
+              <th style="padding: 12px; text-align: center; border-bottom: 2px solid #dee2e6; font-size: 14px; font-weight: bold; color: #333;">Qty</th>
+              <th style="padding: 12px; text-align: right; border-bottom: 2px solid #dee2e6; font-size: 14px; font-weight: bold; color: #333;">Price</th>
+              <th style="padding: 12px; text-align: right; border-bottom: 2px solid #dee2e6; font-size: 14px; font-weight: bold; color: #333;">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${order.items?.map(item => `
+              <tr style="page-break-inside: avoid;">
+                <td style="padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; color: #555;">${item.product?.name || item.name}</td>
+                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee; font-size: 14px; color: #555;">${item.quantity}</td>
+                <td style="padding: 12px; text-align: right; border-bottom: 1px solid #eee; font-size: 14px; color: #555;">₹${item.priceAtPurchase || 0}</td>
+                <td style="padding: 12px; text-align: right; border-bottom: 1px solid #eee; font-size: 14px; color: #555;">₹${(item.priceAtPurchase || 0) * item.quantity}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+
+        <div style="display: flex; justify-content: flex-end; page-break-inside: avoid;">
+          <div style="width: 300px;">
+            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 2px solid #333; font-weight: bold; font-size: 18px;">
+              <span>Total Amount:</span>
+              <span style="color: #ff6600;">₹${order.finalAmount}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div style="margin-top: 50px; text-align: center; color: #888; font-size: 12px; page-break-inside: avoid;">
+          <p>Thank you for shopping with Leo Crackers!</p>
+        </div>
+      </div>
+    `;
+
+    const element = document.createElement('div');
+    element.innerHTML = invoiceContent;
+
+    const opt = {
+      margin:       0.5,
+      filename:     `Order_Invoice_${order.orderNumber}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true },
+      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+      pagebreak:    { mode: ['css', 'legacy'], avoid: 'tr' }
+    };
+
+    html2pdf().set(opt).from(element).save();
   };
 
   return (
@@ -143,7 +223,10 @@ const Orders = () => {
                   </select>
                 </td>
                 <td className="px-5 py-4 border-b border-border text-center">
-                  <button onClick={() => setViewOrder(order)} className="text-primary hover:text-white transition"><FaEye /></button>
+                  <div className="flex items-center justify-center gap-3">
+                    <button onClick={() => downloadPDF(order)} className="text-white/70 hover:text-white transition" title="Download PDF"><FaFilePdf /></button>
+                    <button onClick={() => setViewOrder(order)} className="text-primary hover:text-white transition" title="View Order"><FaEye /></button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -159,7 +242,12 @@ const Orders = () => {
           <div className="glass-panel w-full max-w-lg overflow-hidden max-h-[90vh] flex flex-col border border-white/10 animate-fade-in-up">
             <div className="bg-fire-gradient px-6 py-4 flex justify-between items-center">
               <h2 className="text-lg font-heading font-bold text-white">Order: {viewOrder.orderNumber}</h2>
-              <button onClick={() => setViewOrder(null)} className="text-white/80 hover:text-white text-xl transition-colors"><FaTimes /></button>
+              <div className="flex items-center gap-4">
+                <button onClick={() => downloadPDF(viewOrder)} className="text-white hover:text-white/80 transition-colors" title="Download PDF">
+                  <FaFilePdf size={20} />
+                </button>
+                <button onClick={() => setViewOrder(null)} className="text-white/80 hover:text-white text-xl transition-colors"><FaTimes /></button>
+              </div>
             </div>
             <div className="p-6 overflow-y-auto space-y-4">
               <div className="bg-surface-2 rounded-xl p-4 border border-border">
