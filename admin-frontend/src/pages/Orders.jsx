@@ -77,59 +77,59 @@ const Orders = () => {
     if (!order) return;
     
     const invoiceContent = `
-      <div style="padding: 40px; background-color: #ffffff; color: #000000; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-        <div style="text-align: center; margin-bottom: 40px;">
-          <h1 style="color: #ff6600; margin: 0; font-size: 28px; font-weight: bold;">Leo Crackers</h1>
-          <p style="margin: 5px 0 0; color: #666; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Order Invoice</p>
+      <div style="padding: 15px 25px; background-color: #ffffff; color: #000000; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+        <div style="text-align: center; margin-bottom: 15px;">
+          <h1 style="color: #ff6600; margin: 0; font-size: 22px; font-weight: bold;">Leo Crackers</h1>
+          <p style="margin: 3px 0 0; color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Order Invoice</p>
         </div>
         
-        <div style="display: flex; justify-content: space-between; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
           <div>
-            <h3 style="margin: 0 0 10px; color: #333; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Order Details</h3>
-            <p style="margin: 0 0 5px; font-size: 14px;"><strong>Order #:</strong> ${order.orderNumber}</p>
-            <p style="margin: 0 0 5px; font-size: 14px;"><strong>Status:</strong> ${order.status}</p>
-            <p style="margin: 0 0 5px; font-size: 14px;"><strong>Payment:</strong> ${order.paymentStatus}</p>
+            <h3 style="margin: 0 0 5px; color: #333; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Order Details</h3>
+            <p style="margin: 0 0 3px; font-size: 11px;"><strong>Order #:</strong> ${order.orderNumber}</p>
+            <p style="margin: 0 0 3px; font-size: 11px;"><strong>Status:</strong> ${order.status}</p>
+            <p style="margin: 0 0 3px; font-size: 11px;"><strong>Payment:</strong> ${order.paymentStatus}</p>
           </div>
           <div style="text-align: right;">
-            <h3 style="margin: 0 0 10px; color: #333; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Customer Details</h3>
-            <p style="margin: 0 0 5px; font-size: 14px;"><strong>${order.customer?.customerName || 'N/A'}</strong></p>
-            <p style="margin: 0 0 5px; font-size: 14px;">${order.customer?.mobileNumber || ''} ${order.customer?.email ? ' | ' + order.customer.email : ''}</p>
-            <p style="margin: 0 0 5px; font-size: 14px;">${order.customer?.address || ''}</p>
-            <p style="margin: 0 0 5px; font-size: 14px;">${order.customer?.city || ''} ${order.customer?.pincode ? '- ' + order.customer.pincode : ''}</p>
+            <h3 style="margin: 0 0 5px; color: #333; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Customer Details</h3>
+            <p style="margin: 0 0 3px; font-size: 11px;"><strong>${order.customer?.customerName || 'N/A'}</strong></p>
+            <p style="margin: 0 0 3px; font-size: 11px;">${order.customer?.mobileNumber || ''} ${order.customer?.email ? ' | ' + order.customer.email : ''}</p>
+            <p style="margin: 0 0 3px; font-size: 11px;">${order.customer?.address || ''}</p>
+            <p style="margin: 0 0 3px; font-size: 11px;">${order.customer?.city || ''} ${order.customer?.pincode ? '- ' + order.customer.pincode : ''}</p>
           </div>
         </div>
 
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
           <thead>
             <tr style="background-color: #f8f9fa;">
-              <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6; font-size: 14px; font-weight: bold; color: #333;">Item</th>
-              <th style="padding: 12px; text-align: center; border-bottom: 2px solid #dee2e6; font-size: 14px; font-weight: bold; color: #333;">Qty</th>
-              <th style="padding: 12px; text-align: right; border-bottom: 2px solid #dee2e6; font-size: 14px; font-weight: bold; color: #333;">Price</th>
-              <th style="padding: 12px; text-align: right; border-bottom: 2px solid #dee2e6; font-size: 14px; font-weight: bold; color: #333;">Total</th>
+              <th style="padding: 5px; text-align: left; border-bottom: 1px solid #dee2e6; font-size: 11px; font-weight: bold; color: #333;">Item</th>
+              <th style="padding: 5px; text-align: center; border-bottom: 1px solid #dee2e6; font-size: 11px; font-weight: bold; color: #333;">Qty</th>
+              <th style="padding: 5px; text-align: right; border-bottom: 1px solid #dee2e6; font-size: 11px; font-weight: bold; color: #333;">Price</th>
+              <th style="padding: 5px; text-align: right; border-bottom: 1px solid #dee2e6; font-size: 11px; font-weight: bold; color: #333;">Total</th>
             </tr>
           </thead>
           <tbody>
             ${order.items?.map(item => `
               <tr style="page-break-inside: avoid;">
-                <td style="padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; color: #555;">${item.product?.name || item.name}</td>
-                <td style="padding: 12px; text-align: center; border-bottom: 1px solid #eee; font-size: 14px; color: #555;">${item.quantity}</td>
-                <td style="padding: 12px; text-align: right; border-bottom: 1px solid #eee; font-size: 14px; color: #555;">₹${item.priceAtPurchase || 0}</td>
-                <td style="padding: 12px; text-align: right; border-bottom: 1px solid #eee; font-size: 14px; color: #555;">₹${(item.priceAtPurchase || 0) * item.quantity}</td>
+                <td style="padding: 5px; border-bottom: 1px solid #eee; font-size: 11px; color: #555;">${item.product?.name || item.name}</td>
+                <td style="padding: 5px; text-align: center; border-bottom: 1px solid #eee; font-size: 11px; color: #555;">${item.quantity}</td>
+                <td style="padding: 5px; text-align: right; border-bottom: 1px solid #eee; font-size: 11px; color: #555;">₹${item.priceAtPurchase || 0}</td>
+                <td style="padding: 5px; text-align: right; border-bottom: 1px solid #eee; font-size: 11px; color: #555;">₹${(item.priceAtPurchase || 0) * item.quantity}</td>
               </tr>
             `).join('')}
           </tbody>
         </table>
 
         <div style="display: flex; justify-content: flex-end; page-break-inside: avoid;">
-          <div style="width: 300px;">
-            <div style="display: flex; justify-content: space-between; padding: 10px 0; border-top: 2px solid #333; font-weight: bold; font-size: 18px;">
+          <div style="width: 250px;">
+            <div style="display: flex; justify-content: space-between; padding: 5px 0; border-top: 1px solid #333; font-weight: bold; font-size: 14px;">
               <span>Total Amount:</span>
               <span style="color: #ff6600;">₹${order.finalAmount}</span>
             </div>
           </div>
         </div>
         
-        <div style="margin-top: 50px; text-align: center; color: #888; font-size: 12px; page-break-inside: avoid;">
+        <div style="margin-top: 20px; text-align: center; color: #888; font-size: 10px; page-break-inside: avoid;">
           <p>Thank you for shopping with Leo Crackers!</p>
         </div>
       </div>
