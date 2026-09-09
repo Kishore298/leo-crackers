@@ -44,19 +44,19 @@ const generateOrderPDF = (order, customer) => {
       }
 
       doc.fillColor('#D90429')
-         .fontSize(36)
-         .text('Leo Crackers', 0, currentY, { align: 'center', width: doc.page.width });
-         
+        .fontSize(36)
+        .text('Leo Crackers', 0, currentY, { align: 'center', width: doc.page.width });
+
       doc.font('Helvetica')
-         .fillColor('#444444')
-         .fontSize(10)
-         .text('Premium Quality Crackers | Sivakasi', { align: 'center' })
-         .text('www.leocrackers.com | Phone: +91 91595 33949', { align: 'center' })
-         .moveDown(4);
+        .fillColor('#444444')
+        .fontSize(10)
+        .text('Premium Quality Crackers | Sivakasi', { align: 'center' })
+        .text('www.leocrackers.com | Phone: +91 91595 33949', { align: 'center' })
+        .moveDown(4);
 
       // Order Info
       // Order Info
-      doc.fontSize(14).fillColor('#000000').text('Order Invoice', 81, doc.y, { underline: true });
+      doc.fontSize(14).fillColor('#000000').text('Order Estimate', 81, doc.y, { underline: true });
       doc.fontSize(10).moveDown();
       doc.text(`Order Number: ${order.orderNumber}`, 81, doc.y);
       doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString()}`, 81, doc.y);
@@ -77,7 +77,7 @@ const generateOrderPDF = (order, customer) => {
       doc.text('Qty', 331, tableTop, { width: 50, align: 'right' });
       doc.text('Price', 381, tableTop, { width: 70, align: 'right' });
       doc.text('Total', 451, tableTop, { width: 80, align: 'right' });
-      
+
       doc.moveTo(81, tableTop + 15).lineTo(531, tableTop + 15).stroke();
       doc.font('Helvetica');
 
@@ -87,7 +87,7 @@ const generateOrderPDF = (order, customer) => {
         const itemTotal = item.quantity * item.priceAtPurchase;
         // Check if product is populated (has name), otherwise fallback
         const productName = item.product && item.product.name ? item.product.name : 'Product';
-        
+
         doc.text(productName, 81, y);
         doc.text(item.quantity.toString(), 331, y, { width: 50, align: 'right' });
         doc.text(`Rs. ${item.priceAtPurchase}`, 381, y, { width: 70, align: 'right' });

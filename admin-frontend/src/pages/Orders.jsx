@@ -7,16 +7,16 @@ import { FaEye, FaTimes, FaFilePdf } from 'react-icons/fa';
 import html2pdf from 'html2pdf.js';
 
 const API = process.env.REACT_APP_API_URL + '/orders';
-const STATUS_COLORS = { 
-  PENDING: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20', 
-  APPROVED: 'bg-green-500/10 text-green-500 border-green-500/20', 
-  REJECTED: 'bg-red-500/10 text-red-500 border-red-500/20', 
-  REJECTED_OUT_OF_STOCK: 'bg-red-500/10 text-red-500 border-red-500/20' 
+const STATUS_COLORS = {
+  PENDING: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
+  APPROVED: 'bg-green-500/10 text-green-500 border-green-500/20',
+  REJECTED: 'bg-red-500/10 text-red-500 border-red-500/20',
+  REJECTED_OUT_OF_STOCK: 'bg-red-500/10 text-red-500 border-red-500/20'
 };
-const PAYMENT_COLORS = { 
-  PENDING: 'bg-surface-2 text-text-secondary border-border', 
-  PAID_ONLINE: 'bg-blue-500/10 text-blue-400 border-blue-500/20', 
-  CASH: 'bg-purple-500/10 text-purple-400 border-purple-500/20' 
+const PAYMENT_COLORS = {
+  PENDING: 'bg-surface-2 text-text-secondary border-border',
+  PAID_ONLINE: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+  CASH: 'bg-purple-500/10 text-purple-400 border-purple-500/20'
 };
 
 const Orders = () => {
@@ -46,8 +46,8 @@ const Orders = () => {
     setLoading(false);
   };
 
-  useEffect(() => { 
-    fetchOrders(); 
+  useEffect(() => {
+    fetchOrders();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, page, filterStatus, filterPayment]);
 
@@ -75,12 +75,12 @@ const Orders = () => {
     // If called directly from an event handler, targetOrder might be an event object.
     const order = (targetOrder && !targetOrder.nativeEvent) ? targetOrder : viewOrder;
     if (!order) return;
-    
+
     const invoiceContent = `
       <div style="padding: 15px 25px; background-color: #ffffff; color: #000000; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
         <div style="text-align: center; margin-bottom: 15px;">
           <h1 style="color: #ff6600; margin: 0; font-size: 22px; font-weight: bold;">Leo Crackers</h1>
-          <p style="margin: 3px 0 0; color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Order Invoice</p>
+          <p style="margin: 3px 0 0; color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Order Estimate</p>
         </div>
         
         <div style="display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
@@ -139,12 +139,12 @@ const Orders = () => {
     element.innerHTML = invoiceContent;
 
     const opt = {
-      margin:       0.5,
-      filename:     `Order_Invoice_${order.orderNumber}.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true },
-      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
-      pagebreak:    { mode: ['css', 'legacy'], avoid: 'tr' }
+      margin: 0.5,
+      filename: `Order_Invoice_${order.orderNumber}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+      pagebreak: { mode: ['css', 'legacy'], avoid: 'tr' }
     };
 
     html2pdf().set(opt).from(element).save();
@@ -153,87 +153,87 @@ const Orders = () => {
   return (
     <>
       <div className="animate-fade-in-up">
-      <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-        <div>
-          <h1 className="text-3xl font-heading font-black text-primary">Orders</h1>
-          <p className="text-text-secondary text-sm mt-1">{total} orders total</p>
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+          <div>
+            <h1 className="text-3xl font-heading font-black text-primary">Orders</h1>
+            <p className="text-text-secondary text-sm mt-1">{total} orders total</p>
+          </div>
         </div>
-      </div>
 
-      <div className="glass-panel p-4 mb-4 flex flex-col md:flex-row gap-3">
-        <input type="text" placeholder="Search by order # or customer..." value={search}
-          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-          className="flex-1 border border-border rounded-lg px-3 py-2 bg-surface-2 focus:outline-none focus:ring-1 focus:ring-primary text-text" />
-        <select value={filterStatus} onChange={(e) => { setFilterStatus(e.target.value); setPage(1); }}
-          className="border border-border rounded-lg px-3 py-2 bg-surface-2 focus:outline-none focus:ring-1 focus:ring-primary text-text">
-          <option value="">All Status</option>
-          <option value="PENDING">PENDING</option>
-          <option value="APPROVED">APPROVED</option>
-          <option value="REJECTED">REJECTED</option>
-          <option value="REJECTED_OUT_OF_STOCK">OUT OF STOCK</option>
-        </select>
-        <select value={filterPayment} onChange={(e) => { setFilterPayment(e.target.value); setPage(1); }}
-          className="border border-border rounded-lg px-3 py-2 bg-surface-2 focus:outline-none focus:ring-1 focus:ring-primary text-text">
-          <option value="">All Payment</option>
-          <option value="PENDING">PENDING</option>
-          <option value="PAID_ONLINE">PAID ONLINE</option>
-          <option value="CASH">CASH</option>
-        </select>
-      </div>
+        <div className="glass-panel p-4 mb-4 flex flex-col md:flex-row gap-3">
+          <input type="text" placeholder="Search by order # or customer..." value={search}
+            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+            className="flex-1 border border-border rounded-lg px-3 py-2 bg-surface-2 focus:outline-none focus:ring-1 focus:ring-primary text-text" />
+          <select value={filterStatus} onChange={(e) => { setFilterStatus(e.target.value); setPage(1); }}
+            className="border border-border rounded-lg px-3 py-2 bg-surface-2 focus:outline-none focus:ring-1 focus:ring-primary text-text">
+            <option value="">All Status</option>
+            <option value="PENDING">PENDING</option>
+            <option value="APPROVED">APPROVED</option>
+            <option value="REJECTED">REJECTED</option>
+            <option value="REJECTED_OUT_OF_STOCK">OUT OF STOCK</option>
+          </select>
+          <select value={filterPayment} onChange={(e) => { setFilterPayment(e.target.value); setPage(1); }}
+            className="border border-border rounded-lg px-3 py-2 bg-surface-2 focus:outline-none focus:ring-1 focus:ring-primary text-text">
+            <option value="">All Payment</option>
+            <option value="PENDING">PENDING</option>
+            <option value="PAID_ONLINE">PAID ONLINE</option>
+            <option value="CASH">CASH</option>
+          </select>
+        </div>
 
-      <div className="glass-panel overflow-x-auto w-full">
-        <table className="min-w-full leading-normal">
-          <thead>
-            <tr className="bg-fire-gradient text-white text-xs uppercase tracking-wider">
-              <th className="px-5 py-4 text-left">Order #</th>
-              <th className="px-5 py-4 text-left">Customer</th>
-              <th className="px-5 py-4 text-right">Amount</th>
-              <th className="px-5 py-4 text-center">Status</th>
-              <th className="px-5 py-4 text-center">Payment</th>
-              <th className="px-5 py-4 text-center">Update</th>
-              <th className="px-5 py-4 text-center">Detail</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr><td colSpan="7" className="py-10 text-center text-text-secondary animate-pulse">Loading...</td></tr>
-            ) : orders.length === 0 ? (
-              <tr><td colSpan="7" className="py-10 text-center text-text-secondary">No orders found.</td></tr>
-            ) : orders.map((order, i) => (
-              <tr key={order._id} className={`${i % 2 === 0 ? 'bg-surface' : 'bg-surface-2'} hover:bg-white/5 transition-colors`}>
-                <td className="px-5 py-4 border-b border-border text-sm font-bold text-white font-mono">{order.orderNumber}</td>
-                <td className="px-5 py-4 border-b border-border text-sm">
-                  <div className="font-semibold text-text">{order.customer?.customerName}</div>
-                  <div className="text-xs text-text-secondary">{order.customer?.mobileNumber}</div>
-                </td>
-                <td className="px-5 py-4 border-b border-border text-right font-black text-primary">₹{order.finalAmount}</td>
-                <td className="px-5 py-4 border-b border-border text-center">
-                  <span className={`px-2 py-1 rounded-full text-xs font-bold border ${STATUS_COLORS[order.status] || 'bg-surface-2 text-text-secondary border-border'}`}>{order.status}</span>
-                </td>
-                <td className="px-5 py-4 border-b border-border text-center">
-                  <span className={`px-2 py-1 rounded-full text-xs font-bold border ${PAYMENT_COLORS[order.paymentStatus] || 'bg-surface-2 text-text-secondary border-border'}`}>{order.paymentStatus}</span>
-                </td>
-                <td className="px-5 py-4 border-b border-border text-center">
-                  <select value={order.status} onChange={(e) => updateStatus(order._id, 'status', e.target.value)}
-                    className="border border-border rounded-lg px-2 py-1 text-xs bg-surface focus:outline-none focus:ring-1 focus:ring-primary text-text">
-                    <option value="PENDING">PENDING</option>
-                    <option value="APPROVED">APPROVED</option>
-                    <option value="REJECTED">REJECTED</option>
-                    <option value="REJECTED_OUT_OF_STOCK">OUT OF STOCK</option>
-                  </select>
-                </td>
-                <td className="px-5 py-4 border-b border-border text-center">
-                  <div className="flex items-center justify-center gap-3">
-                    <button onClick={() => downloadPDF(order)} className="text-white/70 hover:text-white transition" title="Download PDF"><FaFilePdf /></button>
-                    <button onClick={() => setViewOrder(order)} className="text-primary hover:text-white transition" title="View Order"><FaEye /></button>
-                  </div>
-                </td>
+        <div className="glass-panel overflow-x-auto w-full">
+          <table className="min-w-full leading-normal">
+            <thead>
+              <tr className="bg-fire-gradient text-white text-xs uppercase tracking-wider">
+                <th className="px-5 py-4 text-left">Order #</th>
+                <th className="px-5 py-4 text-left">Customer</th>
+                <th className="px-5 py-4 text-right">Amount</th>
+                <th className="px-5 py-4 text-center">Status</th>
+                <th className="px-5 py-4 text-center">Payment</th>
+                <th className="px-5 py-4 text-center">Update</th>
+                <th className="px-5 py-4 text-center">Detail</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <Pagination page={page} pages={pages} setPage={setPage} />
-      </div>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr><td colSpan="7" className="py-10 text-center text-text-secondary animate-pulse">Loading...</td></tr>
+              ) : orders.length === 0 ? (
+                <tr><td colSpan="7" className="py-10 text-center text-text-secondary">No orders found.</td></tr>
+              ) : orders.map((order, i) => (
+                <tr key={order._id} className={`${i % 2 === 0 ? 'bg-surface' : 'bg-surface-2'} hover:bg-white/5 transition-colors`}>
+                  <td className="px-5 py-4 border-b border-border text-sm font-bold text-white font-mono">{order.orderNumber}</td>
+                  <td className="px-5 py-4 border-b border-border text-sm">
+                    <div className="font-semibold text-text">{order.customer?.customerName}</div>
+                    <div className="text-xs text-text-secondary">{order.customer?.mobileNumber}</div>
+                  </td>
+                  <td className="px-5 py-4 border-b border-border text-right font-black text-primary">₹{order.finalAmount}</td>
+                  <td className="px-5 py-4 border-b border-border text-center">
+                    <span className={`px-2 py-1 rounded-full text-xs font-bold border ${STATUS_COLORS[order.status] || 'bg-surface-2 text-text-secondary border-border'}`}>{order.status}</span>
+                  </td>
+                  <td className="px-5 py-4 border-b border-border text-center">
+                    <span className={`px-2 py-1 rounded-full text-xs font-bold border ${PAYMENT_COLORS[order.paymentStatus] || 'bg-surface-2 text-text-secondary border-border'}`}>{order.paymentStatus}</span>
+                  </td>
+                  <td className="px-5 py-4 border-b border-border text-center">
+                    <select value={order.status} onChange={(e) => updateStatus(order._id, 'status', e.target.value)}
+                      className="border border-border rounded-lg px-2 py-1 text-xs bg-surface focus:outline-none focus:ring-1 focus:ring-primary text-text">
+                      <option value="PENDING">PENDING</option>
+                      <option value="APPROVED">APPROVED</option>
+                      <option value="REJECTED">REJECTED</option>
+                      <option value="REJECTED_OUT_OF_STOCK">OUT OF STOCK</option>
+                    </select>
+                  </td>
+                  <td className="px-5 py-4 border-b border-border text-center">
+                    <div className="flex items-center justify-center gap-3">
+                      <button onClick={() => downloadPDF(order)} className="text-white/70 hover:text-white transition" title="Download PDF"><FaFilePdf /></button>
+                      <button onClick={() => setViewOrder(order)} className="text-primary hover:text-white transition" title="View Order"><FaEye /></button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <Pagination page={page} pages={pages} setPage={setPage} />
+        </div>
 
       </div>
 
@@ -291,7 +291,7 @@ const Orders = () => {
                 </div>
               </div>
               <div className="mt-4 pt-4 border-t border-border flex justify-end">
-                <button 
+                <button
                   onClick={() => resendConfirmation(viewOrder._id)}
                   disabled={resending}
                   className="bg-primary/20 hover:bg-primary/40 border border-primary text-primary hover:text-white font-bold py-2 px-4 rounded transition-colors disabled:opacity-50 text-sm"

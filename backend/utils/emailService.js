@@ -5,7 +5,7 @@ const createTransporter = () => {
     console.warn('⚠️ EMAIL_USER or EMAIL_PASS not set in .env. Emails will be mocked and not actually sent.');
     return null;
   }
-  
+
   return nodemailer.createTransport({
     service: 'gmail', // You can change this to your email provider (e.g. SES, SendGrid, etc.)
     auth: {
@@ -26,7 +26,7 @@ const sendOrderConfirmationEmail = async (customerEmail, order, pdfBuffer) => {
     html: `
       <h2>Thank you for your order!</h2>
       <p>Your order <strong>${order.orderNumber}</strong> has been successfully placed.</p>
-      <p>We have attached your order invoice for your reference.</p>
+      <p>We have attached your order Estimate for your reference.</p>
       <p>We will notify you once your order status changes.</p>
       <p>For any queries, please contact us at <strong>+91 91595 33949</strong>.</p>
       <br/>
@@ -60,8 +60,8 @@ const sendStatusUpdateEmail = async (customerEmail, order) => {
 
   const transporter = createTransporter();
   let statusMessage = '';
-  
-  switch(order.status) {
+
+  switch (order.status) {
     case 'APPROVED':
       statusMessage = 'has been <strong>APPROVED</strong> and is being processed for shipping.';
       break;
