@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { FaEdit, FaTrash, FaSearch, FaPlus, FaTimes, FaFilter } from 'react-icons/fa';
 import ConfirmDialog from '../components/ConfirmDialog';
 import Pagination from '../components/Pagination';
+import { getOptimizedCloudinaryUrl } from '../utils/cloudinary';
 
 const API = process.env.REACT_APP_API_URL + '';
 const initialForm = { name: '', mrp: '', category: '', youtubeUrl: '', isActive: true };
@@ -175,7 +176,7 @@ const Products = () => {
             ) : products.map((prod, i) => (
               <tr key={prod._id} className={`${i % 2 === 0 ? 'bg-surface' : 'bg-surface-2'} hover:bg-white/5 transition-colors`}>
                 <td className="px-5 py-4 border-b border-border text-center">
-                  {prod.image ? <img src={prod.image} alt={prod.name} className="w-12 h-12 object-cover rounded-lg mx-auto shadow-sm" /> : <div className="w-12 h-12 bg-surface-2 rounded-lg mx-auto flex items-center justify-center text-[10px] text-text-secondary font-bold border border-border">No Img</div>}
+                  {prod.image ? <img src={getOptimizedCloudinaryUrl(prod.image, 100)} alt={prod.name} className="w-12 h-12 object-cover rounded-lg mx-auto shadow-sm" /> : <div className="w-12 h-12 bg-surface-2 rounded-lg mx-auto flex items-center justify-center text-[10px] text-text-secondary font-bold border border-border">No Img</div>}
                 </td>
                 <td className="px-5 py-4 border-b border-border text-sm font-bold text-white">{prod.name}</td>
                 <td className="px-5 py-4 border-b border-border text-sm">

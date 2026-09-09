@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { FaEdit, FaTrash, FaSearch, FaPlus, FaTimes } from 'react-icons/fa';
 import ConfirmDialog from '../components/ConfirmDialog';
 import Pagination from '../components/Pagination';
+import { getOptimizedCloudinaryUrl } from '../utils/cloudinary';
 
 const API = process.env.REACT_APP_API_URL + '/categories';
 
@@ -140,7 +141,7 @@ const Categories = () => {
             ) : categories.map((cat, i) => (
               <tr key={cat._id} className={`${i % 2 === 0 ? 'bg-surface' : 'bg-surface-2'} hover:bg-white/5 transition-colors`}>
                 <td className="px-5 py-4 border-b border-border text-center">
-                  {cat.image ? <img src={cat.image} alt={cat.name} className="w-12 h-12 object-cover rounded-lg mx-auto shadow-sm" /> : <div className="w-12 h-12 bg-surface-2 rounded-lg mx-auto flex items-center justify-center text-[10px] text-text-secondary font-bold border border-border">No Img</div>}
+                  {cat.image ? <img src={getOptimizedCloudinaryUrl(cat.image, 100)} alt={cat.name} className="w-12 h-12 object-cover rounded-lg mx-auto shadow-sm" /> : <div className="w-12 h-12 bg-surface-2 rounded-lg mx-auto flex items-center justify-center text-[10px] text-text-secondary font-bold border border-border">No Img</div>}
                 </td>
                 <td className="px-5 py-4 border-b border-border text-sm font-bold text-white">{cat.name}</td>
                 <td className="px-5 py-4 border-b border-border text-center font-bold text-white text-sm">

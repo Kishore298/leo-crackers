@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, updateQuantity } from '@/store/shopSlice';
 import { FaShoppingCart, FaFire, FaPlayCircle, FaArrowLeft, FaCheck, FaImage } from 'react-icons/fa';
+import { getOptimizedCloudinaryUrl } from '@/utils/cloudinary';
 
 export default function ProductClient({ product }) {
   const dispatch = useDispatch();
@@ -102,7 +103,7 @@ export default function ProductClient({ product }) {
               {!playingVideo ? (
                 <>
                   <img
-                    src={product.image || 'https://placehold.co/600x600/1A1A1A/FFFFFF?text=Leo'}
+                    src={product.image ? getOptimizedCloudinaryUrl(product.image, 1200) : 'https://placehold.co/600x600/1A1A1A/FFFFFF?text=Leo'}
                     alt={product.name}
                     className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                   />

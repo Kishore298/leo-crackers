@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, updateQuantity } from '@/store/shopSlice';
 import { FaShoppingCart, FaFire, FaPlayCircle, FaYoutube } from 'react-icons/fa';
+import { getOptimizedCloudinaryUrl } from '@/utils/cloudinary';
 
 export default function CategoryClient({ category, products }) {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ export default function CategoryClient({ category, products }) {
         {/* Category Header */}
         <div className="bg-surface border border-border rounded-3xl p-8 mb-10 shadow-lg relative overflow-hidden flex items-center gap-6">
           {category.image && (
-            <img src={category.image} alt={category.name} className="w-24 h-24 rounded-full object-cover border-2 border-accent" />
+            <img src={getOptimizedCloudinaryUrl(category.image, 100)} alt={category.name} className="w-24 h-24 rounded-full object-cover border-2 border-accent" />
           )}
           <div className="relative z-10">
             <h1 className="text-4xl md:text-5xl font-heading font-black text-text mb-2">{category.name}</h1>
@@ -81,7 +82,7 @@ export default function CategoryClient({ category, products }) {
                     </div>
                   )}
                   <img
-                    src={product.image || 'https://placehold.co/300x200/1A1A1A/FFFFFF?text=Leo'}
+                    src={product.image ? getOptimizedCloudinaryUrl(product.image, 400) : 'https://placehold.co/300x200/1A1A1A/FFFFFF?text=Leo'}
                     alt={product.name}
                     className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform"
                   />

@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaFire, FaChevronDown, FaChevronUp, FaFilePdf, FaYoutube, FaTimes, FaPlayCircle } from 'react-icons/fa';
+import { getOptimizedCloudinaryUrl } from '@/utils/cloudinary';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -214,7 +215,7 @@ const Home = () => {
                             </div>
                           )}
                           <img
-                            src={product.image || 'https://placehold.co/300x200/1A1A1A/FFFFFF?text=Leo'}
+                            src={product.image ? getOptimizedCloudinaryUrl(product.image, 400) : 'https://placehold.co/300x200/1A1A1A/FFFFFF?text=Leo'}
                             alt={product.name}
                             className="w-full h-full object-contain rounded-lg group-hover:scale-105 transition-transform"
                           />
@@ -316,7 +317,7 @@ const Home = () => {
               <FaTimes className="text-xl" />
             </button>
             <img 
-              src={lightboxImage} 
+              src={getOptimizedCloudinaryUrl(lightboxImage, 1200)} 
               alt="Product Large" 
               className="w-full h-full max-h-[85vh] object-contain"
             />

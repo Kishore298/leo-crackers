@@ -4,11 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { dancingScript } from '@/app/fonts';
 
-const getCloudinaryUrl = (url, width) => {
-  if (!url || !url.includes('cloudinary.com')) return url;
-  // Cloudinary URL format usually: https://res.cloudinary.com/cloudname/image/upload/v12345/filename.jpg
-  return url.replace('/upload/', `/upload/c_scale,w_${width}/q_auto,f_auto/`);
-};
+import { getOptimizedCloudinaryUrl } from '@/utils/cloudinary';
 
 const BannerCarousel = ({ banners }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -59,10 +55,10 @@ const BannerCarousel = ({ banners }) => {
           {/* Background Image with Responsive Resizing */}
           {banner.image && (
             <picture className="w-full h-auto block">
-              <source media="(max-width: 640px)" srcSet={getCloudinaryUrl(banner.image, 640)} />
-              <source media="(max-width: 1024px)" srcSet={getCloudinaryUrl(banner.image, 1024)} />
+              <source media="(max-width: 640px)" srcSet={getOptimizedCloudinaryUrl(banner.image, 640)} />
+              <source media="(max-width: 1024px)" srcSet={getOptimizedCloudinaryUrl(banner.image, 1024)} />
               <img
-                src={getCloudinaryUrl(banner.image, 1920)}
+                src={getOptimizedCloudinaryUrl(banner.image, 1920)}
                 alt={banner.title || 'Leo Crackers Banner'}
                 className="w-full h-auto object-contain block opacity-100"
               />

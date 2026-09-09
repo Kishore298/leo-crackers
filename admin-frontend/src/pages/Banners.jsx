@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { FaTrash } from 'react-icons/fa';
+import { getOptimizedCloudinaryUrl } from '../utils/cloudinary';
 
 const Banners = () => {
   const [banners, setBanners] = useState([]);
@@ -219,7 +220,7 @@ const Banners = () => {
             {banners.map((banner) => (
               <div key={banner._id} className="border border-white/10 rounded-xl p-4 relative bg-surface-2 flex flex-col justify-between h-[200px] overflow-hidden group">
                 <div className="absolute inset-0 z-0 bg-black">
-                  {banner.image && <img src={banner.image} alt="banner" className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity" />}
+                  {banner.image && <img src={getOptimizedCloudinaryUrl(banner.image, 400)} alt="banner" className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity" />}
                 </div>
                 <div className="relative z-10 flex flex-col h-full">
                   <div className="flex justify-between items-start mb-2">
